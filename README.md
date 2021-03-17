@@ -1,4 +1,4 @@
-# Symmetry calculations for systems of first oreder ODE:s
+# Symmetry calculations for systems of first order ODE:s
 This repository contains python code for calculating and validating symmetries of differential equations, created for my Master's thesis project on symmetries in biochemical and ecological ODE:s.
 The code is built on the `sympy` package.
 
