@@ -1,33 +1,29 @@
 """Implementation of infinitesimal generators for sympy."""
 import operator
 
-from sympy import Array, sympify
+from sympy import sympify
 
 from .jetspace import total_derivative
+from .utils import iter_wrapper
 
 
-def create_generator(xis, etas):
+class Generator:
     """Create an operator on the form of an infinitesimal generator."""
 
-    try:
-        iter(xis)
-    except TypeError:
-        xis = [xis]
+    xis = []
+    etas = []
 
-    xis = sympify(xis)
+    def __init__(self, xis, etas):
 
-    try:
-        iter(etas)
-    except TypeError:
-        etas = [etas]
+        self.xis = [sympify(xi) for xi in iter_wrapper(xis)]
 
-    etas = sympify(etas)
+        self.etas = [sympify(eta) for eta in iter_wrapper(etas)]
 
-    def apply_generator(expr, jet_space):
+    def __call__(self, expr, jet_space):
         eta_prolongations = {}
         base_size = len(jet_space.base_space)
 
-        for dependent, eta in zip(jet_space.fibres, etas):
+        for dependent, eta in zip(jet_space.fibres, self.etas):
             eta_prolongations[dependent] = {(0,) * base_size: eta}
 
             multiindex_iter = iter(jet_space.fibres[dependent])
@@ -43,7 +39,7 @@ def create_generator(xis, etas):
 
                 eta_prolongations[dependent][multiindex] = total_derivative(prev_prolongation, leading_deriv_symbol, jet_space)
 
-                for base_coord, xi in zip(jet_space.base_space, xis):
+                for base_coord, xi in zip(jet_space.base_space, self.xis):
                     base_index = jet_space.base_index(base_coord)
                     derivative_index = tuple(map(operator.add, prev_index, base_index))
 
@@ -51,7 +47,7 @@ def create_generator(xis, etas):
 
         out_expr = 0
 
-        for base_coord, xi in zip(jet_space.base_space, xis):
+        for base_coord, xi in zip(jet_space.base_space, self.xis):
             out_expr += xi * expr.diff(base_coord)
 
         for dependent in jet_space.fibres:
@@ -59,5 +55,3 @@ def create_generator(xis, etas):
                 out_expr += eta_prolongations[dependent][multiindex] * expr.diff(jet_space.fibres[dependent][multiindex])
 
         return out_expr
-
-    return apply_generator

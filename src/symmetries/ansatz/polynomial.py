@@ -5,14 +5,14 @@ from sympy import symbols
 from sympy.polys.monomials import itermonomials
 from sympy.polys.orderings import monomial_key
 
-from ..generator import create_generator
+from ..generator import Generator
 
 
 def create_poly_ansatz(jet_space, degree=1):
     independents = jet_space.base_space
     dependents = jet_space.get_dependents()
 
-    key = monomial_key('grlex', tuple(reversed(independents + dependents)))
+    key = monomial_key("grlex", tuple(reversed(independents + dependents)))
 
     monoids = sorted(itermonomials(independents + dependents, degree), key=key)
 
@@ -33,6 +33,6 @@ def create_poly_ansatz(jet_space, degree=1):
 
         all_constants += constants
 
-    generator = create_generator(xis, etas)
+    generator = Generator(xis, etas)
 
     return generator, all_constants
