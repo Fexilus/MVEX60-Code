@@ -6,7 +6,7 @@ from .utils import optional_iter, iter_wrapper, zip_strict
 
 @optional_iter
 def get_lin_symmetry_cond(diff_eqs, generator, jet_space,
-                      derivative_hints=None):
+                          derivative_hints=None):
     """Test if the linearized symmetry conditions hold differential equations.
 
     Args:
@@ -50,14 +50,16 @@ def find_submanifold_subs(diff_eqs, jet_space, derivative_hints=None):
         raise NotImplementedError("Hint-free substitutions not implemented")
 
     def substitutions():
-        for diff_eq, subs_coord in zip_strict(iter_wrapper(diff_eqs), subs_coords):
+        for diff_eq, subs_coord in zip_strict(iter_wrapper(diff_eqs),
+                                              subs_coords):
             rhs = list(linsolve([diff_eq], subs_coord))
 
             if len(rhs) != 1:
                 if len(rhs) == 0:
                     raise ValueError(f"Hint {subs_coord} is not in equation")
                 else:
-                    raise ValueError(f"Hint {subs_coord} has multiple solutions")
+                    raise ValueError(f"Hint {subs_coord} has multiple"
+                                     "solutions")
 
             yield rhs[0][0]
 
