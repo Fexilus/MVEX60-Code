@@ -51,5 +51,8 @@ print(f"\nThe equation system has {str(len(solvable_eqs))} equations",
 
 consts_sol = linsolve(solvable_eqs, ansatz_consts)
 solution = dict(zip(ansatz_consts, tuple(consts_sol)[0]))
+xis = [xi.subs(solution) for xi in inf_generator.xis]
+etas = [eta.subs(solution) for eta in inf_generator.etas]
 
-print(solution)
+for expr in xis + etas:
+    print(expr)
