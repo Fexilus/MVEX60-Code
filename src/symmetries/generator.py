@@ -55,3 +55,12 @@ class Generator:
                 out_expr += eta_prolongations[dependent][multiindex] * expr.diff(jet_space.fibres[dependent][multiindex])
 
         return out_expr
+
+    def __repr__(self):
+        return f"Generator({self.xis}, {self.etas})"
+
+    def __str__(self):
+        xi_str = "  " + "\n  ".join(str(xi) for xi in self.xis)
+        eta_str = "  " + "\n  ".join(str(eta) for eta in self.etas)
+
+        return f"Generator with xis:\n{xi_str}\nand etas:\n{eta_str}"

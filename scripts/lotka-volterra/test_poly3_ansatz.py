@@ -3,6 +3,8 @@ from sympy import symbols, poly, linsolve
 from symmetries.jetspace import JetSpace
 from symmetries.ansatz.polynomial import create_poly_ansatz
 from symmetries.symcond import get_lin_symmetry_cond
+from symmetries.generator import Generator
+from symmetries.ansatz.basis import decompose_generator
 
 
 # Time
@@ -54,5 +56,9 @@ solution = dict(zip(ansatz_consts, tuple(consts_sol)[0]))
 xis = [xi.subs(solution) for xi in inf_generator.xis]
 etas = [eta.subs(solution) for eta in inf_generator.etas]
 
-for expr in xis + etas:
-    print(expr)
+solution_generator = Generator(xis, etas)
+
+solution_basis = decompose_generator(solution_generator, ansatz_consts)
+
+for generator in solution_basis:
+    print(generator)
