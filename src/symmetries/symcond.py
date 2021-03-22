@@ -29,6 +29,9 @@ def get_lin_symmetry_cond(diff_eqs, generator, jet_space,
         generator to generate a group of symmetries that constitute a symmetry.
     """
 
+    # Ensure that the iterable is reusable
+    diff_eqs = list(diff_eqs)
+
     eqs_halfway = (generator(eq, jet_space) for eq in diff_eqs)
 
     submanifold_subs = find_submanifold_subs(diff_eqs, jet_space,
