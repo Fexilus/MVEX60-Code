@@ -1,27 +1,35 @@
 """Utilities."""
 from itertools import zip_longest
+from functools import wraps
 
 
 def optional_iter(func):
-    """Decorator that allows the first argument to be treated as iterable."""
+    """Decorator that allows the first argument to be treated as iterable.
+
+    The function should take an iterable as first argument and return an
+    iterable. The decorated function will accept either a single element or
+    an iterable as first argument, and will return a single element or an
+    iterable depending on the input type.
+    """
 
     def as_iter(arg):
         yield arg
 
-    def inner(first_arg, *args, **kwargs):
+    @wraps(func)
+    def wrapped_func(first_arg, *args, **kwargs):
         try:
             # Test if iterable or not
             iter(first_arg)
         except TypeError:
-            return next(func(as_iter(first_arg), *args, **kwargs))
+            return next(iter(func(as_iter(first_arg), *args, **kwargs)))
         else:
             return func(first_arg, *args, **kwargs)
 
-    return inner
+    return wrapped_func
 
 
 def iter_wrapper(possible_iter):
-    """Ensures that the argument can be treated as an iterator."""
+    """Ensures that the argument can be treated as an iterable."""
     try:
         # Test if iterable or not
         iter(possible_iter)
