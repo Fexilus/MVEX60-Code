@@ -4,7 +4,7 @@ import operator
 from sympy import sympify
 
 from .jetspace import total_derivative
-from .utils import iter_wrapper
+from .utils import iter_wrapper, zip_strict
 
 
 class Generator:
@@ -40,13 +40,30 @@ class Generator:
         return out_expr
 
     def __repr__(self):
+
         return f"Generator({self.xis}, {self.etas})"
 
     def __str__(self):
+
         xi_str = "  " + "\n  ".join(str(xi) for xi in self.xis)
         eta_str = "  " + "\n  ".join(str(eta) for eta in self.etas)
 
         return f"Generator with xis:\n{xi_str}\nand etas:\n{eta_str}"
+
+    def __eq__(self, other):
+
+        if isinstance(other, Generator):
+            for this_xi, other_xi in zip_strict(self.xis, other.xis):
+                if this_xi.expand() != other_xi.expand():
+                    return False
+
+            for this_eta, other_eta in zip_strict(self.etas, other.etas):
+                if this_eta.expand() != other_eta.expand():
+                    return False
+
+            return True
+
+        return False
 
 
 def get_prolongations(xis, etas, jet_space):
