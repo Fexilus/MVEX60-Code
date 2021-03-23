@@ -71,7 +71,7 @@ def get_prolongations(xis, etas, jet_space):
 
     The vector field is characterized by the coefficients of derivatives in
     the base space (xis) and the coefficients of derivatives in the fiber of
-    the original fiber bundle from which the jet space is created.
+    the original fiber bundle (etas) from which the jet space is created.
     """
 
     eta_prolongations = {}
