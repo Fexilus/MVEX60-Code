@@ -3,24 +3,26 @@ import operator
 
 from sympy import sympify
 
-from .jetspace import total_derivative
+from .jetspace import JetSpace, total_derivative
 from .utils import iter_wrapper, zip_strict
 
 
 class Generator:
     """A local coordinate representation of an infinitesimal generator."""
 
-    xis = []
-    etas = []
-
-    def __init__(self, xis, etas):
+    def __init__(self, xis, etas, total_space):
 
         self.xis = [sympify(xi) for xi in iter_wrapper(xis)]
 
         self.etas = [sympify(eta) for eta in iter_wrapper(etas)]
 
-    def __call__(self, expr, jet_space):
+        self.total_space = total_space
+
+    def __call__(self, expr, jet_space=None):
         """Apply the generator on an expression on a jet space."""
+
+        if not jet_space:
+            jet_space = JetSpace(*self.total_space, 0)
 
         eta_prolongations = get_prolongations(self.xis, self.etas, jet_space)
 
@@ -41,18 +43,22 @@ class Generator:
 
     def __repr__(self):
 
-        return f"Generator({self.xis}, {self.etas})"
+        return f"Generator({self.xis}, {self.etas} on {self.total_space})"
 
     def __str__(self):
 
         xi_str = "  " + "\n  ".join(str(xi) for xi in self.xis)
         eta_str = "  " + "\n  ".join(str(eta) for eta in self.etas)
 
-        return f"Generator with xis:\n{xi_str}\nand etas:\n{eta_str}"
+        return (f"Generator on {self.total_space}\nwith xis:\n{xi_str}\n"
+                f"and etas:\n{eta_str}")
 
     def __eq__(self, other):
 
         if isinstance(other, Generator):
+            if self.total_space != other.total_space:
+                return False
+
             for this_xi, other_xi in zip_strict(self.xis, other.xis):
                 if this_xi.expand() != other_xi.expand():
                     return False
@@ -66,6 +72,16 @@ class Generator:
         return False
 
 
+def generator_on(total_space):
+    """Returns a initiallization method for generators on the total space."""
+
+    class _Generator(Generator):
+        def __init__(self, xis, etas):
+            super(_Generator, self).__init__(xis, etas, total_space)
+
+    return _Generator
+
+
 def get_prolongations(xis, etas, jet_space):
     """Calculate the coefficients of a vector field prolonged over a jet space.
 
@@ -77,7 +93,7 @@ def get_prolongations(xis, etas, jet_space):
     eta_prolongations = {}
     base_size = len(jet_space.base_space)
 
-    for dependent, eta in zip(jet_space.fibres, etas):
+    for dependent, eta in zip_strict(jet_space.fibres, etas):
 
         multiindex_iter = iter(jet_space.fibres[dependent])
 
@@ -107,7 +123,7 @@ def get_prolongations(xis, etas, jet_space):
             eta_prolongations[dependent][multiindex] = eta_component
 
             # The omega_(n-1)*D(xi) components of the prolongation formula
-            for base_coord, xi in zip(jet_space.base_space, xis):
+            for base_coord, xi in zip_strict(jet_space.base_space, xis):
                 base_index = jet_space.base_index(base_coord)
                 derivative_index = tuple(map(operator.add, prev_index,
                                              base_index))
@@ -119,3 +135,20 @@ def get_prolongations(xis, etas, jet_space):
                 eta_prolongations[dependent][multiindex] -=  xi_term
 
     return eta_prolongations
+
+
+def lie_bracket(generator1, generator2):
+    """The Lie bracket of two generators in the same coordinate system."""
+
+    if generator1.total_space != generator2.total_space:
+        raise NotImplementedError("Generators have to be in same coordinates")
+
+    bracket_xis = []
+    for xi1, xi2 in zip(generator1.xis, generator2.xis):
+        bracket_xis += [(generator1(xi2) - generator2(xi1)).expand()]
+
+    bracket_etas = []
+    for eta1, eta2 in zip(generator1.etas, generator2.etas):
+        bracket_etas += [(generator1(eta2) - generator2(eta1)).expand()]
+
+    return Generator(bracket_xis, bracket_etas, generator1.total_space)

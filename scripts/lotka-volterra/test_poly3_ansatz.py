@@ -56,7 +56,7 @@ solution = dict(zip(ansatz_consts, tuple(consts_sol)[0]))
 xis = [xi.subs(solution) for xi in inf_generator.xis]
 etas = [eta.subs(solution) for eta in inf_generator.etas]
 
-solution_generator = Generator(xis, etas)
+solution_generator = Generator(xis, etas, jet_space.original_total_space)
 
 solution_basis = decompose_generator(solution_generator, ansatz_consts)
 

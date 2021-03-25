@@ -84,6 +84,17 @@ class JetSpace:
                     symbol_name = dependent.name + "_{" + deriv_string + "}"
                     self.fibres[dependent][deriv_index] = Symbol(symbol_name)
 
+    @property
+    def original_total_space(self):
+        """Return the coordinates of the total space on which the jet space is built
+
+        Returns:
+            A 2-tuple of lists of the coordinates of the base space and fibre
+            respectively.
+        """
+
+        return self.base_space, self.get_dependents()
+
 
 def total_derivative(jet_exp, coordinate, domain):
     """The total derivative of an expression in a coordinate."""

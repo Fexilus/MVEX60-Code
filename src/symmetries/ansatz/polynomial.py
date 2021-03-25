@@ -33,6 +33,6 @@ def create_poly_ansatz(jet_space, degree=1):
 
         all_constants += constants
 
-    generator = Generator(xis, etas)
+    generator = Generator(xis, etas, jet_space.original_total_space)
 
     return generator, all_constants

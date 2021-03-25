@@ -1,7 +1,7 @@
 from sympy import symbols, ln, exp
 
 from symmetries.jetspace import JetSpace
-from symmetries.generator import Generator
+from symmetries.generator import generator_on
 from symmetries.symcond import get_lin_symmetry_cond
 
 # Time
@@ -21,6 +21,7 @@ kG, Ti, A = symbols('k_G T_i A')
 autonomous_equation = Wt + kG * W * ln(W / A)
 classical_equation = Wt - kG * exp(-kG * (t - Ti)) * W
 
+Generator = generator_on((time, state))
 # Generators
 X_aut1 = Generator(1, 0)
 X_aut2 = Generator(0, W * ln(W / A))

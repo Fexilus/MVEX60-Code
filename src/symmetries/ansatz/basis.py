@@ -42,6 +42,7 @@ def decompose_generator(generator, basis):
                 base_etas += [0]
 
         if nonzero_generator:
-            generator_basis += [Generator(base_xis, base_etas)]
+            generator_basis += [Generator(base_xis, base_etas,
+                                          generator.total_space)]
 
     return generator_basis
