@@ -24,12 +24,12 @@ classical_equation = Wt - kG * exp(-kG * (t - Ti)) * W
 Generator = generator_on((time, state))
 # Generators
 X_aut1 = Generator(1, 0)
-X_aut2 = Generator(0, W * ln(W / A))
-X_aut3 = Generator(t, W * ln(W / A) * ln(ln(W / A)))
-X_aut4 = Generator(0, exp(-kG * t) * W)
-X_aut5 = Generator(exp(-kG * t), -kG * exp(-kG * t) * W * ln(W / A))
+X_aut2 = Generator(t, W * ln(W / A) * ln(ln(W / A)))
+X_aut3 = Generator(0, W * ln(W / A))
+X_aut4 = Generator(exp(-kG * t), -kG * exp(-kG * t) * W * ln(W / A))
+X_aut6 = Generator(0, exp(-kG * t) * W)
 
-autonomous_generators = [X_aut1, X_aut2, X_aut3, X_aut4, X_aut5]
+autonomous_generators = [X_aut1, X_aut2, X_aut3, X_aut4, X_aut6]
 
 X_cla1 = Generator(0, W)
 X_cla2 = Generator(1, - kG * W * ln(W))
@@ -42,10 +42,10 @@ all_autonomous_confirmed = True
 for generator in autonomous_generators:
     sym_cond = get_lin_symmetry_cond(autonomous_equation, generator, jet_space,
                                      derivative_hints=Wt)
-    if sym_cond.expand():
+    if not sym_cond.expand().is_zero:
         all_autonomous_confirmed = False
 
-        print(f"The generator {generator} is not a symmetry of the autonomous"
+        print(f"The generator {generator} is not a symmetry of the autonomous "
               "Gompertz model")
 
 if all_autonomous_confirmed:
@@ -56,13 +56,13 @@ all_classical_confirmed = True
 for generator in classical_generators:
     sym_cond = get_lin_symmetry_cond(classical_equation, generator, jet_space,
                                      derivative_hints=Wt)
-    if sym_cond.expand():
+    if not sym_cond.expand().is_zero:
         all_classical_confirmed = False
 
-        print(f"The generator {generator} is not a symmetry of the classical"
+        print(f"The generator {generator} is not a symmetry of the classical "
               "Gompertz model")
 
-if all_autonomous_confirmed:
+if all_classical_confirmed:
     print("All expected generators are generators of the classical Gompertz "
           "model")
 
@@ -73,7 +73,7 @@ any_classical_overlapping = False
 for generator in unique_classical_generators:
     sym_cond = get_lin_symmetry_cond(autonomous_equation, generator, jet_space,
                                      derivative_hints=Wt)
-    if not sym_cond.expand():
+    if sym_cond.expand().is_zero:
         any_classical_overlapping = True
 
         print(f"{generator} is also a symmetry of the autonomous Gompertz "
@@ -90,7 +90,7 @@ any_autonomous_overlapping = False
 for generator in unique_autonomous_generators:
     sym_cond = get_lin_symmetry_cond(classical_equation, generator, jet_space,
                                      derivative_hints=Wt)
-    if not sym_cond.expand():
+    if sym_cond.expand().is_zero:
         any_autonomous_overlapping = True
 
         print(f"{generator} is also a symmetry of the classical Gompertz "
