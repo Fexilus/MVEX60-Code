@@ -10,10 +10,6 @@ from .utils import iter_wrapper
 
 class JetSpace:
     """A local coordinate representation of a jet space."""
-    degree = None
-    base_space = []
-    fibres = {}
-
 
     def __init__(self, base_coord, fibre_coord, degree):
         self.degree = degree
@@ -22,6 +18,7 @@ class JetSpace:
 
         base_size = len(self.base_space)
 
+        self.fibres = {}
         for coordinate in iter_wrapper(fibre_coord):
             self.fibres[coordinate] = {(0,) * base_size: coordinate}
 
