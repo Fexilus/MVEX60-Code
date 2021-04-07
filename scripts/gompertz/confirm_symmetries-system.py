@@ -37,7 +37,7 @@ all_confirmed = True
 for generator in generators:
     sym_conds = get_lin_symmetry_cond(diff_equation, generator, jet_space,
                                      derivative_hints=(Wt, Gt))
-    if not all(sym_cond.expand().is_zero for sym_cond in sym_conds):
+    if not all(sym_cond.expand().together().is_zero for sym_cond in sym_conds):
         all_confirmed = False
 
         print(f"The generator {generator} is not a symmetry of the system "
