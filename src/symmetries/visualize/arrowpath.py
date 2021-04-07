@@ -47,10 +47,10 @@ class ArrowStroke(AbstractPathEffect):
         transpath = affine.transform_path(tpath)
 
         # Evaluate path to straight line segments that can be used to
-        # construct line ticks.
+        # place arrows.
         polys = transpath.to_polygons(closed_only=False)
 
-        for p in polys:
+        for p in (p for p in polys if not np.any(np.isnan(p))):
             x = p[:, 0]
             y = p[:, 1]
 
@@ -67,7 +67,7 @@ class ArrowStroke(AbstractPathEffect):
             s_total = s[-1]
 
             num = int(np.ceil(s_total / spacing_px)) - 1
-            # Pick parameter values for ticks.
+            # Pick parameter values for arrow bases.
             s_tick = np.linspace(spacing_px/2, s_total - spacing_px/2, num)
 
             # Find points along the parameterized curve
@@ -98,7 +98,7 @@ class ArrowStroke(AbstractPathEffect):
             x_left = x_tick - uv[:, 1] * width_scaling
             y_left = y_tick + uv[:, 0] * width_scaling
 
-            # Interleave ticks to form Path vertices
+            # Create vertex matrix
             xyt = np.empty((num, 3, 2), dtype=x_tick.dtype)
             xyt[:, 0, 0] = x_right
             xyt[:, 1, 0] = x_pointy
