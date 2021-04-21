@@ -108,8 +108,7 @@ for eq in a_u1_separated_equations:
 
 arbitrary_func_name = list(poly(sym_cond, (a, u1)).coeffs()[1].atoms(AppliedUndef))[0].name
 eta2 = eta2.replace(Function(arbitrary_func_name)(Wild("x")), 0)
-#eta1 = eta1.replace(Function(arbitrary_func_name)(Wild("x")), 0).doit()
-eta1 = 0 # Temporary fix because of bug only fixed after release of sympy 1.7.1
+eta1 = eta1.replace(Function(arbitrary_func_name)(Wild("x")), 0).doit()
 
 print("Final result:")
 print(Generator(xi, (eta1, eta2)))
