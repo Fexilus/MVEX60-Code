@@ -1,7 +1,7 @@
 from itertools import count
 import operator
 
-from sympy import symbols
+from sympy import Symbol
 from sympy.polys.monomials import itermonomials
 from sympy.polys.orderings import monomial_key
 
@@ -21,14 +21,16 @@ def create_poly_ansatz(jet_space, degree=1):
 
     xis = []
     for _, i in zip(independents, constant_rows):
-        constants = symbols(f"c_{i}_{{(1:{len(monoids) + 1})}}")
+        constants = [Symbol(f"c_{{{i},{j}}}")
+                     for j in range(1, len(monoids) + 1)]
         xis += [sum(map(operator.mul, monoids, constants))]
 
         all_constants += constants
 
     etas = []
     for _, i in zip(dependents, constant_rows):
-        constants = symbols(f"c_{i}_{{(1:{len(monoids) + 1})}}")
+        constants = [Symbol(f"c_{{{i},{j}}}")
+                     for j in range(1, len(monoids) + 1)]
         etas += [sum(map(operator.mul, monoids, constants))]
 
         all_constants += constants

@@ -1,4 +1,6 @@
-from sympy import symbols, poly, linsolve, Function, Eq
+"""Calculate generators linear in time and states for lac operon model."""
+
+from sympy import symbols, together, numer, poly, linsolve, Function, Eq
 
 from symmetries.jetspace import JetSpace
 from symmetries.ansatz.polynomial import create_poly_ansatz
@@ -13,24 +15,34 @@ latex = CustomLatexPrinter({"ln_notation": True})
 # Time
 t = time = symbols("t", real=True)
 # States
-u1, u2 = states = symbols("N P", nonnegative=True)
+M, B, L, A, P = states = symbols("M B L A P", nonnegative=True)
 
 jet_space = JetSpace(time, states, 1)
 
 # Parameters
-r, a = symbols('a b')
-b, m = symbols('c d')
+alphaM, K1, K, Gamma0, gammaM = symbols("alpha_M, K_1, K, Gamma_0, gamma_M")
+n = symbols("n", positive=True)
+alphaB, gammaB = symbols("alpha_B, gamma_B")
+alphaL, Le, KLe, betaL1, KL1, betaL2, KL2, gammaL = symbols("alpha_L, L_e, K_{L_e}, beta_{L_1}, K_{L_1}, beta_{L_2}, K_{L_2}, gamma_L")
+alphaA, KL, betaA, KA, gammaA = symbols("alpha_A, K_L, beta_A, K_A, gamma_A")
+alphaP, gammaP = symbols("alpha_P, gamma_P")
 
 # Right hand differential equation sides
-omega_1 = r * u1 - a * u1 * u2
-omega_2 = b * u1 * u2 - m * u2
+omega_M = alphaM * (1 + K1 * A ** n) / (K + K1 * A ** n) + Gamma0 - gammaM * M
+omega_B = alphaB * M - gammaB * B
+omega_L = alphaL * P * Le / (KLe + Le) - betaL1 * P * L / (KL1 + L) - betaL2 * B * L / (KL2 + L) - gammaL * L
+omega_A = alphaA * B * L / (KL + L) - betaA * B * A / (KA + A) - gammaA * A
+omega_P = alphaP * M - gammaP * P
 
-right_hand_sides = [omega_1, omega_2]
+right_hand_sides = [omega_M, omega_B, omega_L, omega_A, omega_P]
 
-diff_functions = [jet_space.fibres[u1][(1,)] - omega_1,
-                  jet_space.fibres[u2][(1,)] - omega_2]
+diff_functions = [jet_space.fibres[M][(1,)] - omega_M,
+                  jet_space.fibres[B][(1,)] - omega_B,
+                  jet_space.fibres[L][(1,)] - omega_L,
+                  jet_space.fibres[A][(1,)] - omega_A,
+                  jet_space.fibres[P][(1,)] - omega_P]
 
-inf_generator, ansatz_consts = create_poly_ansatz(jet_space, 3)
+inf_generator, ansatz_consts = create_poly_ansatz(jet_space, 1)
 
 print("Ansatz:")
 
@@ -54,7 +66,8 @@ print(f"\r{num_decomposed_eqs}/{num_eqs} equations decomposed",
 
 solvable_eqs = []
 for eq in lin_symmetry_cond:
-    solvable_eqs += poly(eq, (time,) + states).coeffs()
+    eq_numer = numer(together(eq))
+    solvable_eqs += poly(eq_numer, (time,) + states + (A ** n,)).coeffs()
 
     num_decomposed_eqs += 1
     print(f"\r{num_decomposed_eqs}/{num_eqs} equations decomposed",
