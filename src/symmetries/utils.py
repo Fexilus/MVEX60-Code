@@ -2,6 +2,8 @@
 from itertools import zip_longest
 from functools import wraps
 
+from sympy import symbols
+
 
 def optional_iter(func):
     """Decorator that allows the first argument to be treated as iterable.
@@ -91,3 +93,24 @@ def derivatives_sort_key(function_order=None, dependent_order=None):
         return count_val + func_val + dep_val
 
     return _key
+
+
+def replace_consts(exprs, new_const_name):
+    """Replace arbitrary constant from eg. sympy.dsolve."""
+
+    exprs = iter_wrapper(exprs)
+
+    new_consts = []
+
+    i = 1
+    while True:
+        old_const = symbols(f"C{i}")
+        new_const = symbols(f"{new_const_name}_{{{i}}}")
+
+        new_exprs = [expr.subs(old_const, new_const) for expr in exprs]
+        if new_exprs == exprs:
+            return exprs, new_consts
+
+        new_consts.append(new_const)
+        exprs = new_exprs
+        i += 1
