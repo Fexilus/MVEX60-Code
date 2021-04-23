@@ -85,5 +85,7 @@ solution_basis = decompose_generator(solution_generator, arbitrary_const)
 print("Solution basis:")
 for i, generator in enumerate(solution_basis):
     print(f"Generator {i}:")
-    print(latex.doprint(Eq(Function(f"\\xi")(t, state), generator.xis[0])))
-    print(latex.doprint(Eq(Function(f"\\eta")(t, state), generator.etas[0])))
+    print(latex.doprint(Eq(Function(f"\\xi")(t, state),
+                           generator.xis[0].expand().powsimp())))
+    print(latex.doprint(Eq(Function(f"\\eta")(t, state),
+                           generator.etas[0].expand().powsimp())))
