@@ -7,6 +7,11 @@ from sympy import Symbol, S
 class CustomLatexPrinter(LatexPrinter):
     """Latex printer that prints derivatives with f_t notation."""
 
+    def __init__(self, *args, short_functions=True, **kwargs):
+        self._short_functions=short_functions
+
+        super().__init__(*args, **kwargs)
+
     def _print_Derivative(self, expr):
         if not isinstance(expr.expr, AppliedUndef):
             return super()._print_Derivative(expr)
@@ -22,13 +27,15 @@ class CustomLatexPrinter(LatexPrinter):
 
             tex += "}"
 
-        return tex
+        deriv_as_func_expr = Function(tex)(*func_expr.args)
+
+        return self._print_Function(deriv_as_func_expr)
 
     def _print_Function(self, expr, exp=None):
-        if not isinstance(expr, AppliedUndef):
-            return super()._print_Function(expr, exp)
+        if ((not self._short_functions)
+            or (not isinstance(expr, AppliedUndef))
+            or (not all(isinstance(arg, Symbol) for arg in expr.args))):
 
-        if not all(isinstance(arg, Symbol) for arg in expr.args):
             return super()._print_Function(expr, exp)
 
         return self._hprint_Function(expr.func.name)
@@ -57,7 +64,7 @@ class CustomLatexPrinter(LatexPrinter):
         main, first_tick, more_ticks = func.partition("\'")
 
         return super()._hprint_Function(main) + first_tick + more_ticks
-    
+
     def _print_Poly(self, poly):
 
         terms = []
