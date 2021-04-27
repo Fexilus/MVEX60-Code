@@ -113,7 +113,7 @@ def integrate_forward(integrator, dt, max_len, t_boundry=None, y_boundry=None):
     return np.array(curve_t)[:,None], np.array(curve_y)
 
 
-def spaced_points(curve, num_points):
+def get_spaced_points(curve, num_points):
     """Take a curve and return fairly spaced points of the curve."""
 
     if len(curve) <= num_points:
