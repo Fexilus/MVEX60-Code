@@ -9,7 +9,8 @@ from .arrowpath import WithArrowStroke
 from .utils import integrate_two_ways, get_spaced_points
 
 def plot_transformation(generator, ax, diff_eq_rhs, init_val, tlim,
-                        parameters=None, dt=0.1, ylim=None):
+                        parameters=None, dt=0.1, ylim=None,
+                        num_trans_points=10, trans_max_len=10):
     """Plot transformation defined by generator of an ODE on axis."""
 
     if not parameters:
@@ -34,11 +35,12 @@ def plot_transformation(generator, ax, diff_eq_rhs, init_val, tlim,
 
     transformation_points = get_normed_spaced_points(solution_curve,
                                                      (tlim_diff, ylim_diff),
-                                                     10)
+                                                     num_trans_points)
 
     trans_curves = get_integral_curves(generator, transformation_points,
                                        parameters=parameters,
-                                       boundry=(tlim, ylim))
+                                       boundry=(tlim, ylim),
+                                       max_len=trans_max_len)
 
     center_trans_curves = trans_curves[floor(len(trans_curves) / 2)]
     center_trans_end_point = center_trans_curves[-1]
