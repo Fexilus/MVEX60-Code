@@ -41,28 +41,32 @@ def integrate_two_ways(integrator, dt, max_len, t_boundry=None,
     curve_forward_t = []
     curve_forward_y = []
 
-    while (integrator.successful()
-           and integrator.t <= init_t + max_len
+    while (integrator.t <= init_t + max_len
            and in_ranges(integrator.t, t_boundry)
            and in_ranges(integrator.y, y_boundry)):
         integrator.integrate(integrator.t + dt)
 
-        curve_forward_t.append(integrator.t)
-        curve_forward_y.append(integrator.y)
+        if integrator.successful():
+            curve_forward_t.append(integrator.t)
+            curve_forward_y.append(integrator.y)
+        else:
+            break
 
     integrator.set_initial_value(init_y, init_t)
 
     curve_backward_t = []
     curve_backward_y = []
 
-    while (integrator.successful()
-           and integrator.t >= init_t - max_len
+    while (integrator.t >= init_t - max_len
            and in_ranges(integrator.t, t_boundry)
            and in_ranges(integrator.y, y_boundry)):
         integrator.integrate(integrator.t - dt)
 
-        curve_backward_t.append(integrator.t)
-        curve_backward_y.append(integrator.y)
+        if integrator.successful():
+            curve_backward_t.append(integrator.t)
+            curve_backward_y.append(integrator.y)
+        else:
+            break
 
     curve_t = list(reversed(curve_backward_t)) + [init_t] + curve_forward_t
     curve_y = list(reversed(curve_backward_y)) + [init_y] + curve_forward_y
@@ -95,14 +99,16 @@ def integrate_forward(integrator, dt, max_len, t_boundry=None, y_boundry=None):
     curve_forward_t = []
     curve_forward_y = []
 
-    while (integrator.successful()
-           and integrator.t <= init_t + max_len
+    while (integrator.t <= init_t + max_len
            and in_ranges(integrator.t, t_boundry)
            and in_ranges(integrator.y, y_boundry)):
         integrator.integrate(integrator.t + dt)
 
-        curve_forward_t.append(integrator.t)
-        curve_forward_y.append(integrator.y)
+        if integrator.successful():
+            curve_forward_t.append(integrator.t)
+            curve_forward_y.append(integrator.y)
+        else:
+            break
 
     curve_t = [init_t] + curve_forward_t
     curve_y = [init_y] + curve_forward_y

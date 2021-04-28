@@ -23,7 +23,7 @@ def get_integral_curves(generator, start_points, parameters=None, boundry=None,
     def diff_eq(t, y):
         return np.array([func(*y, *param_vals) for func in vector_field])
 
-    ds = 0.01
+    ds = max_len / 100
 
     curves = []
 
