@@ -67,50 +67,55 @@ class ArrowStroke(AbstractPathEffect):
             s_total = s[-1]
 
             num = int(np.ceil(s_total / spacing_px)) - 1
-            # Pick parameter values for arrow bases.
-            s_tick = np.linspace(spacing_px/2, s_total - spacing_px/2, num)
 
-            # Find points along the parameterized curve
-            x_tick = np.interp(s_tick, s, x)
-            y_tick = np.interp(s_tick, s, y)
+            if num > 0:
+                # Pick parameter values for arrow bases.
+                s_base = np.linspace(spacing_px/2, s_total - spacing_px/2, num)
 
-            # Find unit vectors in local direction of curve
-            delta_s = self._spacing * .001
-            u = (np.interp(s_tick + delta_s, s, x) - x_tick) / delta_s
-            v = (np.interp(s_tick + delta_s, s, y) - y_tick) / delta_s
+                # Find points along the parameterized curve
+                x_base = np.interp(s_base, s, x)
+                y_base = np.interp(s_base, s, y)
 
-            # Normalize slope into unit slope vector.
-            n = np.hypot(u, v)
-            mask = n == 0
-            n[mask] = 1.0
+                # Find unit vectors in local direction of curve
+                delta_s = self._spacing * .001
+                u = (np.interp(s_base + delta_s, s, x) - x_base) / delta_s
+                v = (np.interp(s_base + delta_s, s, y) - y_base) / delta_s
 
-            uv = np.array([u / n, v / n]).T
-            uv[mask] = np.array([0, 0]).T
+                # Normalize slope into unit slope vector.
+                n = np.hypot(u, v)
+                mask = n == 0
+                n[mask] = 1.0
 
-            # Build arrow verticies
+                uv = np.array([u / n, v / n]).T
+                uv[mask] = np.array([0, 0]).T
 
-            x_right = x_tick + uv[:, 1] * width_scaling
-            y_right = y_tick - uv[:, 0] * width_scaling
+                # Build arrow verticies
 
-            x_pointy = x_tick + uv[:, 0] * self._scaling
-            y_pointy = y_tick + uv[:, 1] * self._scaling
+                x_right = x_base + uv[:, 1] * width_scaling
+                y_right = y_base - uv[:, 0] * width_scaling
 
-            x_left = x_tick - uv[:, 1] * width_scaling
-            y_left = y_tick + uv[:, 0] * width_scaling
+                x_pointy = x_base + uv[:, 0] * self._scaling
+                y_pointy = y_base + uv[:, 1] * self._scaling
 
-            # Create vertex matrix
-            xyt = np.empty((num, 3, 2), dtype=x_tick.dtype)
-            xyt[:, 0, 0] = x_right
-            xyt[:, 1, 0] = x_pointy
-            xyt[:, 2, 0] = x_left
-            xyt[:, 0, 1] = y_right
-            xyt[:, 1, 1] = y_pointy
-            xyt[:, 2, 1] = y_left
+                x_left = x_base - uv[:, 1] * width_scaling
+                y_left = y_base + uv[:, 0] * width_scaling
 
-            colors = np.repeat(np.repeat(np.array(gc0._rgb)[np.newaxis, np.newaxis, :], 3, axis=1), num, axis=0)
+                # Create vertex matrix
+                xyt = np.empty((num, 4, 2), dtype=x_base.dtype)
+                xyt[:, 0, 0] = x_right
+                xyt[:, 1, 0] = x_pointy
+                xyt[:, 2, 0] = x_left
+                xyt[:, 3, 0] = x_right # Will be ignored
+                xyt[:, 0, 1] = y_right
+                xyt[:, 1, 1] = y_pointy
+                xyt[:, 2, 1] = y_left
+                xyt[:, 3, 1] = y_right # Will be ignored
 
-            # Transform back to data space during render
-            renderer.draw_gouraud_triangles(gc0, xyt, colors, affine.inverted() + trans)
+                tri_path = Path.make_compound_path_from_polys(xyt)
+
+                # Transform back to data space during render
+                renderer.draw_path(gc0, tri_path, affine.inverted() + trans,
+                                   rgbFace=gc0._rgb)
 
         gc0.restore()
 
