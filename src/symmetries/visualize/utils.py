@@ -146,3 +146,36 @@ def get_spaced_points(curve, num_points):
         dist_error += dist
 
     return np.array(final_points)
+
+
+def get_spread(include_val, min_val, max_val, num_val):
+    """Creates an equidistant spread of values including a specific value"""
+
+    include_val = np.asarray(include_val)
+    min_val = np.asarray(min_val)
+    max_val = np.asarray(max_val)
+
+    # Calculate step size and magnitude without include value
+    apr_step_size = (max_val - min_val) / (num_val - 1)
+    apr_step_mag = np.linalg.norm(apr_step_size)
+
+    include_index = round(np.linalg.norm(include_val - min_val) / apr_step_mag)
+
+    apr_min_val = include_val - include_index * apr_step_size
+    apr_max_val = include_val + (num_val - 1 - include_index) * apr_step_size
+
+    step_size = apr_step_size
+
+    # Reduce step size in all dimensions with too low/high aproximative values
+    for i, min_diff in enumerate(min_val - apr_min_val):
+        if min_diff > 0:
+            step_size[i] -= min_diff / include_index
+
+    for i, max_diff in enumerate(apr_max_val - max_val):
+        if max_diff > 0:
+            step_size[i] -= max_diff / (num_val - 1 - include_index)
+
+    final_min_val = include_val - include_index * step_size
+    final_max_val = include_val + (num_val - 1 - include_index) * step_size
+
+    return np.linspace(final_min_val, final_max_val, num_val)
