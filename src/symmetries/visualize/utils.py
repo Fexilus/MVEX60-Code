@@ -6,13 +6,25 @@ def in_ranges(vec, ranges):
 
     If ranges is None, allways return True.
     """
-    if ranges is None:
-        return True
 
-    vec = np.array(vec)
+    vec = np.array(vec, ndmin=1)
+
+    if len(vec) > 1:
+        mask = [_range is not None for _range in ranges]
+
+        if not np.asarray(mask).any():
+            return True
+
+        vec = vec[mask]
+        ranges = [_range for _range, m in zip(ranges, mask) if m]
+    else:
+        if ranges is None:
+            return True
+
     ranges = np.array(ranges, ndmin=2)
 
-    return np.all(vec > ranges[:,0]) and np.all(vec < ranges[:,1])
+    return np.all(vec >= ranges[:,0]) and np.all(vec <= ranges[:,1])
+
 
 
 def integrate_two_ways(integrator, dt, max_len, t_boundry=None,
