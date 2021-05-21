@@ -21,14 +21,14 @@ ax.add_patch(tri2)
 ax.add_patch(tri3)
 
 points1 = np.stack([triangle1_vertecies[0,:],
-                    triangle2_vertecies[1,:],
-                    triangle3_vertecies[2,:]])
-points2 = np.stack([triangle1_vertecies[2,:],
-                    triangle2_vertecies[0,:],
-                    triangle3_vertecies[1,:]])
-points3 = np.stack([triangle1_vertecies[1,:],
                     triangle2_vertecies[2,:],
+                    triangle3_vertecies[1,:]])
+points2 = np.stack([triangle1_vertecies[2,:],
+                    triangle2_vertecies[1,:],
                     triangle3_vertecies[0,:]])
+points3 = np.stack([triangle1_vertecies[1,:],
+                    triangle2_vertecies[0,:],
+                    triangle3_vertecies[2,:]])
 
 ax.scatter(points1[:,0], points1[:,1], marker="o", s=60, color="black")
 ax.scatter(points2[:,0], points2[:,1], marker="s", s=60, color="black")
