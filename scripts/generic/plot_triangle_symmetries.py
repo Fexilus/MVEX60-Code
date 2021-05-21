@@ -10,7 +10,7 @@ triangle1_vertecies = np.array([[0, 0], [0.5, np.sqrt(0.75)], [1, 0]])
 triangle2_vertecies = triangle1_vertecies + np.array([1.2, 0])
 triangle3_vertecies = triangle2_vertecies + np.array([1.2, 0])
 
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(6, 2))
 
 tri1 = plt.Polygon(triangle1_vertecies, fill=False)
 tri2 = plt.Polygon(triangle2_vertecies, fill=False)
@@ -30,9 +30,9 @@ points3 = np.stack([triangle1_vertecies[1,:],
                     triangle2_vertecies[2,:],
                     triangle3_vertecies[0,:]])
 
-ax.scatter(points1[:,0], points1[:,1], marker="o", color="black")
-ax.scatter(points2[:,0], points2[:,1], marker="s", color="black")
-ax.scatter(points3[:,0], points3[:,1], marker="X", color="black")
+ax.scatter(points1[:,0], points1[:,1], marker="o", s=60, color="black")
+ax.scatter(points2[:,0], points2[:,1], marker="s", s=60, color="black")
+ax.scatter(points3[:,0], points3[:,1], marker="X", s=60, color="black")
 
 arc2 = Arc(triangle2_vertecies.sum(axis=0) / 3,
            width=np.sqrt(0.75) / 2,
@@ -52,5 +52,7 @@ ax.add_patch(arc3)
 
 ax.axis("equal")
 ax.axis("off")
+
+plt.savefig("triangles.eps", format="eps", bbox_inches="tight")
 
 plt.show()

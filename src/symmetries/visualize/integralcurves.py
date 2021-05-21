@@ -38,6 +38,9 @@ def get_integral_curves(generator, start_points, parameters=None, boundry=None,
             _, curve = integrate_forward(integrator, dt=ds, max_len=max_len,
                                          y_boundry=boundry)
 
+        if integrator.get_return_code() < 0: # Ad hoc way to detect warnings
+            return None
+
         curves.append(curve)
 
     return curves

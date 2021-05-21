@@ -59,7 +59,7 @@ def diff_eq(t, y):
 
 
 # Plot generators from ansatz
-fig, axs = plt.subplots(1, 3, sharex=True, sharey=True)
+fig, axs = plt.subplots(1, 3, sharex=True, sharey=True, figsize=(9, 3))
 
 all_axs = axs.flat
 ansatz_iter_bundle = ((i, gen, max_len) for i, (gen, max_len)
@@ -71,14 +71,19 @@ for i, gen, trans_max_len, ax in zip(*zip(*ansatz_iter_bundle), all_axs):
 
     ax.set_title(f"$X_{{\\mathrm{{a}},{i}}}$")
     ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
+    ax.set_xlabel("t")
+    ax.set_ylabel("W")
 
 for ax in all_axs:
     ax.set_axis_off()
 
 fig.tight_layout()
 
+plt.savefig("gompertz-autonomous-ansatz.eps", format="eps",
+            bbox_inches="tight")
+
 # Plot generators from parameter independence
-fig, axs = plt.subplots(2, 3, sharex=True, sharey=True)
+fig, axs = plt.subplots(2, 3, sharex=True, sharey=True, figsize=(9, 6))
 
 param_iter_bundle = ((i, gen, max_len) for i, (gen, max_len)
                      in enumerate(zip(generators, trans_max_lens), start=1)
@@ -90,10 +95,15 @@ for i, gen, trans_max_len, ax in zip(*zip(*param_iter_bundle), all_axs):
 
     ax.set_title(f"$X_{{\\mathrm{{a}},{i}}}$")
     ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
+    ax.set_xlabel("t")
+    ax.set_ylabel("W")
 
 for ax in all_axs:
     ax.set_axis_off()
 
 fig.tight_layout()
+
+plt.savefig("gompertz-autonomous-param.eps", format="eps",
+            bbox_inches="tight")
 
 plt.show()

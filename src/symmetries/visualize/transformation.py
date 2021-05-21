@@ -1,4 +1,4 @@
-from math import floor
+from math import floor, log
 
 import numpy as np
 
@@ -35,8 +35,8 @@ def plot_transformation(generator, axs, diff_eq_rhs, init_val, tlim,
     if not ylim:
         ylim = (solut.min(axis=0), solut.max(axis=0))
 
-    ylim_diff = np.asarray(ylim)[:, 1] - np.asarray(ylim)[:, 0]
-
+    ylim = np.array(ylim, ndmin=2)
+    ylim_diff = ylim[:, 1] - ylim[:, 0]
 
     solution_curve = np.concatenate((time_points, solut), axis=1)
 
@@ -49,23 +49,43 @@ def plot_transformation(generator, axs, diff_eq_rhs, init_val, tlim,
                                        boundry=(tlim, *ylim),
                                        max_len=trans_max_len)
 
-    center_trans_curves = trans_curves[floor(len(trans_curves) / 2)]
-    center_trans_end_point = center_trans_curves[-1]
+    # Look if transformation curves were generated without warnings
+    if trans_curves:
+        # If transformation curves were sucessful, plot them and the
+        # solution they land on.
+        center_trans_curves = trans_curves[floor(len(trans_curves) / 2)]
+        center_trans_end_point = center_trans_curves[-1]
 
-    integrator.set_initial_value(center_trans_end_point[1:],
-                                 center_trans_end_point[0])
+        integrator.set_initial_value(center_trans_end_point[1:],
+                                    center_trans_end_point[0])
 
-    time_points, solut = integrate_two_ways(integrator, dt, max_len=tlim_diff,
-                                            t_boundry=tlim, y_boundry=ylim)
+        time_points, solut = integrate_two_ways(integrator, dt,
+                                                max_len=tlim_diff,
+                                                t_boundry=tlim, y_boundry=ylim)
 
-    for i, ax in enumerate(axs):
-        ax.plot(time_points, solut[:, i])
+        for i, ax in enumerate(axs):
+            ax.plot(time_points, solut[:, i])
 
-    for curve in trans_curves:
-        curve = np.asarray(curve)
-        for i, ax in enumerate(axs, start=1):
-            ax.plot(curve[:,0], curve[:, i],
-                    path_effects=[WithArrowStroke(spacing=14)], color="black")
+        for curve in trans_curves:
+            curve = np.asarray(curve)
+            for i, ax in enumerate(axs, start=1):
+                ax.plot(curve[:,0], curve[:, i],
+                        path_effects=[WithArrowStroke(spacing=14)],
+                        color="black")
+    else:
+        # Otherwise overlay a vector field on the base points of the 
+        # transformation.
+        t_sym = generator.total_space[0][0]
+        y_syms = generator.total_space[1]
+
+        for i, (eta, ax) in enumerate(zip(generator.etas, axs), start=1):
+            xi_evals = [log(1 + generator.xis[0].subs(zip((t_sym, *y_syms), point)).subs(parameters))
+                        for point in transformation_points]
+            eta_evals = [log(1 + eta.subs(zip((t_sym, *y_syms), point)).subs(parameters))
+                         for point in transformation_points]
+
+            ax.quiver(transformation_points[:,0], transformation_points[:,i],
+                      xi_evals, eta_evals, zorder=3, headwidth=5)
 
 
 def get_normed_spaced_points(curve, scales, num_points):

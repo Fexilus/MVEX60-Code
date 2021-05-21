@@ -46,5 +46,10 @@ for init_val in init_vals:
     ax.plot(time_points, solut, color=color)
 
 ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
+ax.set_xlabel("t")
+ax.set_ylabel("W")
+
+plt.savefig("gompertz-autonomous-solutions.eps", format="eps",
+            bbox_inches="tight")
 
 plt.show()

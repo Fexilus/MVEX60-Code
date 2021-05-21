@@ -43,7 +43,7 @@ tlim = (-2, 10)
 Wlim = (0, 3)
 Glim = (0, 3)
 
-trans_max_lens = [3, 0.8, 0.8, 0.3, 3, 1]
+trans_max_lens = [3, 0.8, 0.8, 0.3, 3, 0.2]
 
 params = {kG: 1}
 
@@ -61,8 +61,8 @@ def diff_eq(t, y):
 
 
 # Plot generators from ansatz
-fig = plt.figure(constrained_layout=True)
-subfigs = fig.subfigures(5, 1)
+fig = plt.figure(figsize=(12, 9))
+subfigs = fig.subfigures(3, 2).flat
 
 ansatz_iter_bundle = ((i, gen, max_len) for i, (gen, max_len)
                       in enumerate(zip(generators, trans_max_lens), start=1)
@@ -75,10 +75,17 @@ for i, gen, trans_max_len, subfig in zip(*zip(*ansatz_iter_bundle), subfigs):
 
     subfig.suptitle(f"$X_{{\\mathrm{{s}},{i}}}$")
     axs[0].set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
+    axs[0].set_xlabel("t")
+    axs[0].set_ylabel("W")
     axs[1].set_aspect((tlim[1] - tlim[0]) / (Glim[1] - Glim[0]))
+    axs[1].set_xlabel("t")
+    axs[1].set_ylabel("G")
+
+plt.savefig("gompertz-system-ansatz.eps", format="eps",
+            bbox_inches="tight")
 
 # Plot generators from parameter independence
-fig = plt.figure(constrained_layout=True)
+fig = plt.figure(constrained_layout=True, figsize=(6, 9))
 subfigs = fig.subfigures(3, 1)
 
 ansatz_iter_bundle = ((i, gen, max_len) for i, (gen, max_len)
@@ -92,6 +99,13 @@ for i, gen, trans_max_len, subfig in zip(*zip(*ansatz_iter_bundle), subfigs):
 
     subfig.suptitle(f"$X_{{\\mathrm{{s}},{i}}}$")
     axs[0].set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
+    axs[0].set_xlabel("t")
+    axs[0].set_ylabel("W")
     axs[1].set_aspect((tlim[1] - tlim[0]) / (Glim[1] - Glim[0]))
+    axs[1].set_xlabel("t")
+    axs[1].set_ylabel("G")
+
+plt.savefig("gompertz-system-param.eps", format="eps",
+            bbox_inches="tight")
 
 plt.show()
