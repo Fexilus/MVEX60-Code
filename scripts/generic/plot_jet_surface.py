@@ -4,9 +4,12 @@ import os.path
 import numpy as np
 
 import matplotlib.pyplot as plt
+from matplotlib.colors import to_rgba
 
 
 def plot(save_path=None, file_name="jet-surface.pdf"):
+    plt.rc("mathtext", fontset="cm")
+
     xlim = (-1, 1)
     ylim = (-8, 8)
     zlim = (-16, 8)
@@ -45,8 +48,8 @@ def plot(save_path=None, file_name="jet-surface.pdf"):
     ax.set_ylim(*ylim)
     ax.set_zlim(*zlim)
 
-    ax.set_xlabel(r"$x$")
-    ax.set_ylabel(r"$y$")
+    ax.set_xlabel("$x$")
+    ax.set_ylabel("$y$")
     ax.set_zlabel(r"$y'$")
 
     ax.view_init(elev=12, azim=-68)

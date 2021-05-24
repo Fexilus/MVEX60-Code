@@ -12,6 +12,8 @@ from symmetries.visualize.utils import integrate_two_ways, get_spread
 
 def plot(save_path=None, file_names=["gompertz-system-solutions-varw.eps",
                                      "gompertz-system-solutions-varg.eps"]):
+    plt.rc("mathtext", fontset="cm")
+
     tlim = (-2, 10)
     Wlim = (0, 3)
     Glim = (0, 3)
@@ -53,13 +55,13 @@ def plot(save_path=None, file_names=["gompertz-system-solutions-varw.eps",
 
         axs[0].plot(time_points, solut[:, 0], color=color)
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
-        axs[0].set_xlabel("t")
-        axs[0].set_ylabel("W")
+        axs[0].set_xlabel("$t$")
+        axs[0].set_ylabel("$W$")
 
         axs[1].plot(time_points, solut[:, 1], color=color)
         axs[1].set_aspect((tlim[1] - tlim[0]) / (Glim[1] - Glim[0]))
-        axs[1].set_xlabel("t")
-        axs[1].set_ylabel("G")
+        axs[1].set_xlabel("$t$")
+        axs[1].set_ylabel("$G$")
 
     fig.tight_layout()
 
@@ -84,13 +86,13 @@ def plot(save_path=None, file_names=["gompertz-system-solutions-varw.eps",
 
         axs[0].plot(time_points, solut[:, 0], color=color)
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
-        axs[0].set_xlabel("t")
-        axs[0].set_ylabel("W")
+        axs[0].set_xlabel("$t$")
+        axs[0].set_ylabel("$W$")
 
         axs[1].plot(time_points, solut[:, 1], color=color)
         axs[1].set_aspect((tlim[1] - tlim[0]) / (Glim[1] - Glim[0]))
-        axs[1].set_xlabel("t")
-        axs[1].set_ylabel("G")
+        axs[1].set_xlabel("$t$")
+        axs[1].set_ylabel("$G$")
 
     fig.tight_layout()
 

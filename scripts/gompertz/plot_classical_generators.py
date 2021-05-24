@@ -41,6 +41,8 @@ generators = [X_cla1, X_cla2, X_cla3, X_cla4, X_cla5]
 
 def plot(save_path=None, file_names=["gompertz-classical-ansatz.eps",
                                      "gompertz-classical-param.eps"]):
+    plt.rc("mathtext", fontset="cm")
+
     tlim = (-2, 10)
     Wlim = (0, 3)
 
@@ -74,8 +76,8 @@ def plot(save_path=None, file_names=["gompertz-classical-ansatz.eps",
 
         ax.set_title(f"$X_{{\\mathrm{{c}},{i}}}$")
         ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
-        ax.set_xlabel("t")
-        ax.set_ylabel("W")
+        ax.set_xlabel("$t$")
+        ax.set_ylabel("$W$")
 
     for ax in all_axs:
         ax.set_axis_off()
@@ -100,8 +102,8 @@ def plot(save_path=None, file_names=["gompertz-classical-ansatz.eps",
 
         ax.set_title(f"$X_{{\\mathrm{{c}},{i}}}$")
         ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
-        ax.set_xlabel("t")
-        ax.set_ylabel("W")
+        ax.set_xlabel("$t$")
+        ax.set_ylabel("$W$")
 
     for ax in all_axs:
         ax.set_axis_off()

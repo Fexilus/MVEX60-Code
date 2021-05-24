@@ -12,6 +12,8 @@ from symmetries.visualize.utils import integrate_two_ways, get_spread
 
 def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
                                      "lotka-volterra-solutions-varp.eps"]):
+    plt.rc("mathtext", fontset="cm")
+
     tlim = (-2, 10)
     Nlim = (0, 2)
     Plim = (0, 2)
@@ -55,13 +57,13 @@ def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
 
         axs[0].plot(time_points, solut[:, 0], color=color)
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Nlim[1] - Nlim[0]))
-        axs[0].set_xlabel("t")
-        axs[0].set_ylabel("N")
+        axs[0].set_xlabel("$t$")
+        axs[0].set_ylabel("$N$")
 
         axs[1].plot(time_points, solut[:, 1], color=color)
         axs[1].set_aspect((tlim[1] - tlim[0]) / (Plim[1] - Plim[0]))
-        axs[1].set_xlabel("t")
-        axs[1].set_ylabel("P")
+        axs[1].set_xlabel("$t$")
+        axs[1].set_ylabel("$P$")
 
     fig.tight_layout()
 
@@ -86,13 +88,13 @@ def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
 
         axs[0].plot(time_points, solut[:, 0], color=color)
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Nlim[1] - Nlim[0]))
-        axs[0].set_xlabel("t")
-        axs[0].set_ylabel("N")
+        axs[0].set_xlabel("$t$")
+        axs[0].set_ylabel("$N$")
 
         axs[1].plot(time_points, solut[:, 1], color=color)
         axs[1].set_aspect((tlim[1] - tlim[0]) / (Plim[1] - Plim[0]))
-        axs[1].set_xlabel("t")
-        axs[1].set_ylabel("P")
+        axs[1].set_xlabel("$t$")
+        axs[1].set_ylabel("$P$")
 
     fig.tight_layout()
 

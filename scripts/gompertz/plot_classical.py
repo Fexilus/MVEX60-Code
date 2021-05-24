@@ -11,6 +11,8 @@ from symmetries.visualize.utils import integrate_two_ways, get_spread
 
 
 def plot(save_path=None, file_name="gompertz-classical-solutions.eps"):
+    plt.rc("mathtext", fontset="cm")
+
     tlim = (-2, 10)
     Wlim = (0, 3)
 
@@ -49,8 +51,8 @@ def plot(save_path=None, file_name="gompertz-classical-solutions.eps"):
         ax.plot(time_points, solut, color=color)
 
     ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
-    ax.set_xlabel("t")
-    ax.set_ylabel("W")
+    ax.set_xlabel("$t$")
+    ax.set_ylabel("$W$")
 
     if save_path:
         file_path = os.path.join(save_path, file_name)

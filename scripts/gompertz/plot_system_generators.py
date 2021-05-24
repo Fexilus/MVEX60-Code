@@ -42,6 +42,8 @@ generators = [X_sys1, X_sys2, X_sys3, X_sys4, X_sys5, X_sys6]
 
 def plot(save_path=None, file_names=["gompertz-system-ansatz.eps",
                                      "gompertz-system-param.eps"]):
+    plt.rc("mathtext", fontset="cm")
+
     tlim = (-2, 10)
     Wlim = (0, 3)
     Glim = (0, 3)
@@ -78,11 +80,11 @@ def plot(save_path=None, file_names=["gompertz-system-ansatz.eps",
 
         subfig.suptitle(f"$X_{{\\mathrm{{s}},{i}}}$")
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
-        axs[0].set_xlabel("t")
-        axs[0].set_ylabel("W")
+        axs[0].set_xlabel("$t$")
+        axs[0].set_ylabel("$W$")
         axs[1].set_aspect((tlim[1] - tlim[0]) / (Glim[1] - Glim[0]))
-        axs[1].set_xlabel("t")
-        axs[1].set_ylabel("G")
+        axs[1].set_xlabel("$t$")
+        axs[1].set_ylabel("$G$")
 
     if save_path:
         file_path = os.path.join(save_path, file_names[0])
@@ -104,11 +106,11 @@ def plot(save_path=None, file_names=["gompertz-system-ansatz.eps",
 
         subfig.suptitle(f"$X_{{\\mathrm{{s}},{i}}}$")
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
-        axs[0].set_xlabel("t")
-        axs[0].set_ylabel("W")
+        axs[0].set_xlabel("$t$")
+        axs[0].set_ylabel("$W$")
         axs[1].set_aspect((tlim[1] - tlim[0]) / (Glim[1] - Glim[0]))
-        axs[1].set_xlabel("t")
-        axs[1].set_ylabel("G")
+        axs[1].set_xlabel("$t$")
+        axs[1].set_ylabel("$G$")
 
     if save_path:
         file_path = os.path.join(save_path, file_names[1])
