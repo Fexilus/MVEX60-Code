@@ -14,7 +14,7 @@ xs, ys = np.meshgrid(x_vec, y_vec)
 
 zs = ys
 
-fig, ax = plt.subplots(subplot_kw=dict(projection='3d'))
+fig, ax = plt.subplots(subplot_kw=dict(projection='3d'), figsize=(9, 6))
 
 ax.plot_surface(xs, ys, zs, antialiased=False)
 
@@ -42,5 +42,9 @@ ax.set_zlabel(r"$y'$")
 
 ax.view_init(elev=12, azim=-68)
 fig.subplots_adjust(left=0, right=1, bottom=0, top=1)
+
+fig.tight_layout()
+
+plt.savefig("jet-surface.eps", format="eps", bbox_inches="tight")
 
 plt.show()
