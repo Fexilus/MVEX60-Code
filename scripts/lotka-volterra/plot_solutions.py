@@ -1,3 +1,6 @@
+"""Plot several solution lines of the Lotka-Volterra model."""
+import os.path
+
 import numpy as np
 
 from scipy.integrate import ode
@@ -6,83 +9,99 @@ import matplotlib.pyplot as plt
 
 from symmetries.visualize.utils import integrate_two_ways, get_spread
 
-tlim = (-2, 10)
-Nlim = (0, 2)
-Plim = (0, 2)
 
-NUM_SOLUTION_LINES = 3
-include_init_val = (0, 1, 1)
+def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
+                                     "lotka-volterra-solutions-varp.eps"]):
+    tlim = (-2, 10)
+    Nlim = (0, 2)
+    Plim = (0, 2)
 
-params = {"a": 1, "b": 2, "c": 2.5, "d": 1.5}
+    NUM_SOLUTION_LINES = 3
+    include_init_val = (0, 1, 1)
 
-
-def lotka_volterra_rhs(t, y, a=1, b=1, c=1, d=1):
-    """The classical Gompertz model with \\(T_i\\)-parametrization."""
-
-    N, P = y
-
-    dNdt = a * N - b * N * P
-    dPdt = c * N * P - d * P
-    return np.array([dNdt, dPdt])
+    params = {"a": 1, "b": 2, "c": 2.5, "d": 1.5}
 
 
-integrator = ode(lambda t, y: lotka_volterra_rhs(t, y, **params))
-integrator.set_integrator('vode', method='adams')
+    def lotka_volterra_rhs(t, y, a=1, b=1, c=1, d=1):
+        """The classical Gompertz model with \\(T_i\\)-parametrization."""
 
-tlim_diff = tlim[1] - tlim[0]
-dt = tlim_diff / 100
+        N, P = y
 
-# Plot with varying initial N
-fig, axs = plt.subplots(1, 2)
+        dNdt = a * N - b * N * P
+        dPdt = c * N * P - d * P
+        return np.array([dNdt, dPdt])
 
-init_vals = get_spread(include_init_val, (0, (1 - Nlim[0]) / 2, 1),
-                       (0, (1 + Nlim[1]) / 2, 1), NUM_SOLUTION_LINES)
-for init_val in init_vals:
-    integrator.set_initial_value(init_val[1:], init_val[0])
 
-    time_points, solut = integrate_two_ways(integrator, dt, max_len=tlim_diff,
-                                            t_boundry=tlim,
-                                            y_boundry=(Nlim, Plim))
+    integrator = ode(lambda t, y: lotka_volterra_rhs(t, y, **params))
+    integrator.set_integrator('vode', method='adams')
 
-    is_include_init_val = np.allclose(init_val, include_init_val)
-    color = "black" if is_include_init_val else "grey"
+    tlim_diff = tlim[1] - tlim[0]
+    dt = tlim_diff / 100
 
-    axs[0].plot(time_points, solut[:, 0], color=color)
-    axs[0].set_aspect((tlim[1] - tlim[0]) / (Nlim[1] - Nlim[0]))
-    axs[0].set_xlabel("t")
-    axs[0].set_ylabel("N")
+    # Plot with varying initial N
+    fig, axs = plt.subplots(1, 2)
 
-    axs[1].plot(time_points, solut[:, 1], color=color)
-    axs[1].set_aspect((tlim[1] - tlim[0]) / (Plim[1] - Plim[0]))
-    axs[1].set_xlabel("t")
-    axs[1].set_ylabel("P")
+    init_vals = get_spread(include_init_val, (0, (1 - Nlim[0]) / 2, 1),
+                           (0, (1 + Nlim[1]) / 2, 1), NUM_SOLUTION_LINES)
+    for init_val in init_vals:
+        integrator.set_initial_value(init_val[1:], init_val[0])
 
-fig.tight_layout()
+        time_points, solut = integrate_two_ways(integrator, dt, max_len=tlim_diff,
+                                                t_boundry=tlim,
+                                                y_boundry=(Nlim, Plim))
 
-# Plot with varying initial P
-fig, axs = plt.subplots(1, 2)
+        is_include_init_val = np.allclose(init_val, include_init_val)
+        color = "black" if is_include_init_val else "grey"
 
-init_vals = get_spread(include_init_val, (0, 1, (1 - Plim[0]) / 2),
-                       (0, 1, (1 + Plim[1]) / 2), NUM_SOLUTION_LINES)
-for init_val in init_vals:
-    integrator.set_initial_value(init_val[1:], init_val[0])
+        axs[0].plot(time_points, solut[:, 0], color=color)
+        axs[0].set_aspect((tlim[1] - tlim[0]) / (Nlim[1] - Nlim[0]))
+        axs[0].set_xlabel("t")
+        axs[0].set_ylabel("N")
 
-    time_points, solut = integrate_two_ways(integrator, dt, max_len=tlim_diff,
-                                            t_boundry=tlim, y_boundry=(Nlim, Plim))
+        axs[1].plot(time_points, solut[:, 1], color=color)
+        axs[1].set_aspect((tlim[1] - tlim[0]) / (Plim[1] - Plim[0]))
+        axs[1].set_xlabel("t")
+        axs[1].set_ylabel("P")
 
-    is_include_init_val = np.allclose(init_val, include_init_val)
-    color = "black" if is_include_init_val else "grey"
+    fig.tight_layout()
 
-    axs[0].plot(time_points, solut[:, 0], color=color)
-    axs[0].set_aspect((tlim[1] - tlim[0]) / (Nlim[1] - Nlim[0]))
-    axs[0].set_xlabel("t")
-    axs[0].set_ylabel("N")
+    if save_path:
+        file_path = os.path.join(save_path, file_names[0])
+        plt.savefig(file_path, format="eps",
+                    bbox_inches="tight")
 
-    axs[1].plot(time_points, solut[:, 1], color=color)
-    axs[1].set_aspect((tlim[1] - tlim[0]) / (Plim[1] - Plim[0]))
-    axs[1].set_xlabel("t")
-    axs[1].set_ylabel("P")
+    # Plot with varying initial P
+    fig, axs = plt.subplots(1, 2)
 
-fig.tight_layout()
+    init_vals = get_spread(include_init_val, (0, 1, (1 - Plim[0]) / 2),
+                           (0, 1, (1 + Plim[1]) / 2), NUM_SOLUTION_LINES)
+    for init_val in init_vals:
+        integrator.set_initial_value(init_val[1:], init_val[0])
 
-plt.show()
+        time_points, solut = integrate_two_ways(integrator, dt, max_len=tlim_diff,
+                                                t_boundry=tlim, y_boundry=(Nlim, Plim))
+
+        is_include_init_val = np.allclose(init_val, include_init_val)
+        color = "black" if is_include_init_val else "grey"
+
+        axs[0].plot(time_points, solut[:, 0], color=color)
+        axs[0].set_aspect((tlim[1] - tlim[0]) / (Nlim[1] - Nlim[0]))
+        axs[0].set_xlabel("t")
+        axs[0].set_ylabel("N")
+
+        axs[1].plot(time_points, solut[:, 1], color=color)
+        axs[1].set_aspect((tlim[1] - tlim[0]) / (Plim[1] - Plim[0]))
+        axs[1].set_xlabel("t")
+        axs[1].set_ylabel("P")
+
+    fig.tight_layout()
+
+    if save_path:
+        file_path = os.path.join(save_path, file_names[1])
+        plt.savefig(file_path, format="eps",
+                    bbox_inches="tight")
+
+
+if __name__ == "__main__":
+    plot()
+    plt.show()
