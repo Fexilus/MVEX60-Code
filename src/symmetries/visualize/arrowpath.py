@@ -10,7 +10,7 @@ class ArrowStroke(AbstractPathEffect):
     Much of the code is reused from the TickedStroke class in matplotlib.
     """
 
-    def __init__(self, offset=(0, 0), spacing=20.0, scaling=7.0, **kwargs):
+    def __init__(self, offset=(0, 0), spacing=10.0, scaling=4.0, **kwargs):
         """
         Parameters
         ----------
@@ -40,6 +40,10 @@ class ArrowStroke(AbstractPathEffect):
         # Convert spacing parameter to pixels.
         spacing_px = renderer.points_to_pixels(self._spacing)
 
+        # Set the offset from the begining of the line until first arrow
+        spacing_begining = spacing_px / 2
+        spacing_end = self._scaling
+
         width_scaling = self._scaling * 5.0 / 7.0
 
         # Transform before evaluation because to_polygons works at resolution
@@ -66,17 +70,22 @@ class ArrowStroke(AbstractPathEffect):
             s = np.concatenate(([0.0], np.cumsum(ds)))
             s_total = s[-1]
 
-            num = int(np.ceil(s_total / spacing_px)) - 1
+            internal_space = s_total - spacing_begining - spacing_end
+            num = int(np.floor(internal_space / spacing_px)) + 1
 
             if num > 0:
                 # Pick parameter values for arrow bases.
-                s_base = np.linspace(spacing_px/2, s_total - spacing_px/2, num)
+                s_base = np.linspace(spacing_begining,
+                                     spacing_begining + spacing_px * num,
+                                     num)
 
                 # Find points along the parameterized curve
                 x_base = np.interp(s_base, s, x)
                 y_base = np.interp(s_base, s, y)
 
                 # Find unit vectors in local direction of curve
+                # This is not optimal if the arrows are too large, as 
+                # they might go "out" from the curve
                 delta_s = self._spacing * .001
                 u = (np.interp(s_base + delta_s, s, x) - x_base) / delta_s
                 v = (np.interp(s_base + delta_s, s, y) - y_base) / delta_s
