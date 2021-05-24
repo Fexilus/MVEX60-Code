@@ -34,22 +34,25 @@ def plot(save_path=None, file_name="triangles.eps"):
                         triangle2_vertices[0, :],
                         triangle3_vertices[2, :]])
 
-    ax.scatter(points1[:, 0], points1[:, 1], marker="o", s=60, color="black")
-    ax.scatter(points2[:, 0], points2[:, 1], marker="s", s=60, color="black")
-    ax.scatter(points3[:, 0], points3[:, 1], marker="X", s=60, color="black")
+    ax.scatter(points1[:, 0], points1[:, 1], marker="o", s=60, color="C0",
+               zorder=3)
+    ax.scatter(points2[:, 0], points2[:, 1], marker="s", s=60, color="C1",
+               zorder=3)
+    ax.scatter(points3[:, 0], points3[:, 1], marker="X", s=60, color="C2",
+               zorder=3)
 
     arc2 = Arc(triangle2_vertices.sum(axis=0) / 3,
                width=np.sqrt(0.75) / 2,
                height=np.sqrt(0.75) / 2,
                theta1=5 * 30,
                theta2=9 * 30,
-               path_effects=[WithArrowStroke()])
+               path_effects=[WithArrowStroke(spacing=70.1, scaling=7)])
     arc3 = Arc(triangle3_vertices.sum(axis=0) / 3,
                width=np.sqrt(0.75) / 2,
                height=np.sqrt(0.75) / 2,
                theta1=5 * 30,
                theta2=13 * 30,
-               path_effects=[WithArrowStroke()])
+               path_effects=[WithArrowStroke(spacing=150.2, scaling=7)])
 
     ax.add_patch(arc2)
     ax.add_patch(arc3)
