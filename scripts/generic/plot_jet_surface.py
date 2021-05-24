@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def plot(save_path=None, file_name="jet-surface.eps"):
+def plot(save_path=None, file_name="jet-surface.pdf"):
     xlim = (-1, 1)
     ylim = (-8, 8)
     zlim = (-16, 8)
@@ -14,13 +14,18 @@ def plot(save_path=None, file_name="jet-surface.eps"):
     x_vec = np.linspace(*xlim, 100)
     y_vec = np.linspace(*ylim, 100)
 
-    xs, ys = np.meshgrid(x_vec, y_vec)
+    #xs, ys = np.meshgrid(x_vec, y_vec)
+    # Matplotlib can't render transparent surfaces correctly since it
+    # lacks a 3d-rendering backend. This workaround works for a flat 
+    # surface
+    xs, ys = np.meshgrid(xlim, ylim)
 
     zs = ys
 
     fig, ax = plt.subplots(subplot_kw=dict(projection='3d'), figsize=(9, 6))
 
-    ax.plot_surface(xs, ys, zs, antialiased=False)
+    ax.plot_surface(xs, ys, zs, antialiased=False, color=to_rgba("C0", 0.85),
+                    edgecolors=to_rgba("C0", 0), linewidths=0.0)
 
     for c in np.linspace(-8 * np.exp(1), 8 * np.exp(1), 14)[1:-2]:
         line_xs = x_vec
@@ -51,7 +56,7 @@ def plot(save_path=None, file_name="jet-surface.eps"):
 
     if save_path:
         file_path = os.path.join(save_path, file_name)
-        plt.savefig(file_path, format="eps",
+        plt.savefig(file_path, format="pdf",
                     bbox_inches="tight")
 
 
