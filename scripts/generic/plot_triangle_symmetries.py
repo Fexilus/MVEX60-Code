@@ -1,4 +1,6 @@
 """Plot the symmetries of an equilateral triangle."""
+import os.path
+
 import numpy as np
 
 import matplotlib.pyplot as plt
@@ -6,53 +8,61 @@ from matplotlib.patches import Arc
 
 from symmetries.visualize.arrowpath import WithArrowStroke
 
-triangle1_vertecies = np.array([[0, 0], [0.5, np.sqrt(0.75)], [1, 0]])
-triangle2_vertecies = triangle1_vertecies + np.array([1.2, 0])
-triangle3_vertecies = triangle2_vertecies + np.array([1.2, 0])
 
-fig, ax = plt.subplots(figsize=(6, 2))
+def plot(save_path=None, file_name="triangles.eps"):
+    triangle1_vertices = np.array([[0, 0], [0.5, np.sqrt(0.75)], [1, 0]])
+    triangle2_vertices = triangle1_vertices + np.array([1.2, 0])
+    triangle3_vertices = triangle2_vertices + np.array([1.2, 0])
 
-tri1 = plt.Polygon(triangle1_vertecies, fill=False)
-tri2 = plt.Polygon(triangle2_vertecies, fill=False)
-tri3 = plt.Polygon(triangle3_vertecies, fill=False)
+    fig, ax = plt.subplots(figsize=(6, 2))
 
-ax.add_patch(tri1)
-ax.add_patch(tri2)
-ax.add_patch(tri3)
+    tri1 = plt.Polygon(triangle1_vertices, fill=False)
+    tri2 = plt.Polygon(triangle2_vertices, fill=False)
+    tri3 = plt.Polygon(triangle3_vertices, fill=False)
 
-points1 = np.stack([triangle1_vertecies[0,:],
-                    triangle2_vertecies[2,:],
-                    triangle3_vertecies[1,:]])
-points2 = np.stack([triangle1_vertecies[2,:],
-                    triangle2_vertecies[1,:],
-                    triangle3_vertecies[0,:]])
-points3 = np.stack([triangle1_vertecies[1,:],
-                    triangle2_vertecies[0,:],
-                    triangle3_vertecies[2,:]])
+    ax.add_patch(tri1)
+    ax.add_patch(tri2)
+    ax.add_patch(tri3)
 
-ax.scatter(points1[:,0], points1[:,1], marker="o", s=60, color="black")
-ax.scatter(points2[:,0], points2[:,1], marker="s", s=60, color="black")
-ax.scatter(points3[:,0], points3[:,1], marker="X", s=60, color="black")
+    points1 = np.stack([triangle1_vertices[0, :],
+                        triangle2_vertices[2, :],
+                        triangle3_vertices[1, :]])
+    points2 = np.stack([triangle1_vertices[2, :],
+                        triangle2_vertices[1, :],
+                        triangle3_vertices[0, :]])
+    points3 = np.stack([triangle1_vertices[1, :],
+                        triangle2_vertices[0, :],
+                        triangle3_vertices[2, :]])
 
-arc2 = Arc(triangle2_vertecies.sum(axis=0) / 3,
-           width=np.sqrt(0.75) / 2,
-           height=np.sqrt(0.75) / 2,
-           theta1=5 * 30,
-           theta2=9 * 30,
-           path_effects=[WithArrowStroke()])
-arc3 = Arc(triangle3_vertecies.sum(axis=0) / 3,
-           width=np.sqrt(0.75) / 2,
-           height=np.sqrt(0.75) / 2,
-           theta1=5 * 30,
-           theta2=13 * 30,
-           path_effects=[WithArrowStroke()])
+    ax.scatter(points1[:, 0], points1[:, 1], marker="o", s=60, color="black")
+    ax.scatter(points2[:, 0], points2[:, 1], marker="s", s=60, color="black")
+    ax.scatter(points3[:, 0], points3[:, 1], marker="X", s=60, color="black")
 
-ax.add_patch(arc2)
-ax.add_patch(arc3)
+    arc2 = Arc(triangle2_vertices.sum(axis=0) / 3,
+               width=np.sqrt(0.75) / 2,
+               height=np.sqrt(0.75) / 2,
+               theta1=5 * 30,
+               theta2=9 * 30,
+               path_effects=[WithArrowStroke()])
+    arc3 = Arc(triangle3_vertices.sum(axis=0) / 3,
+               width=np.sqrt(0.75) / 2,
+               height=np.sqrt(0.75) / 2,
+               theta1=5 * 30,
+               theta2=13 * 30,
+               path_effects=[WithArrowStroke()])
 
-ax.axis("equal")
-ax.axis("off")
+    ax.add_patch(arc2)
+    ax.add_patch(arc3)
 
-plt.savefig("triangles.eps", format="eps", bbox_inches="tight")
+    ax.axis("equal")
+    ax.axis("off")
 
-plt.show()
+    if save_path:
+        file_path = os.path.join(save_path, file_name)
+        plt.savefig(file_path, format="eps",
+                    bbox_inches="tight")
+
+
+if __name__ == "__main__":
+    plot()
+    plt.show()

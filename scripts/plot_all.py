@@ -4,14 +4,15 @@ import argparse
 import importlib
 
 
-SOLUTION_PLOT_FILES  = ["gompertz.plot_classical",
-                        "gompertz.plot_autonomous",
-                        "gompertz.plot_system",
-                        "lotka-volterra.plot_solutions"]
+SOLUTION_PLOT_FILES = ["gompertz.plot_classical",
+                       "gompertz.plot_autonomous",
+                       "gompertz.plot_system",
+                       "lotka-volterra.plot_solutions"]
 GENERATOR_PLOT_FILES = ["gompertz.plot_classical_generators",
                         "gompertz.plot_autonomous_generators",
                         "gompertz.plot_system_generators"]
-OTHER_PLOT_FILES     = []
+OTHER_PLOT_FILES = ["generic.plot_triangle_symmetries",
+                    "generic.plot_jet_surface"]
 
 # Import the files containing the plot functions as modules
 solution_modules = []
@@ -26,7 +27,7 @@ other_modules = []
 for src_file in OTHER_PLOT_FILES:
     other_modules.append(importlib.import_module(src_file))
 
-# Add parser functionallity
+# Add parser functionality
 parser = argparse.ArgumentParser(description="Generate all plots in the"
                                              "project.")
 
