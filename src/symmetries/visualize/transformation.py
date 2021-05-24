@@ -12,7 +12,8 @@ from ..utils import iter_wrapper
 
 def plot_transformation(generator, axs, diff_eq_rhs, init_val, tlim,
                         parameters=None, dt=0.1, ylim=None,
-                        num_trans_points=10, trans_max_len=10):
+                        num_trans_points=10, trans_max_len=10,
+                        arrow_stroke_arguments={}):
     """Plot transformation defined by generator of an ODE on axis."""
 
     axs = list(iter_wrapper(axs))
@@ -66,14 +67,17 @@ def plot_transformation(generator, axs, diff_eq_rhs, init_val, tlim,
         for i, ax in enumerate(axs):
             ax.plot(time_points, solut[:, i])
 
+        # Set up arrow stroke effect
+        arrow_stroke = WithArrowStroke(**arrow_stroke_arguments)
+
         for curve in trans_curves:
             curve = np.asarray(curve)
             for i, ax in enumerate(axs, start=1):
                 ax.plot(curve[:,0], curve[:, i],
-                        path_effects=[WithArrowStroke(spacing=14)],
+                        path_effects=[arrow_stroke],
                         color="black")
     else:
-        # Otherwise overlay a vector field on the base points of the 
+        # Otherwise overlay a vector field on the base points of the
         # transformation.
         t_sym = generator.total_space[0][0]
         y_syms = generator.total_space[1]

@@ -7,7 +7,8 @@ import numpy as np
 class ArrowStroke(AbstractPathEffect):
     """A line-based PathEffect which draws a path with arrows.
 
-    Much of the code is reused from the TickedStroke class in matplotlib.
+    Much of the code is reused from the TickedStroke class in
+    matplotlib.
     """
 
     def __init__(self, offset=(0, 0), spacing=10.0, scaling=4.0, **kwargs):
@@ -17,9 +18,10 @@ class ArrowStroke(AbstractPathEffect):
         offset : (float, float), default: (0, 0)
             The (x, y) offset to apply to the path, in points.
         spacing : float, default: 10.0
-            The spacing between ticks in points.
+            The spacing between ticks in points, in points.
         **kwargs
-            Extra keywords are stored and passed through to AbstractPathEffect.
+            Extra keywords are stored and passed through to
+            AbstractPathEffect.
         """
         super().__init__(offset)
 
@@ -44,10 +46,10 @@ class ArrowStroke(AbstractPathEffect):
         spacing_begining = spacing_px / 2
         spacing_end = self._scaling
 
-        width_scaling = self._scaling * 5.0 / 7.0
+        width_scaling = self._scaling * 3.0 / 5.0
 
-        # Transform before evaluation because to_polygons works at resolution
-        # of one -- assuming it is working in pixel space.
+        # Transform before evaluation because to_polygons works at
+        # a resolution of one -- assuming it is working in pixel space.
         transpath = affine.transform_path(tpath)
 
         # Evaluate path to straight line segments that can be used to
@@ -58,8 +60,8 @@ class ArrowStroke(AbstractPathEffect):
             x = p[:, 0]
             y = p[:, 1]
 
-            # Can not interpolate points or draw line if only one point in
-            # polyline.
+            # Can not interpolate points or draw line if only one point 
+            # in polyline.
             if x.size < 2:
                 continue
 
@@ -76,15 +78,16 @@ class ArrowStroke(AbstractPathEffect):
             if num > 0:
                 # Pick parameter values for arrow bases.
                 s_base = np.linspace(spacing_begining,
-                                     spacing_begining + spacing_px * num,
+                                     spacing_begining + spacing_px * (num - 1),
                                      num)
 
                 # Find points along the parameterized curve
+                assert(s_base[-1] <= s_total)
                 x_base = np.interp(s_base, s, x)
                 y_base = np.interp(s_base, s, y)
 
                 # Find unit vectors in local direction of curve
-                # This is not optimal if the arrows are too large, as 
+                # This is not optimal if the arrows are too large, as
                 # they might go "out" from the curve
                 delta_s = self._spacing * .001
                 u = (np.interp(s_base + delta_s, s, x) - x_base) / delta_s
@@ -120,6 +123,7 @@ class ArrowStroke(AbstractPathEffect):
                 xyt[:, 2, 1] = y_left
                 xyt[:, 3, 1] = y_right # Will be ignored
 
+                # TODO: This could at least be done per p
                 tri_path = Path.make_compound_path_from_polys(xyt)
 
                 # Transform back to data space during render
