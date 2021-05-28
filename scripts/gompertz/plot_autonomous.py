@@ -16,7 +16,7 @@ def plot(save_path=None, file_name="gompertz-autonomous-solutions.eps"):
     tlim = (-2, 10)
     Wlim = (0, 3)
 
-    NUM_SOLUTION_LINES = 11
+    NUM_SOLUTION_LINES = 5
     include_init_val = (0, 1)
 
     params = {"A": 3, "kG": 1}
@@ -36,7 +36,7 @@ def plot(save_path=None, file_name="gompertz-autonomous-solutions.eps"):
 
     fig, ax = plt.subplots()
 
-    init_vals = get_spread(include_init_val, (0, Wlim[0]), (0, Wlim[1]),
+    init_vals = get_spread(include_init_val, (-2, 1), (2, 1),
                         NUM_SOLUTION_LINES)
     for init_val in init_vals:
         integrator.set_initial_value(init_val[1], init_val[0])
@@ -45,9 +45,10 @@ def plot(save_path=None, file_name="gompertz-autonomous-solutions.eps"):
                                                 t_boundry=tlim, y_boundry=Wlim)
 
         is_include_init_val = np.allclose(init_val, include_init_val)
-        color = "black" if is_include_init_val else "grey"
+        color = "black" if is_include_init_val else None
+        zorder = 2 if is_include_init_val else 1
 
-        ax.plot(time_points, solut, color=color)
+        ax.plot(time_points, solut, color=color, zorder=zorder)
 
     ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
     ax.set_xlabel("$t$")

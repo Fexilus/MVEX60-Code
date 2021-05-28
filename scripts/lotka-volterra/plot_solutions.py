@@ -44,7 +44,7 @@ def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
     fig, axs = plt.subplots(1, 2)
 
     init_vals = get_spread(include_init_val, (0, (1 - Nlim[0]) / 2, 1),
-                           (0, (1 + Nlim[1]) / 2, 1), NUM_SOLUTION_LINES)
+                        (0, (1 + Nlim[1]) / 2, 1), NUM_SOLUTION_LINES)
     for init_val in init_vals:
         integrator.set_initial_value(init_val[1:], init_val[0])
 
@@ -53,14 +53,15 @@ def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
                                                 y_boundry=(Nlim, Plim))
 
         is_include_init_val = np.allclose(init_val, include_init_val)
-        color = "black" if is_include_init_val else "grey"
+        color = "black" if is_include_init_val else None
+        zorder = 2 if is_include_init_val else 1
 
-        axs[0].plot(time_points, solut[:, 0], color=color)
+        axs[0].plot(time_points, solut[:, 0], color=color, zorder=zorder)
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Nlim[1] - Nlim[0]))
         axs[0].set_xlabel("$t$")
         axs[0].set_ylabel("$N$")
 
-        axs[1].plot(time_points, solut[:, 1], color=color)
+        axs[1].plot(time_points, solut[:, 1], color=color, zorder=zorder)
         axs[1].set_aspect((tlim[1] - tlim[0]) / (Plim[1] - Plim[0]))
         axs[1].set_xlabel("$t$")
         axs[1].set_ylabel("$P$")
@@ -76,7 +77,7 @@ def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
     fig, axs = plt.subplots(1, 2)
 
     init_vals = get_spread(include_init_val, (0, 1, (1 - Plim[0]) / 2),
-                           (0, 1, (1 + Plim[1]) / 2), NUM_SOLUTION_LINES)
+                        (0, 1, (1 + Plim[1]) / 2), NUM_SOLUTION_LINES)
     for init_val in init_vals:
         integrator.set_initial_value(init_val[1:], init_val[0])
 
@@ -84,14 +85,15 @@ def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
                                                 t_boundry=tlim, y_boundry=(Nlim, Plim))
 
         is_include_init_val = np.allclose(init_val, include_init_val)
-        color = "black" if is_include_init_val else "grey"
+        color = "black" if is_include_init_val else None
+        zorder = 2 if is_include_init_val else 1
 
-        axs[0].plot(time_points, solut[:, 0], color=color)
+        axs[0].plot(time_points, solut[:, 0], color=color, zorder=zorder)
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Nlim[1] - Nlim[0]))
         axs[0].set_xlabel("$t$")
         axs[0].set_ylabel("$N$")
 
-        axs[1].plot(time_points, solut[:, 1], color=color)
+        axs[1].plot(time_points, solut[:, 1], color=color, zorder=zorder)
         axs[1].set_aspect((tlim[1] - tlim[0]) / (Plim[1] - Plim[0]))
         axs[1].set_xlabel("$t$")
         axs[1].set_ylabel("$P$")
