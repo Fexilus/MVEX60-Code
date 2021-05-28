@@ -7,11 +7,14 @@ import os.path
 
 from sympy import symbols, ln, exp, lambdify
 
+import numpy as np
+
 import matplotlib.pyplot as plt
 
 from symmetries.generator import generator_on
 from symmetries.jetspace import JetSpace
-from symmetries.visualize.transformation import plot_transformation
+from symmetries.visualize.transformation import (plot_transformation,
+                                                 plot_solution_curve)
 
 
 # Time
@@ -39,7 +42,8 @@ X_cla5 = Generator(1, - kG * W * ln(W))
 generators = [X_cla1, X_cla2, X_cla3, X_cla4, X_cla5]
 
 
-def plot(save_path=None, file_names=["gompertz-classical-ansatz.eps",
+def plot(save_path=None, file_names=["gompertz-classical-local.eps",
+                                     "gompertz-classical-ansatz.eps",
                                      "gompertz-classical-param.eps"],
          transformation_kw_args=None):
     plt.rc("mathtext", fontset="cm")
@@ -65,15 +69,44 @@ def plot(save_path=None, file_names=["gompertz-classical-ansatz.eps",
 
         return rhs_func(t, *y, *param_vals)
 
+    
+    # Plot vector fields of local transformations
+    fig, axs = plt.subplots(1, 2, sharex=True, sharey=True, figsize=(6, 3))
 
-    # Plot generators from ansatz
-    fig, axs = plt.subplots(1, 3, sharex=True, sharey=True, figsize=(9, 3))
+    ts, Ws = np.meshgrid(np.linspace(*tlim, 10), np.linspace(*Wlim, 10))
+
+    all_axs = axs.flat
+    nonlocal_iter_bundle = ((i, gen) for i, (gen,)
+                            in enumerate(zip(generators), start=1)
+                            if i in [1, 2])
+    for i, gen, ax in zip(*zip(*nonlocal_iter_bundle), all_axs):
+        plot_solution_curve(ax, diff_eq, (0, 1), tlim=tlim, ylim=Wlim)
+
+        xi_evals = [math.log(1 + gen.xis[0].subs(zip((t, W), point)).subs(params))
+                    for point in zip(ts.flat, Ws.flat)]
+        eta_evals = [math.log(1 + gen.etas[0].subs(zip((t, W), point)).subs(params))
+                    for point in zip(ts.flat, Ws.flat)]
+
+        ax.quiver(ts, Ws, xi_evals, eta_evals, zorder=3, headwidth=5)
+
+        ax.set_title(f"$X_{{\\mathrm{{c}},{i}}}$")
+        ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
+        ax.set_xlabel("$t$")
+        ax.set_ylabel("$W$")
+
+    if save_path:
+        file_path = os.path.join(save_path, file_names[0])
+        plt.savefig(file_path, format="eps",
+                    bbox_inches="tight")
+
+    # Plot non-local generators from ansatz
+    fig, axs = plt.subplots(1, 1, sharex=True, sharey=True, figsize=(3, 3))
 
     # Iteration over axes
-    all_axs = axs.flat
+    all_axs = np.array(axs).flat
     ansatz_iter_bundle = ((i, gen, max_len) for i, (gen, max_len)
                         in enumerate(zip(generators, trans_max_lens), start=1)
-                        if i in [1, 2, 3])
+                        if i in [3])
     for i, gen, trans_max_len, ax in zip(*zip(*ansatz_iter_bundle), all_axs):
         plot_transformation(gen, ax, diff_eq, (0, 1), tlim=tlim, ylim=Wlim,
                             parameters=params, trans_max_len=trans_max_len,
@@ -90,18 +123,18 @@ def plot(save_path=None, file_names=["gompertz-classical-ansatz.eps",
     fig.tight_layout()
 
     if save_path:
-        file_path = os.path.join(save_path, file_names[0])
+        file_path = os.path.join(save_path, file_names[1])
         plt.savefig(file_path, format="eps",
                     bbox_inches="tight")
 
     # Plot generators from parameter independence
-    fig, axs = plt.subplots(1, 3, sharex=True, sharey=True, figsize=(9, 3))
+    fig, axs = plt.subplots(1, 2, sharex=True, sharey=True, figsize=(6, 3))
 
     # Iteration over axes
     all_axs = axs.flat
     param_iter_bundle = ((i, gen, max_len) for i, (gen, max_len)
                         in enumerate(zip(generators, trans_max_lens), start=1)
-                        if i in [1, 4, 5])
+                        if i in [4, 5])
     for i, gen, trans_max_len, ax in zip(*zip(*param_iter_bundle), all_axs):
         plot_transformation(gen, ax, diff_eq, (0, 1), tlim=tlim, ylim=Wlim,
                             parameters=params, trans_max_len=trans_max_len,
@@ -118,7 +151,7 @@ def plot(save_path=None, file_names=["gompertz-classical-ansatz.eps",
     fig.tight_layout()
 
     if save_path:
-        file_path = os.path.join(save_path, file_names[1])
+        file_path = os.path.join(save_path, file_names[2])
         plt.savefig(file_path, format="eps",
                     bbox_inches="tight")
 
