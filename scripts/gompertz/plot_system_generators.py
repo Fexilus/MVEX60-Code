@@ -41,8 +41,11 @@ generators = [X_sys1, X_sys2, X_sys3, X_sys4, X_sys5, X_sys6]
 
 
 def plot(save_path=None, file_names=["gompertz-system-ansatz.eps",
-                                     "gompertz-system-param.eps"]):
+                                     "gompertz-system-param.eps"],
+         transformation_kw_args=None):
     plt.rc("mathtext", fontset="cm")
+
+    transformation_kw_args = transformation_kw_args or {}
 
     tlim = (-2, 10)
     Wlim = (0, 3)
@@ -76,7 +79,8 @@ def plot(save_path=None, file_names=["gompertz-system-ansatz.eps",
         axs = subfig.subplots(1, 2)
         plot_transformation(gen, axs, diff_eq, (0, 1, math.log(3)), tlim=tlim,
                             ylim=(Wlim, Glim), parameters=params,
-                            trans_max_len=trans_max_len)
+                            trans_max_len=trans_max_len,
+                            **transformation_kw_args)
 
         subfig.suptitle(f"$X_{{\\mathrm{{s}},{i}}}$")
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
@@ -102,7 +106,8 @@ def plot(save_path=None, file_names=["gompertz-system-ansatz.eps",
         axs = subfig.subplots(1, 2)
         plot_transformation(gen, axs, diff_eq, (0, 1, math.log(3)), tlim=tlim,
                             ylim=(Wlim, Glim), parameters=params,
-                            trans_max_len=trans_max_len)
+                            trans_max_len=trans_max_len,
+                            **transformation_kw_args)
 
         subfig.suptitle(f"$X_{{\\mathrm{{s}},{i}}}$")
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))

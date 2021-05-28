@@ -18,7 +18,9 @@ class ArrowStroke(AbstractPathEffect):
         offset : (float, float), default: (0, 0)
             The (x, y) offset to apply to the path, in points.
         spacing : float, default: 10.0
-            The spacing between ticks in points, in points.
+            The spacing between arrow bases, in points.
+        scaling : float, default: 4.0
+            The length of the arrows, in points.
         **kwargs
             Extra keywords are stored and passed through to
             AbstractPathEffect.

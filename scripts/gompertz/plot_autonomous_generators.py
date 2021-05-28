@@ -40,8 +40,11 @@ generators = [X_aut1, X_aut2, X_aut3, X_aut4, X_aut5, X_aut6]
 
 
 def plot(save_path=None, file_names=["gompertz-autonomous-ansatz.eps",
-                                     "gompertz-autonomous-param.eps"]):
+                                     "gompertz-autonomous-param.eps"],
+         transformation_kw_args=None):
     plt.rc("mathtext", fontset="cm")
+
+    transformation_kw_args = transformation_kw_args or {}
 
     tlim = (-2, 10)
     Wlim = (0, 3)
@@ -73,7 +76,8 @@ def plot(save_path=None, file_names=["gompertz-autonomous-ansatz.eps",
                         if i in [1, 2, 3])
     for i, gen, trans_max_len, ax in zip(*zip(*ansatz_iter_bundle), all_axs):
         plot_transformation(gen, ax, diff_eq, (0, 1), tlim=tlim, ylim=Wlim,
-                            parameters=params, trans_max_len=trans_max_len)
+                            parameters=params, trans_max_len=trans_max_len,
+                            **transformation_kw_args)
 
         ax.set_title(f"$X_{{\\mathrm{{a}},{i}}}$")
         ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
@@ -99,7 +103,8 @@ def plot(save_path=None, file_names=["gompertz-autonomous-ansatz.eps",
     all_axs = axs.flat
     for i, gen, trans_max_len, ax in zip(*zip(*param_iter_bundle), all_axs):
         plot_transformation(gen, ax, diff_eq, (0, 1), tlim=tlim, ylim=Wlim,
-                            parameters=params, trans_max_len=trans_max_len)
+                            parameters=params, trans_max_len=trans_max_len,
+                            **transformation_kw_args)
 
         ax.set_title(f"$X_{{\\mathrm{{a}},{i}}}$")
         ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))

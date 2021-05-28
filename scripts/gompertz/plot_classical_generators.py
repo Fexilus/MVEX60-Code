@@ -40,8 +40,11 @@ generators = [X_cla1, X_cla2, X_cla3, X_cla4, X_cla5]
 
 
 def plot(save_path=None, file_names=["gompertz-classical-ansatz.eps",
-                                     "gompertz-classical-param.eps"]):
+                                     "gompertz-classical-param.eps"],
+         transformation_kw_args=None):
     plt.rc("mathtext", fontset="cm")
+
+    transformation_kw_args = transformation_kw_args or {}
 
     tlim = (-2, 10)
     Wlim = (0, 3)
@@ -66,13 +69,15 @@ def plot(save_path=None, file_names=["gompertz-classical-ansatz.eps",
     # Plot generators from ansatz
     fig, axs = plt.subplots(1, 3, sharex=True, sharey=True, figsize=(9, 3))
 
+    # Iteration over axes
     all_axs = axs.flat
     ansatz_iter_bundle = ((i, gen, max_len) for i, (gen, max_len)
                         in enumerate(zip(generators, trans_max_lens), start=1)
                         if i in [1, 2, 3])
     for i, gen, trans_max_len, ax in zip(*zip(*ansatz_iter_bundle), all_axs):
         plot_transformation(gen, ax, diff_eq, (0, 1), tlim=tlim, ylim=Wlim,
-                            parameters=params, trans_max_len=trans_max_len)
+                            parameters=params, trans_max_len=trans_max_len,
+                            **transformation_kw_args)
 
         ax.set_title(f"$X_{{\\mathrm{{c}},{i}}}$")
         ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
@@ -92,13 +97,15 @@ def plot(save_path=None, file_names=["gompertz-classical-ansatz.eps",
     # Plot generators from parameter independence
     fig, axs = plt.subplots(1, 3, sharex=True, sharey=True, figsize=(9, 3))
 
+    # Iteration over axes
+    all_axs = axs.flat
     param_iter_bundle = ((i, gen, max_len) for i, (gen, max_len)
                         in enumerate(zip(generators, trans_max_lens), start=1)
                         if i in [1, 4, 5])
-    all_axs = axs.flat
     for i, gen, trans_max_len, ax in zip(*zip(*param_iter_bundle), all_axs):
         plot_transformation(gen, ax, diff_eq, (0, 1), tlim=tlim, ylim=Wlim,
-                            parameters=params, trans_max_len=trans_max_len)
+                            parameters=params, trans_max_len=trans_max_len,
+                            **transformation_kw_args)
 
         ax.set_title(f"$X_{{\\mathrm{{c}},{i}}}$")
         ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))

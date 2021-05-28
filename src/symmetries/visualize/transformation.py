@@ -13,13 +13,15 @@ from ..utils import iter_wrapper
 def plot_transformation(generator, axs, diff_eq_rhs, init_val, tlim,
                         parameters=None, dt=0.1, ylim=None,
                         num_trans_points=10, trans_max_len=10,
-                        arrow_stroke_arguments={}):
+                        arrow_stroke_arguments=None):
     """Plot transformation defined by generator of an ODE on axis."""
 
     axs = list(iter_wrapper(axs))
 
     if not parameters:
         parameters = {}
+
+    arrow_stroke_arguments = arrow_stroke_arguments or {}
 
     integrator = ode(diff_eq_rhs).set_integrator('vode', method='adams')
     integrator.set_initial_value(init_val[1:], init_val[0])
