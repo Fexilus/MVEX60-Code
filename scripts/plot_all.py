@@ -41,7 +41,7 @@ path = os.path.realpath(args.path)
 for module in solution_modules:
     module.plot(save_path=path)
 
-transformation_kw_args = {"arrow_stroke_arguments": {"scaling": 3.0}}
+transformation_kw_args = {"arrow_stroke_arguments": {"scaling": 2.8}}
 
 for module in generator_modules:
     module.plot(save_path=path, transformation_kw_args=transformation_kw_args)
