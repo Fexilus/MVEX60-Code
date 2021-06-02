@@ -45,13 +45,17 @@ generators = [X_cla1, X_cla2, X_cla3, X_cla4, X_cla5]
 def plot(save_path=None, file_names=["gompertz-classical-local.eps",
                                      "gompertz-classical-ansatz.eps",
                                      "gompertz-classical-param.eps"],
-         transformation_kw_args=None):
+         limits=None, transformation_kw_args=None):
     plt.rc("mathtext", fontset="cm")
 
     transformation_kw_args = transformation_kw_args or {}
 
-    tlim = (-2, 10)
-    Wlim = (0, 3)
+    if limits:
+        tlim = limits[0]
+        Wlim = limits[1]
+    else:
+        tlim = (-2, 10)
+        Wlim = (0, 3)
 
     trans_max_lens = [0.15, 0.07, 0.6, 0.2, 1]
 
