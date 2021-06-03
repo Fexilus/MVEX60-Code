@@ -48,8 +48,9 @@ def plot(save_path=None, file_name="gompertz-classical-solutions.eps"):
         is_include_init_val = np.allclose(init_val, include_init_val)
         color = "black" if is_include_init_val else None
         zorder = 2 if is_include_init_val else 1
+        linewidth = 2 if is_include_init_val else 1
 
-        ax.plot(time_points, solut, color=color, zorder=zorder)
+        ax.plot(time_points, solut, color=color, zorder=zorder, lw=linewidth)
 
     ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
     ax.set_xlabel("$t$")
