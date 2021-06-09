@@ -175,8 +175,9 @@ def get_spaced_points(curve, num_points):
 
 
 def get_spread(include_val, min_val, max_val, num_val):
-    """Creates an equidistant spread of values including a specific value"""
-
+    """Creates an equidistant spread of values including a specific
+    value.
+    """
     include_val = np.asarray(include_val)
     min_val = np.asarray(min_val)
     max_val = np.asarray(max_val)
@@ -192,7 +193,8 @@ def get_spread(include_val, min_val, max_val, num_val):
 
     step_size = apr_step_size
 
-    # Reduce step size in all dimensions with too low/high aproximative values
+    # Reduce step size in all dimensions with too low/high aproximative
+    # values
     for i, min_diff in enumerate(min_val - apr_min_val):
         if min_diff > 0:
             step_size[i] -= min_diff / include_index

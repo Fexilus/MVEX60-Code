@@ -13,6 +13,7 @@ FIG_HEIGHT = 6
 
 def plot(save_path=None, file_name="jet-surface.pdf", plot_projection=True,
          plot_lifts=True, plot_surface=True):
+
     plt.rc("mathtext", fontset="cm")
 
     xlim = (-1, 1)
@@ -20,8 +21,7 @@ def plot(save_path=None, file_name="jet-surface.pdf", plot_projection=True,
     zlim = (-16, 8)
 
     x_vec = np.linspace(*xlim, 100)
-    y_vec = np.linspace(*ylim, 100)
-
+    #y_vec = np.linspace(*ylim, 100)
     #xs, ys = np.meshgrid(x_vec, y_vec)
     # Matplotlib can't render transparent surfaces correctly since it
     # lacks a 3d-rendering backend. This workaround works for a flat

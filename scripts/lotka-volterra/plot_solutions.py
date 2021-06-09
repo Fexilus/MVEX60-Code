@@ -10,6 +10,7 @@ from symmetries.visualize.utils import integrate_two_ways, get_spread
 
 def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
                                      "lotka-volterra-solutions-varp.eps"]):
+
     plt.rc("mathtext", fontset="cm")
 
     tlim = (-2, 10)
@@ -21,7 +22,6 @@ def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
 
     params = {"a": 1, "b": 2, "c": 2.5, "d": 1.5}
 
-
     def lotka_volterra_rhs(t, y, a=1, b=1, c=1, d=1):
         """The classical Gompertz model with \\(T_i\\)-parametrization."""
 
@@ -30,7 +30,6 @@ def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
         dNdt = a * N - b * N * P
         dPdt = c * N * P - d * P
         return np.array([dNdt, dPdt])
-
 
     integrator = ode(lambda t, y: lotka_volterra_rhs(t, y, **params))
     integrator.set_integrator('vode', method='adams')
@@ -46,7 +45,8 @@ def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
     for init_val in init_vals:
         integrator.set_initial_value(init_val[1:], init_val[0])
 
-        time_points, solut = integrate_two_ways(integrator, dt, max_len=tlim_diff,
+        time_points, solut = integrate_two_ways(integrator, dt,
+                                                max_len=tlim_diff,
                                                 t_boundry=tlim,
                                                 y_boundry=(Nlim, Plim))
 
@@ -79,8 +79,10 @@ def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
     for init_val in init_vals:
         integrator.set_initial_value(init_val[1:], init_val[0])
 
-        time_points, solut = integrate_two_ways(integrator, dt, max_len=tlim_diff,
-                                                t_boundry=tlim, y_boundry=(Nlim, Plim))
+        time_points, solut = integrate_two_ways(integrator, dt,
+                                                max_len=tlim_diff,
+                                                t_boundry=tlim,
+                                                y_boundry=(Nlim, Plim))
 
         is_include_init_val = np.allclose(init_val, include_init_val)
         color = "black" if is_include_init_val else None

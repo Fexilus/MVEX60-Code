@@ -53,7 +53,7 @@ odeqs = poly(lin_symmetry_cond, W).coeffs()
 
 num_decomposed_eqs += 1
 print(f"\r{num_decomposed_eqs}/{num_eqs} equations decomposed",
-        end="", flush=True)
+      end="", flush=True)
 
 print(f"\nThe equation system has {str(len(odeqs))} ODE:s:",
       flush=True)

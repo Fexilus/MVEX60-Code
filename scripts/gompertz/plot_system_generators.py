@@ -40,6 +40,7 @@ generators = [X_sys1, X_sys2, X_sys3, X_sys4, X_sys5, X_sys6]
 def plot(save_path=None, file_names=["gompertz-system-ansatz.eps",
                                      "gompertz-system-param.eps"],
          transformation_kw_args=None):
+
     plt.rc("mathtext", fontset="cm")
 
     transformation_kw_args = transformation_kw_args or {}
@@ -54,30 +55,28 @@ def plot(save_path=None, file_names=["gompertz-system-ansatz.eps",
 
     param_syms, param_vals = zip(*params.items())
 
-    coords = jet_space.original_total_space[0] + jet_space.original_total_space[1]
+    coords = (jet_space.original_total_space[0]
+              + jet_space.original_total_space[1])
 
     rhs_func = lambdify(coords + list(param_syms), system_rhs)
 
-
     def diff_eq(t, y):
         """The differential equation as a python function."""
-
         return rhs_func(t, *y, *param_vals)
-
 
     # Plot generators from ansatz
     fig = plt.figure(figsize=(12, 9))
     subfigs = fig.subfigures(3, 2).flat
 
     ansatz_iter_bundle = ((i, gen, max_len) for i, (gen, max_len)
-                        in enumerate(zip(generators, trans_max_lens), start=1)
-                        if i in [1, 2, 3, 4, 5])
-    for i, gen, trans_max_len, subfig in zip(*zip(*ansatz_iter_bundle), subfigs):
+                          in enumerate(zip(generators, trans_max_lens),
+                                       start=1)
+                          if i in [1, 2, 3, 4, 5])
+    for i, gen, max_len, subfig in zip(*zip(*ansatz_iter_bundle), subfigs):
         axs = subfig.subplots(1, 2)
         plot_transformation(gen, axs, diff_eq, (0, 1, math.log(3)), tlim=tlim,
                             ylim=(Wlim, Glim), parameters=params,
-                            trans_max_len=trans_max_len,
-                            **transformation_kw_args)
+                            trans_max_len=max_len, **transformation_kw_args)
 
         subfig.suptitle(f"$X_{{\\mathrm{{s}},{i}}}$")
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
@@ -97,14 +96,14 @@ def plot(save_path=None, file_names=["gompertz-system-ansatz.eps",
     subfigs = fig.subfigures(3, 1)
 
     ansatz_iter_bundle = ((i, gen, max_len) for i, (gen, max_len)
-                        in enumerate(zip(generators, trans_max_lens), start=1)
-                        if i in [1, 4, 6])
-    for i, gen, trans_max_len, subfig in zip(*zip(*ansatz_iter_bundle), subfigs):
+                          in enumerate(zip(generators, trans_max_lens),
+                                       start=1)
+                          if i in [1, 4, 6])
+    for i, gen, max_len, subfig in zip(*zip(*ansatz_iter_bundle), subfigs):
         axs = subfig.subplots(1, 2)
         plot_transformation(gen, axs, diff_eq, (0, 1, math.log(3)), tlim=tlim,
                             ylim=(Wlim, Glim), parameters=params,
-                            trans_max_len=trans_max_len,
-                            **transformation_kw_args)
+                            trans_max_len=max_len, **transformation_kw_args)
 
         subfig.suptitle(f"$X_{{\\mathrm{{s}},{i}}}$")
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))

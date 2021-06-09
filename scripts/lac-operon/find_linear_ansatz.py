@@ -21,14 +21,20 @@ jet_space = JetSpace(time, states, 1)
 alphaM, K1, K, Gamma0, gammaM = symbols("alpha_M, K_1, K, Gamma_0, gamma_M")
 n = symbols("n", positive=True)
 alphaB, gammaB = symbols("alpha_B, gamma_B")
-alphaL, Le, KLe, betaL1, KL1, betaL2, KL2, gammaL = symbols("alpha_L, L_e, K_{L_e}, beta_{L_1}, K_{L_1}, beta_{L_2}, K_{L_2}, gamma_L")
+alphaL, Le, KLe, betaL1, KL1, betaL2, KL2, gammaL = symbols("alpha_L, L_e, "
+                                                            "K_{L_e}, "
+                                                            "beta_{L_1}, "
+                                                            "K_{L_1}, "
+                                                            "beta_{L_2}, "
+                                                            "K_{L_2}, gamma_L")
 alphaA, KL, betaA, KA, gammaA = symbols("alpha_A, K_L, beta_A, K_A, gamma_A")
 alphaP, gammaP = symbols("alpha_P, gamma_P")
 
 # Right hand differential equation sides
 omega_M = alphaM * (1 + K1 * A ** n) / (K + K1 * A ** n) + Gamma0 - gammaM * M
 omega_B = alphaB * M - gammaB * B
-omega_L = alphaL * P * Le / (KLe + Le) - betaL1 * P * L / (KL1 + L) - betaL2 * B * L / (KL2 + L) - gammaL * L
+omega_L = (alphaL * P * Le / (KLe + Le) - betaL1 * P * L / (KL1 + L)
+           - betaL2 * B * L / (KL2 + L) - gammaL * L)
 omega_A = alphaA * B * L / (KL + L) - betaA * B * A / (KA + A) - gammaA * A
 omega_P = alphaP * M - gammaP * P
 

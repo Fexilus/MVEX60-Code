@@ -7,6 +7,7 @@ from matplotlib.patches import FancyArrowPatch
 
 
 def plot(save_path=None, file_name="triangles.pdf", vertex_labels=None):
+
     plt.rc("text", usetex=True)
     plt.rc("font", family="serif")
     plt.rc("mathtext", fontset="cm")

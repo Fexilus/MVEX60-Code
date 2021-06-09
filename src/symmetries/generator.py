@@ -8,8 +8,8 @@ from .utils import iter_wrapper, zip_strict
 
 
 class Generator:
-    """A local coordinate representation of an infinitesimal generator."""
-
+    """A local coordinate representation of an infinitesimal generator.
+    """
     def __init__(self, xis, etas, total_space):
 
         self.xis = [sympify(xi) for xi in iter_wrapper(xis)]
@@ -77,7 +77,8 @@ class Generator:
             return NotImplemented
 
         if self.total_space != other.total_space:
-            raise NotImplementedError("Generators have to be in same coordinates")
+            raise NotImplementedError("Generators have to be in same "
+                                      "coordinates")
 
         sum_xis = []
         for xi1, xi2 in zip(self.xis, other.xis):
@@ -95,7 +96,8 @@ class Generator:
             return NotImplemented
 
         if self.total_space != other.total_space:
-            raise NotImplementedError("Generators have to be in same coordinates")
+            raise NotImplementedError("Generators have to be in same "
+                                      "coordinates")
 
         sum_xis = []
         for xi1, xi2 in zip(self.xis, other.xis):
@@ -120,8 +122,9 @@ class Generator:
         return Generator(quot_xis, quot_etas, self.total_space)
 
     def __rmul__(self, other):
-        # Only right multiplication is implemented, as left multiplication of
-        # the differential operator might be interpreted as application.
+        # Only right multiplication is implemented, as left
+        # multiplication of the differential operator might be
+        # interpreted as application.
 
         prod_xis = []
         for xi in self.xis:
@@ -151,10 +154,11 @@ class Generator:
 
 
 def generator_on(total_space):
-    """Returns a initiallization method for generators on the total space.
+    """Returns a initiallization method for generators on the total
+    space.
 
-    Is meant to be used in code where several generators on the same space are
-    used to reduce visual clutter.
+    Is meant to be used in code where several generators on the same
+    space are used to reduce visual clutter.
     """
 
     class _Generator(Generator):
@@ -165,11 +169,13 @@ def generator_on(total_space):
 
 
 def get_prolongations(xis, etas, jet_space):
-    """Calculate the coefficients of a vector field prolonged over a jet space.
+    """Calculate the coefficients of a vector field prolonged over a jet
+    space.
 
-    The vector field is characterized by the coefficients of derivatives in
-    the base space (xis) and the coefficients of derivatives in the fiber of
-    the original fiber bundle (etas) from which the jet space is created.
+    The vector field is characterized by the coefficients of derivatives
+    in the base space (xis) and the coefficients of derivatives in the
+    fiber of the original fiber bundle (etas) from which the jet space
+    is created.
     """
 
     eta_prolongations = {}
@@ -183,7 +189,8 @@ def get_prolongations(xis, etas, jet_space):
         next(multiindex_iter)
 
         for multiindex in multiindex_iter:
-            # Calculate the index class, ie. the "first" derivative's number
+            # Calculate the index class, ie. the "first" derivative's
+            # number
             index_class = next(i for i, x in enumerate(multiindex) if x)
 
             leading_deriv_index = ((0,) * index_class +
@@ -204,7 +211,8 @@ def get_prolongations(xis, etas, jet_space):
                                              jet_space)
             eta_prolongations[dependent][multiindex] = eta_component
 
-            # The omega_(n-1)*D(xi) components of the prolongation formula
+            # The omega_(n-1)*D(xi) components of the prolongation
+            # formula
             for base_coord, xi in zip_strict(jet_space.base_space, xis):
                 base_index = jet_space.base_index(base_coord)
                 derivative_index = tuple(map(operator.add, prev_index,
@@ -220,8 +228,8 @@ def get_prolongations(xis, etas, jet_space):
 
 
 def lie_bracket(generator1, generator2):
-    """The Lie bracket of two generators in the same coordinate system."""
-
+    """The Lie bracket of two generators in the same coordinate system.
+    """
     if generator1.total_space != generator2.total_space:
         raise NotImplementedError("Generators have to be in same coordinates")
 

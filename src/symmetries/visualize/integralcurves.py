@@ -6,6 +6,7 @@ from scipy.integrate import ode
 
 from .utils import integrate_two_ways, integrate_forward
 
+
 def get_integral_curves(generator, start_points, parameters=None, boundry=None,
                         max_len=10.0, two_sided=False):
     """Get integral curves of a generator in specific points."""

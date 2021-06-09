@@ -40,15 +40,17 @@ inf_generator = Generator(f1 + f2 * W + f3 * G,
 
 print("Ansatz:")
 print(latex.doprint(Eq(Function(f"\\xi")(t, *states), inf_generator.xis[0])))
-print(latex.doprint(Eq(Function(f"\\eta^1")(t, *states), inf_generator.etas[0])))
-print(latex.doprint(Eq(Function(f"\\eta^2")(t, *states), inf_generator.etas[1])))
+print(latex.doprint(Eq(Function(f"\\eta^1")(t, *states),
+                       inf_generator.etas[0])))
+print(latex.doprint(Eq(Function(f"\\eta^2")(t, *states),
+                       inf_generator.etas[1])))
 
 lin_symmetry_cond = get_lin_symmetry_cond(diff_functions, inf_generator,
                                           jet_space, derivative_hints=[Wt, Gt])
 
 print("Linearized symmetry condition:")
 for eq in lin_symmetry_cond:
-      print(latex.doprint(Eq(eq.expand(), 0)))
+    print(latex.doprint(Eq(eq.expand(), 0)))
 
 num_eqs = len(lin_symmetry_cond)
 num_decomposed_eqs = 0

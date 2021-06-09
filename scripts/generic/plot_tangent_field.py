@@ -10,8 +10,10 @@ from symmetries.visualize import WithArrowStroke
 FIG_WIDTH = 9
 FIG_HEIGHT = 6
 
+
 def plot(save_path=None, file_names=["rotation-field.eps",
                                      "rotation-representative.eps"]):
+
     plt.rc("mathtext", fontset="cm")
 
     xlim = (-1, 1)
@@ -22,7 +24,7 @@ def plot(save_path=None, file_names=["rotation-field.eps",
 
     xs, ys = np.meshgrid(x_vec, y_vec)
 
-    fig, ax = plt.subplots(figsize=(FIG_WIDTH, FIG_HEIGHT))
+    _, ax = plt.subplots(figsize=(FIG_WIDTH, FIG_HEIGHT))
 
     ax.quiver(xs, ys, -ys, xs)
 

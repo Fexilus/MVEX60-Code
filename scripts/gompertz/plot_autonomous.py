@@ -9,6 +9,7 @@ from symmetries.visualize.utils import integrate_two_ways, get_spread
 
 
 def plot(save_path=None, file_name="gompertz-autonomous-solutions.eps"):
+
     plt.rc("mathtext", fontset="cm")
 
     tlim = (-2, 10)
@@ -25,21 +26,21 @@ def plot(save_path=None, file_name="gompertz-autonomous-solutions.eps"):
         dWdt = - kG * np.log(W / A) * W
         return dWdt
 
-
     integrator = ode(lambda t, W: autonomous_rhs(t, W, **params))
     integrator.set_integrator('vode', method='adams')
 
     tlim_diff = tlim[1] - tlim[0]
     dt = tlim_diff / 100
 
-    fig, ax = plt.subplots()
+    _, ax = plt.subplots()
 
     init_vals = get_spread(include_init_val, (-2, 1), (2, 1),
-                        NUM_SOLUTION_LINES)
+                           NUM_SOLUTION_LINES)
     for init_val in init_vals:
         integrator.set_initial_value(init_val[1], init_val[0])
 
-        time_points, solut = integrate_two_ways(integrator, dt, max_len=tlim_diff,
+        time_points, solut = integrate_two_ways(integrator, dt,
+                                                max_len=tlim_diff,
                                                 t_boundry=tlim, y_boundry=Wlim)
 
         is_include_init_val = np.allclose(init_val, include_init_val)

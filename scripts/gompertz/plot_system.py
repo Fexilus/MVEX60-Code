@@ -11,6 +11,7 @@ from symmetries.visualize.utils import integrate_two_ways, get_spread
 def plot(save_path=None, file_names=["gompertz-system-solutions-varw.eps",
                                      "gompertz-system-solutions-varg.eps"],
          plot_selective=None):
+
     plt.rc("mathtext", fontset="cm")
 
     if not plot_selective:
@@ -33,7 +34,6 @@ def plot(save_path=None, file_names=["gompertz-system-solutions-varw.eps",
         dWdt = W * G
         dGdt = -kG * G
         return np.array([dWdt, dGdt])
-
 
     integrator = ode(lambda t, y: system_rhs(t, y, **params))
     integrator.set_integrator('vode', method='adams')

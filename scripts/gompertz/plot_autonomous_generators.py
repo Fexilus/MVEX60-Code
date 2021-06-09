@@ -39,6 +39,7 @@ generators = [X_aut1, X_aut2, X_aut3, X_aut4, X_aut5, X_aut6]
 def plot(save_path=None, file_names=["gompertz-autonomous-ansatz.eps",
                                      "gompertz-autonomous-param.eps"],
          transformation_kw_args=None):
+
     plt.rc("mathtext", fontset="cm")
 
     transformation_kw_args = transformation_kw_args or {}
@@ -53,27 +54,26 @@ def plot(save_path=None, file_names=["gompertz-autonomous-ansatz.eps",
 
     param_syms, param_vals = zip(*params.items())
 
-    coords = jet_space.original_total_space[0] + jet_space.original_total_space[1]
+    coords = (jet_space.original_total_space[0]
+              + jet_space.original_total_space[1])
 
     rhs_func = lambdify(coords + list(param_syms), autonomous_rhs)
 
-
     def diff_eq(t, y):
         """The differential equation as a python function."""
-
         return rhs_func(t, *y, *param_vals)
-
 
     # Plot generators from ansatz
     fig, axs = plt.subplots(1, 3, sharex=True, sharey=True, figsize=(9, 3))
 
     all_axs = axs.flat
     ansatz_iter_bundle = ((i, gen, max_len) for i, (gen, max_len)
-                        in enumerate(zip(generators, trans_max_lens), start=1)
-                        if i in [1, 2, 3])
-    for i, gen, trans_max_len, ax in zip(*zip(*ansatz_iter_bundle), all_axs):
+                          in enumerate(zip(generators, trans_max_lens),
+                                       start=1)
+                          if i in [1, 2, 3])
+    for i, gen, max_len, ax in zip(*zip(*ansatz_iter_bundle), all_axs):
         plot_transformation(gen, ax, diff_eq, (0, 1), tlim=tlim, ylim=Wlim,
-                            parameters=params, trans_max_len=trans_max_len,
+                            parameters=params, trans_max_len=max_len,
                             **transformation_kw_args)
 
         ax.set_title(f"$X_{{\\mathrm{{a}},{i}}}$")
@@ -95,12 +95,12 @@ def plot(save_path=None, file_names=["gompertz-autonomous-ansatz.eps",
     fig, axs = plt.subplots(2, 3, sharex=True, sharey=True, figsize=(9, 6))
 
     param_iter_bundle = ((i, gen, max_len) for i, (gen, max_len)
-                        in enumerate(zip(generators, trans_max_lens), start=1)
-                        if i in [2, 3, 4, 5, 6])
+                         in enumerate(zip(generators, trans_max_lens), start=1)
+                         if i in [2, 3, 4, 5, 6])
     all_axs = axs.flat
-    for i, gen, trans_max_len, ax in zip(*zip(*param_iter_bundle), all_axs):
+    for i, gen, max_len, ax in zip(*zip(*param_iter_bundle), all_axs):
         plot_transformation(gen, ax, diff_eq, (0, 1), tlim=tlim, ylim=Wlim,
-                            parameters=params, trans_max_len=trans_max_len,
+                            parameters=params, trans_max_len=max_len,
                             **transformation_kw_args)
 
         ax.set_title(f"$X_{{\\mathrm{{a}},{i}}}$")

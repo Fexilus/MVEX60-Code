@@ -7,7 +7,8 @@ from .generator import Generator
 
 
 def decompose_generator(generator, basis):
-    """Decompose a generator by a basis of arbitrary constants or functions.
+    """Decompose a generator by a basis of arbitrary constants or
+    functions.
 
     Only generators linear in the basis is implemented.
     """

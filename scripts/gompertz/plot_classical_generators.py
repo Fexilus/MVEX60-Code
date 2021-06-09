@@ -41,6 +41,7 @@ def plot(save_path=None, file_names=["gompertz-classical-local.eps",
                                      "gompertz-classical-ansatz.eps",
                                      "gompertz-classical-param.eps"],
          limits=None, transformation_kw_args=None, plot_selective=None):
+
     plt.rc("mathtext", fontset="cm")
 
     # Process arguments
@@ -62,17 +63,15 @@ def plot(save_path=None, file_names=["gompertz-classical-local.eps",
 
     param_syms, param_vals = zip(*params.items())
 
-    coords = jet_space.original_total_space[0] + jet_space.original_total_space[1]
+    coords = (jet_space.original_total_space[0]
+              + jet_space.original_total_space[1])
 
     rhs_func = lambdify(coords + list(param_syms), classical_rhs)
 
-
     def diff_eq(t, y):
         """The differential equation as a python function."""
-
         return rhs_func(t, *y, *param_vals)
 
-    
     # Plot vector fields of local transformations
     fig, axs = plt.subplots(1, 2, sharex=True, sharey=True, figsize=(6, 3))
 
@@ -85,9 +84,11 @@ def plot(save_path=None, file_names=["gompertz-classical-local.eps",
     for i, gen, ax in zip(*zip(*nonlocal_iter_bundle), all_axs):
         plot_solution_curve(ax, diff_eq, (0, 1), tlim=tlim, ylim=Wlim)
 
-        xi_evals = [math.log(1 + gen.xis[0].subs(zip((t, W), point)).subs(params))
+        xi_evals = [math.log(1 + gen.xis[0].subs(zip((t, W),
+                                                     point)).subs(params))
                     for point in zip(ts.flat, Ws.flat)]
-        eta_evals = [math.log(1 + gen.etas[0].subs(zip((t, W), point)).subs(params))
+        eta_evals = [math.log(1 + gen.etas[0].subs(zip((t, W),
+                                                       point)).subs(params))
                     for point in zip(ts.flat, Ws.flat)]
 
         ax.quiver(ts, Ws, xi_evals, eta_evals, zorder=3, headwidth=5)
@@ -108,11 +109,12 @@ def plot(save_path=None, file_names=["gompertz-classical-local.eps",
     # Iteration over axes
     all_axs = np.array(axs).flat
     ansatz_iter_bundle = ((i, gen, max_len) for i, (gen, max_len)
-                        in enumerate(zip(generators, trans_max_lens), start=1)
-                        if i in [3])
-    for i, gen, trans_max_len, ax in zip(*zip(*ansatz_iter_bundle), all_axs):
+                          in enumerate(zip(generators, trans_max_lens),
+                                       start=1)
+                          if i in [3])
+    for i, gen, max_len, ax in zip(*zip(*ansatz_iter_bundle), all_axs):
         plot_transformation(gen, ax, diff_eq, (0, 1), tlim=tlim, ylim=Wlim,
-                            parameters=params, trans_max_len=trans_max_len,
+                            parameters=params, trans_max_len=max_len,
                             **transformation_kw_args)
 
         ax.set_title(f"$X_{{\\mathrm{{c}},{i}}}$")
@@ -136,11 +138,11 @@ def plot(save_path=None, file_names=["gompertz-classical-local.eps",
     # Iteration over axes
     all_axs = axs.flat
     param_iter_bundle = ((i, gen, max_len) for i, (gen, max_len)
-                        in enumerate(zip(generators, trans_max_lens), start=1)
-                        if i in [4, 5])
-    for i, gen, trans_max_len, ax in zip(*zip(*param_iter_bundle), all_axs):
+                         in enumerate(zip(generators, trans_max_lens), start=1)
+                         if i in [4, 5])
+    for i, gen, max_len, ax in zip(*zip(*param_iter_bundle), all_axs):
         plot_transformation(gen, ax, diff_eq, (0, 1), tlim=tlim, ylim=Wlim,
-                            parameters=params, trans_max_len=trans_max_len,
+                            parameters=params, trans_max_len=max_len,
                             **transformation_kw_args)
 
         ax.set_title(f"$X_{{\\mathrm{{c}},{i}}}$")

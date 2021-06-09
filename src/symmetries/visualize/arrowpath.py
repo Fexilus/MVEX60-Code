@@ -84,7 +84,7 @@ class ArrowStroke(AbstractPathEffect):
                                      num)
 
                 # Find points along the parameterized curve
-                assert(s_base[-1] <= s_total)
+                assert s_base[-1] <= s_total
                 x_base = np.interp(s_base, s, x)
                 y_base = np.interp(s_base, s, y)
 

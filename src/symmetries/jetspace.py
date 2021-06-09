@@ -12,6 +12,7 @@ class JetSpace:
     """A local coordinate representation of a jet space."""
 
     def __init__(self, base_coord, fibre_coord, degree):
+
         self.degree = degree
 
         self.base_space = list(iter_wrapper(base_coord))
@@ -26,6 +27,7 @@ class JetSpace:
 
 
     def __deepcopy__(self, memo):
+
         dcopy = copy(self)
         dcopy.base_space = deepcopy(self.base_space, memo)
         dcopy.fibres = deepcopy(self.fibres, memo)
@@ -34,7 +36,9 @@ class JetSpace:
 
 
     def base_index(self, base_symbol):
-        """Returns the derivative index for a coordinate in the base space."""
+        """Returns the derivative index for a coordinate in the base
+        space.
+        """
         base_num = self.base_space.index(base_symbol)
         base_size = len(self.base_space)
 
@@ -42,7 +46,9 @@ class JetSpace:
 
 
     def extension(self, new_degree):
-        """Creates a jet space on the same total space of a higher degree."""
+        """Creates a jet space on the same total space of a higher
+        degree.
+        """
         new_space = deepcopy(self)
 
         if new_degree > new_space.degree:
@@ -73,21 +79,24 @@ class JetSpace:
             deriv_indices = [tuple(map(sum, zip(*tuples)))
                              for tuples in deriv_index_combs]
 
-            deriv_symbols = list(combinations_with_replacement(self.base_space, d))
+            deriv_symbols = list(combinations_with_replacement(self.base_space,
+                                                               d))
 
             for dependent in self.fibres:
-                for deriv_index, deriv_symbol in zip(deriv_indices, deriv_symbols):
+                for deriv_index, deriv_symbol in zip(deriv_indices,
+                                                     deriv_symbols):
                     deriv_string = "".join(map(str, deriv_symbol))
                     symbol_name = dependent.name + "_{" + deriv_string + "}"
                     self.fibres[dependent][deriv_index] = Symbol(symbol_name)
 
     @property
     def original_total_space(self):
-        """Return the coordinates of the total space on which the jet space is built
+        """Return the coordinates of the total space on which the jet 
+        space is built
 
         Returns:
-            A 2-tuple of lists of the coordinates of the base space and fibre
-            respectively.
+            A 2-tuple of lists of the coordinates of the base space and
+            fibre respectively.
         """
 
         return self.base_space, self.get_dependents()

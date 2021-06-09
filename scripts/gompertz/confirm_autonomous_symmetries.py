@@ -40,13 +40,12 @@ for generator in generators:
     if not sym_cond.expand().together().is_zero:
         # Test if the symmetry condition holds piecewise
         if isinstance(sym_cond.expand().together().simplify(), Piecewise):
-
             piecewise_holds = True
             for expr, cond in sym_cond.expand().together().simplify().args:
 
                 if isinstance(cond, Equality):
-
-                    # If the condition can never happen, skip checking expr
+                    # If the condition can never happen, skip checking
+                    # the expression
                     if not solve(cond):
                         continue
 
@@ -61,7 +60,6 @@ for generator in generators:
                     piecewise_holds = False
 
             if piecewise_holds:
-
                 print(f"The generator {generator} is piecewise a "
                       "symmetry of the autonomous Gompertz model")
                 continue

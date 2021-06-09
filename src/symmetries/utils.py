@@ -6,14 +6,14 @@ from sympy import symbols
 
 
 def optional_iter(func):
-    """Decorator that allows the first argument to be treated as iterable.
+    """Decorator that allows the first argument to be treated as
+    iterable.
 
     The function should take an iterable as first argument and return an
-    iterable. The decorated function will accept either a single element or
-    an iterable as first argument, and will return a single element or an
-    iterable depending on the input type.
+    iterable. The decorated function will accept either a single element
+    or an iterable as first argument, and will return a single element
+    or an iterable depending on the input type.
     """
-
     def as_iter(arg):
         yield arg
 
@@ -77,7 +77,8 @@ def derivatives_sort_key(function_order=None, dependent_order=None):
         num_der = derivative.derivative_count
 
         # This is a very overkill upper bound of
-        # 1) All combinations with replacement of up to num_der derivative
+        # 1) All combinations with replacement of up to num_der
+        #    derivative
         # 2) The value of dep_val
         comb_bound = num_der * num_dep ** num_der * num_der ** num_dep
         count_val = num_funcs * comb_bound

@@ -11,6 +11,7 @@ from .utils import integrate_two_ways, get_normed_spaced_points
 
 from ..utils import iter_wrapper
 
+
 def plot_transformation(generator, axs, diff_eq_rhs, init_val, tlim,
                         parameters=None, dt=0.1, ylim=None,
                         num_trans_points=10, trans_max_len=10,
