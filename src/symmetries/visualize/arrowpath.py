@@ -1,3 +1,4 @@
+"""Path effect with arrows along lines."""
 from matplotlib.patheffects import AbstractPathEffect, _subclass_with_normal
 from matplotlib.path import Path
 import numpy as np

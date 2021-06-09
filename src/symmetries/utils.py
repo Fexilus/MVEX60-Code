@@ -1,4 +1,4 @@
-"""Utilities."""
+"""Utilities for the main symmetries package."""
 from itertools import zip_longest
 from functools import wraps
 

@@ -1,11 +1,15 @@
-"""Class for reproducing printing in report."""
+"""Class for reproducing most of the printing style of my reports."""
 from sympy.printing.latex import LatexPrinter
 from sympy.core.function import AppliedUndef, Derivative, Function, Subs
 from sympy import Symbol, S
 
 
 class CustomLatexPrinter(LatexPrinter):
-    """Latex printer that prints derivatives with f_t notation."""
+    """Latex printer that prints derivatives with f_t notation.
+
+    Redefines several of the built in methods of the default LaTeX
+    printer.
+    """
 
     def __init__(self, *args, short_functions=True, **kwargs):
         self._short_functions=short_functions

@@ -1,3 +1,6 @@
+"""Automatic generation of polynomial ansätze for infinitesimal
+generators.
+"""
 from itertools import count
 import operator
 
@@ -9,6 +12,9 @@ from ..generator import Generator
 
 
 def create_poly_ansatz(jet_space, degree=1):
+    """Create an infinitesimal generator that is polynomial in the
+    components of a given jet space.
+    """
     independents = jet_space.base_space
     dependents = jet_space.get_dependents()
 

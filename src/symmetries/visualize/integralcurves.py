@@ -1,3 +1,6 @@
+"""Calculation of integral curves of vector fields defined by
+infinitesimal generators.
+"""
 from itertools import chain
 
 from sympy import lambdify
@@ -21,7 +24,7 @@ def get_integral_curves(generator, start_points, parameters=None, boundry=None,
     vector_field = [lambdify(coords + list(param_syms), expr) for expr
                     in chain(generator.xis, generator.etas)]
 
-    def diff_eq(t, y):
+    def diff_eq(_, y):
         return np.array([func(*y, *param_vals) for func in vector_field])
 
     ds = max_len / 100
