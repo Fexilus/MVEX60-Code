@@ -1,3 +1,4 @@
+"""Plotting of representative transformations of Lie point symmetries."""
 from math import floor
 
 import numpy as np
@@ -6,7 +7,7 @@ from scipy.integrate import ode
 
 from .integralcurves import get_integral_curves
 from .arrowpath import WithArrowStroke
-from .utils import integrate_two_ways, get_spaced_points
+from .utils import integrate_two_ways, get_normed_spaced_points
 
 from ..utils import iter_wrapper
 
@@ -90,17 +91,3 @@ def plot_solution_curve(axs, diff_eq_rhs, init_val, tlim, dt=0.1, ylim=None):
         ax.plot(time_points, solut[:,i])
 
     return time_points, solut
-
-
-def get_normed_spaced_points(curve, scales, num_points):
-    """Get spaced points along a curve according to scaling."""
-
-    norm_matrix = np.diag(scales)
-
-    normed_curve = (np.linalg.inv(norm_matrix) @ curve.T).T
-
-    normed_spaced_points = get_spaced_points(normed_curve, num_points)
-
-    spaced_points = (norm_matrix @ normed_spaced_points.T).T
-
-    return spaced_points

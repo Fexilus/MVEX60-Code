@@ -1,12 +1,10 @@
-"""Show the problems with finding \\(\\alpha_M\\)-independent symmetries."""
-
+"""Show the problems with finding \\(\\alpha_M\\)-independent
+symmetries.
+"""
 from sympy import symbols, Function, Derivative, Union
 
-from symmetries.jetspace import JetSpace
-from symmetries.generator import generator_on
-from symmetries.symcond import get_lin_symmetry_cond
+from symmetries import JetSpace, generator_on, get_lin_symmetry_cond
 from symmetries.utils import derivatives_sort_key
-
 from printutils import CustomLatexPrinter
 
 # Time

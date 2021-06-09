@@ -2,10 +2,9 @@
 import os.path
 
 import numpy as np
-
 import matplotlib.pyplot as plt
 
-from symmetries.visualize.arrowpath import WithArrowStroke
+from symmetries.visualize import WithArrowStroke
 
 
 FIG_WIDTH = 9

@@ -3,7 +3,7 @@ from itertools import chain
 
 from sympy import poly
 
-from ..generator import Generator
+from .generator import Generator
 
 
 def decompose_generator(generator, basis):

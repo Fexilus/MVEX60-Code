@@ -106,7 +106,7 @@ class Generator:
             sum_etas += [(eta1 - eta2).expand()]
 
         return Generator(sum_xis, sum_etas, self.total_space)
-    
+
     def __truediv__(self, other):
 
         quot_xis = []
@@ -132,7 +132,7 @@ class Generator:
             prod_etas += [(other * eta).expand()]
 
         return Generator(prod_xis, prod_etas, self.total_space)
-    
+
     def __neg__(self):
 
         neg_xis = [(-xi).expand() for xi in self.xis]

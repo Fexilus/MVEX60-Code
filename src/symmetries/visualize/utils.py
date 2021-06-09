@@ -131,6 +131,20 @@ def integrate_forward(integrator, dt, max_len, t_boundry=None, y_boundry=None):
     return np.array(curve_t)[:,None], np.array(curve_y)
 
 
+def get_normed_spaced_points(curve, scales, num_points):
+    """Get spaced points along a curve according to scaling."""
+
+    norm_matrix = np.diag(scales)
+
+    normed_curve = (np.linalg.inv(norm_matrix) @ curve.T).T
+
+    normed_spaced_points = get_spaced_points(normed_curve, num_points)
+
+    spaced_points = (norm_matrix @ normed_spaced_points.T).T
+
+    return spaced_points
+
+
 def get_spaced_points(curve, num_points):
     """Take a curve and return fairly spaced points of the curve."""
 

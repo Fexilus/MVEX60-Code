@@ -6,12 +6,10 @@ from sympy import symbols, Function, poly, Derivative, pdsolve, Wild, Eq
 from sympy.core.function import AppliedUndef
 from sympy.solvers.solveset import linsolve
 
-from symmetries.jetspace import JetSpace
-from symmetries.generator import generator_on
-from symmetries.symcond import get_lin_symmetry_cond
+from symmetries import JetSpace, generator_on, get_lin_symmetry_cond
 from symmetries.utils import derivatives_sort_key
-
 from printutils import CustomLatexPrinter
+
 
 t = symbols("t", real=True)
 u1, u2 = states = symbols("N P", positive=True)

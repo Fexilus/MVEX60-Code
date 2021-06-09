@@ -1,14 +1,12 @@
-"""Calculate generators linear in time and states for lac operon model."""
-
+"""Calculate generators linear in time and states for lac operon model.
+"""
 from sympy import symbols, together, numer, poly, linsolve, Function, Eq
 
-from symmetries.jetspace import JetSpace
-from symmetries.ansatz.polynomial import create_poly_ansatz
-from symmetries.symcond import get_lin_symmetry_cond
-from symmetries.generator import Generator
-from symmetries.ansatz.basis import decompose_generator
-
+from symmetries import (JetSpace, get_lin_symmetry_cond, Generator,
+                        decompose_generator)
+from symmetries.ansatz import create_poly_ansatz
 from printutils import CustomLatexPrinter
+
 
 latex = CustomLatexPrinter({"ln_notation": True})
 

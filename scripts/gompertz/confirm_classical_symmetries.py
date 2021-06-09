@@ -1,8 +1,9 @@
+"""Confirm that symmetries of the classical Gompertz model calculated by
+hand are correct.
+"""
 from sympy import symbols, ln, exp
 
-from symmetries.jetspace import JetSpace
-from symmetries.generator import generator_on
-from symmetries.symcond import get_lin_symmetry_cond
+from symmetries import JetSpace, generator_on, get_lin_symmetry_cond
 
 # Time
 t = time = symbols("t", real=True)

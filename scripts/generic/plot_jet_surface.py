@@ -1,8 +1,9 @@
-"""Plot an example of a jet surface corresponding to a differential equation"""
+"""Plot an example of a jet surface corresponding to a differential
+equation.
+"""
 import os.path
 
 import numpy as np
-
 import matplotlib.pyplot as plt
 from matplotlib.colors import to_rgba
 

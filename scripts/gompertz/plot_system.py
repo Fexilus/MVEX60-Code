@@ -2,9 +2,7 @@
 import os.path
 
 import numpy as np
-
 from scipy.integrate import ode
-
 import matplotlib.pyplot as plt
 
 from symmetries.visualize.utils import integrate_two_ways, get_spread

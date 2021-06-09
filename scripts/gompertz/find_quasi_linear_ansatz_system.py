@@ -1,14 +1,13 @@
-"""Calculate generators linear in the state for the system Gompertz model."""
-
+"""Calculate generators linear in the state for the system Gompertz
+model.
+"""
 from sympy import symbols, poly, Function, Eq, dsolve, Derivative, linsolve
 
-from symmetries.jetspace import JetSpace
-from symmetries.symcond import get_lin_symmetry_cond
-from symmetries.generator import Generator
-from symmetries.ansatz.basis import decompose_generator
+from symmetries import (JetSpace, get_lin_symmetry_cond, Generator,
+                        decompose_generator)
 from symmetries.utils import replace_consts
-
 from printutils import CustomLatexPrinter
+
 
 latex = CustomLatexPrinter({"ln_notation": True}, short_functions=False)
 
