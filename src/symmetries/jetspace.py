@@ -96,7 +96,7 @@ class JetSpace:
 
         Returns:
             A 2-tuple of lists of the coordinates of the base space and
-            fibre respectively.
+            fiber respectively.
         """
 
         return self.base_space, self.get_dependents()

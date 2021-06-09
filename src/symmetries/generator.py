@@ -154,7 +154,7 @@ class Generator:
 
 
 def generator_on(total_space):
-    """Returns a initiallization method for generators on the total
+    """Returns a initialization method for generators on the total
     space.
 
     Is meant to be used in code where several generators on the same
