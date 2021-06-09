@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch
 
 
-def plot(save_path=None, file_name="triangles.eps"):
+def plot(save_path=None, file_name="triangles.pdf", vertex_labels=None):
     plt.rc("text", usetex=True)
     plt.rc("font", family="serif")
     plt.rc("mathtext", fontset="cm")
@@ -65,6 +65,27 @@ def plot(save_path=None, file_name="triangles.eps"):
             r"Rotation by $-120^{\circ}$",
             horizontalalignment="center")
 
+    if vertex_labels:
+        points_a = np.stack([triangle1_vertices[0, :],
+                             triangle2_vertices[0, :],
+                             triangle3_vertices[0, :]])
+        points_b = np.stack([triangle1_vertices[1, :],
+                             triangle2_vertices[1, :],
+                             triangle3_vertices[1, :]])
+        points_c = np.stack([triangle1_vertices[2, :],
+                             triangle2_vertices[2, :],
+                             triangle3_vertices[2, :]])
+
+        for point in points_a:
+            ax.text(*(point + (0.1, 0.05)), vertex_labels[0],
+                    horizontalalignment="left")
+        for point in points_b:
+            ax.text(*(point + (0, -0.1)), vertex_labels[1],
+                    horizontalalignment="center", verticalalignment="top")
+        for point in points_c:
+            ax.text(*(point + (-0.1, 0.05)), vertex_labels[2],
+                    horizontalalignment="right")
+
     ax.axis("equal")
     ax.set(xlim=(0, 3.4), ylim=(0, np.sqrt(0.75)))
     ax.axis("off")
@@ -73,7 +94,7 @@ def plot(save_path=None, file_name="triangles.eps"):
 
     if save_path:
         file_path = os.path.join(save_path, file_name)
-        plt.savefig(file_path, format="eps",
+        plt.savefig(file_path, format="pdf",
                     bbox_inches="tight")
 
 

@@ -45,17 +45,21 @@ generators = [X_cla1, X_cla2, X_cla3, X_cla4, X_cla5]
 def plot(save_path=None, file_names=["gompertz-classical-local.eps",
                                      "gompertz-classical-ansatz.eps",
                                      "gompertz-classical-param.eps"],
-         limits=None, transformation_kw_args=None):
+         limits=None, transformation_kw_args=None, plot_selective=None):
     plt.rc("mathtext", fontset="cm")
 
-    transformation_kw_args = transformation_kw_args or {}
-
+    # Process arguments
     if limits:
         tlim = limits[0]
         Wlim = limits[1]
     else:
         tlim = (-2, 10)
         Wlim = (0, 3)
+
+    transformation_kw_args = transformation_kw_args or {}
+
+    if not plot_selective:
+        plot_selective = [True for _ in file_names]
 
     trans_max_lens = [0.15, 0.07, 0.6, 0.2, 1]
 
@@ -98,7 +102,7 @@ def plot(save_path=None, file_names=["gompertz-classical-local.eps",
         ax.set_xlabel("$t$")
         ax.set_ylabel("$W$")
 
-    if save_path:
+    if save_path and plot_selective[0]:
         file_path = os.path.join(save_path, file_names[0])
         plt.savefig(file_path, format="eps",
                     bbox_inches="tight")
@@ -126,7 +130,7 @@ def plot(save_path=None, file_names=["gompertz-classical-local.eps",
 
     fig.tight_layout()
 
-    if save_path:
+    if save_path and plot_selective[1]:
         file_path = os.path.join(save_path, file_names[1])
         plt.savefig(file_path, format="eps",
                     bbox_inches="tight")
@@ -154,7 +158,7 @@ def plot(save_path=None, file_names=["gompertz-classical-local.eps",
 
     fig.tight_layout()
 
-    if save_path:
+    if save_path and plot_selective[2]:
         file_path = os.path.join(save_path, file_names[2])
         plt.savefig(file_path, format="eps",
                     bbox_inches="tight")

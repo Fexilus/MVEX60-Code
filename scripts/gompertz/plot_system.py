@@ -11,8 +11,12 @@ from symmetries.visualize.utils import integrate_two_ways, get_spread
 
 
 def plot(save_path=None, file_names=["gompertz-system-solutions-varw.eps",
-                                     "gompertz-system-solutions-varg.eps"]):
+                                     "gompertz-system-solutions-varg.eps"],
+         plot_selective=None):
     plt.rc("mathtext", fontset="cm")
+
+    if not plot_selective:
+        plot_selective = [True for _ in file_names]
 
     tlim = (-2, 10)
     Wlim = (0, 3)
@@ -69,7 +73,7 @@ def plot(save_path=None, file_names=["gompertz-system-solutions-varw.eps",
 
     fig.tight_layout()
 
-    if save_path:
+    if save_path and plot_selective[0]:
         file_path = os.path.join(save_path, file_names[0])
         plt.savefig(file_path, format="eps",
                     bbox_inches="tight")
@@ -104,7 +108,7 @@ def plot(save_path=None, file_names=["gompertz-system-solutions-varw.eps",
 
     fig.tight_layout()
 
-    if save_path:
+    if save_path and plot_selective[1]:
         file_path = os.path.join(save_path, file_names[1])
         plt.savefig(file_path, format="eps",
                     bbox_inches="tight")
