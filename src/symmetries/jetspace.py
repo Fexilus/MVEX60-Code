@@ -91,11 +91,11 @@ class JetSpace:
 
     @property
     def original_total_space(self):
-        """Return the coordinates of the total space on which the jet 
-        space is built
+        """The coordinates of the total space on which the jet space is
+        built.
 
         Returns:
-            A 2-tuple of lists of the coordinates of the base space and
+            A two-tuple of lists of the coordinates of the base space and
             fiber respectively.
         """
 

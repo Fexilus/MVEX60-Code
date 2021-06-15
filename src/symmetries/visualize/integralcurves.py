@@ -1,7 +1,6 @@
 """Calculation of integral curves of vector fields defined by
 infinitesimal generators.
 """
-from itertools import chain
 
 from sympy import lambdify
 import numpy as np
@@ -11,10 +10,10 @@ from .utils import integrate_two_ways, integrate_forward
 
 
 def get_integral_curves(generator, start_points, parameters=None, boundry=None,
-                        max_len=10.0, two_sided=False):
+                        max_len=10.0, two_sided=False, jet_space_order=0):
     """Get integral curves of a generator in specific points."""
 
-    coords = generator.total_space[0] + generator.total_space[1]
+    coords = generator.get_jet_space_basis(jet_space_order)
 
     if not parameters:
         parameters = {}
@@ -22,7 +21,7 @@ def get_integral_curves(generator, start_points, parameters=None, boundry=None,
     param_syms, param_vals = zip(*parameters.items())
 
     vector_field = [lambdify(coords + list(param_syms), expr) for expr
-                    in chain(generator.xis, generator.etas)]
+                    in generator.get_tangent_field(jet_space_order)]
 
     def diff_eq(_, y):
         return np.array([func(*y, *param_vals) for func in vector_field])

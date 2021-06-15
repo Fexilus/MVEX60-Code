@@ -1,5 +1,6 @@
 """Implementation of infinitesimal generators for sympy."""
 import operator
+from itertools import chain
 
 from sympy import sympify
 
@@ -16,11 +17,22 @@ class Generator:
 
         self.etas = [sympify(eta) for eta in iter_wrapper(etas)]
 
-        self.total_space = total_space
+        self.total_space = (list(total_space[0]), list(total_space[1]))
 
     def __call__(self, expr, jet_space=None):
-        """Apply the generator on an expression on a jet space."""
+        r"""Apply the generator on an expression on a jet space.
 
+        Args:
+            expr: The \lstinline{sympy} expression to apply the
+                generator on.
+
+            jet_space: The :class:`~jetspace.JetSpace` in which the
+                expression lives.
+
+        Returns:
+            The \lstinline{sympy} expression after application of the
+            generator.
+        """
         if not jet_space:
             jet_space = JetSpace(*self.total_space, 0)
 
@@ -151,6 +163,60 @@ class Generator:
         pos_etas = [(+eta).expand() for eta in self.etas]
 
         return Generator(pos_xis, pos_etas, self.total_space)
+
+    def get_tangent_field(self, degree=0):
+        r"""Return the corresponding prolonged tangent field of the
+        generator.
+
+        The ordering is the same as the ordering of
+        :func:`~generator.Generator.get_jet_space_basis`.
+
+        Args:
+            degree: The degree of the prolongation.
+
+        Returns:
+            A list of the \lstinline{sympy} expressions corresponding to
+            the components of the (possibly prolonged) tangent field.
+        """
+        jet_space = JetSpace(*self.total_space, degree)
+        eta_prolongations = get_prolongations(self.xis, self.etas, jet_space)
+
+        # Sort the prolonged tangent field
+        eta_prolong_exprs = []
+        for cur_deg in range(degree + 1):
+            for derivative_dict in eta_prolongations.values():
+                for multiindex, expr in derivative_dict.items():
+                    if sum(multiindex) == cur_deg:
+                        eta_prolong_exprs.append(expr)
+
+        return list(chain(self.xis, eta_prolong_exprs))
+
+    def get_jet_space_basis(self, degree=0):
+        r"""Return the basis of a jet space on which the generator can
+        act.
+
+        The ordering is the same as the ordering of
+        :func:`~generator.Generator.get_tangent_field`.
+
+        Args:
+            degree: The degree of the jet space.
+
+        Returns:
+            A list of the \lstinline{sympy} expressions corresponding to
+            the basis vectors of the jet space.
+        """
+        jet_space = JetSpace(*self.total_space, degree)
+        fibers = jet_space.fibres
+
+        # Sort the prolonged tangent field
+        fibre_basis = []
+        for cur_deg in range(degree + 1):
+            for derivative_dict in fibers.values():
+                for multiindex, base in derivative_dict.items():
+                    if sum(multiindex) == cur_deg:
+                        fibre_basis.append(base)
+
+        return list(chain(jet_space.base_space, fibre_basis))
 
 
 def generator_on(total_space):

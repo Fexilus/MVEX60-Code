@@ -12,7 +12,8 @@ GENERATOR_PLOT_FILES = [("gompertz.plot_classical_generators", {}),
                         ("gompertz.plot_autonomous_generators", {}),
                         ("gompertz.plot_system_generators", {})]
 OTHER_PLOT_FILES = [("generic.plot_triangle_symmetries", {}),
-                    ("generic.plot_jet_surface", {})]
+                    ("generic.plot_jet_surface", {}),
+                    ("gompertz.plot_jet_surfaces", {})]
 
 # Import the files containing the plot functions as modules
 solution_modules = []
