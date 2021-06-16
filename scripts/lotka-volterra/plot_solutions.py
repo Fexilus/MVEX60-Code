@@ -23,7 +23,7 @@ def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
     params = {"a": 1, "b": 2, "c": 2.5, "d": 1.5}
 
     def lotka_volterra_rhs(t, y, a=1, b=1, c=1, d=1):
-        """The classical Gompertz model with \\(T_i\\)-parametrization."""
+        """The Lotka-Volterra model."""
 
         N, P = y
 

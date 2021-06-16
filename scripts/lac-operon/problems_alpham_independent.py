@@ -1,4 +1,4 @@
-"""Show the problems with finding \\(\\alpha_M\\)-independent
+"""Show the problems with finding :math:`\\alpha_M`-independent
 symmetries.
 """
 from sympy import symbols, Function, Derivative, Union

@@ -14,6 +14,18 @@ from ..generator import Generator
 def create_poly_ansatz(jet_space, degree=1):
     """Create an infinitesimal generator that is polynomial in the
     components of a given jet space.
+
+    :param jet_space: The jet space on which the generator can act.
+    :type jet_space: :class:`~symmetries.jetspace.JetSpace`
+
+    :param degree: The degree of the polynomials in all generator
+        components.
+    :type degree: int, optional
+
+    :return: The generator and arbitrary constants defined by the
+        ansatz.
+    :rtype: tuple[:class:`~symmetries.generator.Generator`,
+        list[:class:`sympy.Expr`]]
     """
     independents = jet_space.base_space
     dependents = jet_space.dependents

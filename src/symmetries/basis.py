@@ -1,4 +1,4 @@
-"""Operations to determine generator bases for ansätze."""
+"""A function to split a generator into base components."""
 from itertools import chain
 
 from sympy import poly
@@ -10,7 +10,18 @@ def decompose_generator(generator, basis):
     """Decompose a generator by a basis of arbitrary constants or
     functions.
 
-    Only generators linear in the basis is implemented.
+    Only decomposition of generators linear in the basis is implemented.
+
+    :param generator: The generator to decompose.
+    :type generator: :class:`~generator.Generator`
+
+    :param basis: The arbitrary constants or functions in which the
+        generator can be decomposed.
+    :type basis: list[:class:`sympy.Expr`]
+
+    :return: The generators that span the space the input generator was
+        in.
+    :rtype: list[:class:`~generator.Generator`]
     """
 
     xi_polys = [poly(xi, basis) for xi in generator.xis]

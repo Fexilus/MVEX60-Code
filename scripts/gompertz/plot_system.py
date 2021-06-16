@@ -27,8 +27,8 @@ def plot(save_path=None, file_names=["gompertz-system-solutions-varw.eps",
     params = {"kG": 1}
 
     def system_rhs(t, y, kG=1,):
-        """The system Gompertz model with \\(T_i\\)-parametrization."""
-
+        """The system Gompertz model with :math:`T_i`-parametrization.
+        """
         W, G = y
 
         dWdt = W * G

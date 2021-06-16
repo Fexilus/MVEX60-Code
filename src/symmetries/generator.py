@@ -10,6 +10,17 @@ from .utils import iter_wrapper, zip_strict
 
 class Generator:
     """A local coordinate representation of an infinitesimal generator.
+
+    :param xis: The base space components of the tangent field.
+    :type xis: list[:class:`sympy.Expr`]
+
+    :param etas: The fiber components of the tangent field.
+    :type etas: list[:class:`sympy.Expr`]
+
+    :param total_space: The base vectors of the total space on which the
+        generator acts.
+    :type total_space: tuple[list[:class:`sympy.Expr`],
+        list[:class:`sympy.Expr`]]
     """
     def __init__(self, xis, etas, total_space):
 
@@ -20,18 +31,16 @@ class Generator:
         self.total_space = (list(total_space[0]), list(total_space[1]))
 
     def __call__(self, expr, jet_space=None):
-        r"""Apply the generator on an expression on a jet space.
+        """Apply the generator on an expression on a jet space.
 
-        Args:
-            expr: The \lstinline{sympy} expression to apply the
-                generator on.
+        :param expr: The expression to apply the generator on.
+        :type expr: :class:`sympy.Expr`
 
-            jet_space: The :class:`~jetspace.JetSpace` in which the
-                expression lives.
+        :param jet_space: The jet space in which the expression lives.
+        :type jet_space: :class:`~jetspace.JetSpace`, optional
 
-        Returns:
-            The \lstinline{sympy} expression after application of the
-            generator.
+        :return: The expression after application of the generator.
+        :rtype: :class:`sympy.Expr`
         """
         if not jet_space:
             jet_space = JetSpace(*self.total_space, 0)
@@ -165,18 +174,18 @@ class Generator:
         return Generator(pos_xis, pos_etas, self.total_space)
 
     def get_tangent_field(self, degree=0):
-        r"""Return the corresponding prolonged tangent field of the
+        """Return the corresponding prolonged tangent field of the
         generator.
 
         The ordering is the same as the ordering of
-        :func:`~generator.Generator.get_jet_space_basis`.
+        :func:`~get_jet_space_basis`.
 
-        Args:
-            degree: The degree of the prolongation.
+        :param degree: The degree of the prolongation.
+        :type degree: int, optional
 
-        Returns:
-            A list of the \lstinline{sympy} expressions corresponding to
-            the components of the (possibly prolonged) tangent field.
+        :return: The expressions corresponding to the components of the
+            (possibly prolonged) tangent field.
+        :rtype: list[:class:`sympy.Expr`]
         """
         jet_space = JetSpace(*self.total_space, degree)
         eta_prolongations = get_prolongations(self.xis, self.etas, jet_space)
@@ -192,18 +201,18 @@ class Generator:
         return list(chain(self.xis, eta_prolong_exprs))
 
     def get_jet_space_basis(self, degree=0):
-        r"""Return the basis of a jet space on which the generator can
+        """Return the basis of a jet space on which the generator can
         act.
 
         The ordering is the same as the ordering of
-        :func:`~generator.Generator.get_tangent_field`.
+        :func:`~get_tangent_field`.
 
-        Args:
-            degree: The degree of the jet space.
+        :param degree: The degree of the jet space.
+        :type degree: int, optional
 
-        Returns:
-            A list of the \lstinline{sympy} expressions corresponding to
-            the basis vectors of the jet space.
+        :return: The expressions corresponding to the basis vectors of
+            the jet space.
+        :rtype: list[:class:`sympy.Expr`]
         """
         jet_space = JetSpace(*self.total_space, degree)
         fibers = jet_space.fibres
@@ -223,8 +232,17 @@ def generator_on(total_space):
     """Returns a initialization method for generators on the total
     space.
 
-    Is meant to be used in code where several generators on the same
-    space are used to reduce visual clutter.
+    Is meant to be used to reduce visual clutter in code where several
+    generators on the same space are used.
+
+    :param total_space: The base vectors of the total space on which the
+        generator acts.
+    :type total_space: tuple[list[:class:`sympy.Expr`],
+        list[:class:`sympy.Expr`]]
+
+    :return: A generator subclass without the total space argument in
+        the initializer.
+    :rtype: :class:`~Generator`
     """
 
     class _Generator(Generator):
@@ -242,6 +260,21 @@ def get_prolongations(xis, etas, jet_space):
     in the base space (xis) and the coefficients of derivatives in the
     fiber of the original fiber bundle (etas) from which the jet space
     is created.
+
+    :param xis: The base space components of the tangent field.
+    :type xis: list[:class:`sympy.Expr`]
+
+    :param etas: The fiber components of the tangent field.
+    :type etas: list[:class:`sympy.Expr`]
+
+    :param jet_space: The jet space on which the prolonged tangent field
+        will be calculated.
+    :type jet_space: :class:`~jetspace.JetSpace`
+
+    :return: The prolonged fiber expressions, ordered firstly by
+        original fiber and secondly by corresponding derivative
+        multiindex.
+    :rtype: dict[str, dict[tuple[int, ...], :class:`sympy.Expr`]]
     """
 
     eta_prolongations = {}
@@ -294,7 +327,16 @@ def get_prolongations(xis, etas, jet_space):
 
 
 def lie_bracket(generator1, generator2):
-    """The Lie bracket of two generators in the same coordinate system.
+    """The Lie bracket of two generators acting on the same total space.
+
+    :param generator1: The left generator in the Lie bracket.
+    :type generator1: :class:`~Generator`
+
+    :param generator2: The right generator in the Lie bracket.
+    :type generator2: :class:`~Generator`
+
+    :return: The Lie bracket of the two generators.
+    :rtype: :class:`~Generator`
     """
     if generator1.total_space != generator2.total_space:
         raise NotImplementedError("Generators have to be in same coordinates")

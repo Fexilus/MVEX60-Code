@@ -9,7 +9,18 @@ from .utils import iter_wrapper
 
 
 class JetSpace:
-    """A local coordinate representation of a jet space."""
+    """A local coordinate representation of a jet space.
+
+    :param base_coord: The basis vectors of the base space.
+    :type base_coord: list[:class:`sympy.Expr`]
+
+    :param fibre_coord: The basis vectors of the fibers.
+    :type fibre_coord: list[:class:`sympy.Expr`]
+
+    :param degree: The degree of the created jet space. A degree of 0
+        corresponds to the total space.
+    :type degree: int
+    """
 
     def __init__(self, base_coord, fibre_coord, degree):
 
@@ -38,6 +49,12 @@ class JetSpace:
     def base_index(self, base_symbol):
         """Returns the derivative index for a coordinate in the base
         space.
+
+        :param base_symbol: The symbol to find the base index of.
+        :type base_symbol: :class:`sympy.Expr`
+
+        :return: The multiindex of the desired symbol in the base space.
+        :rtype: tuple[int, ...]
         """
         base_num = self.base_space.index(base_symbol)
         base_size = len(self.base_space)
@@ -48,6 +65,14 @@ class JetSpace:
     def extension(self, new_degree):
         """Creates a jet space on the same total space of a higher
         degree.
+
+        :param new_degree: The degree of the extended jet space. Must
+            be higher than the current degree.
+        :type new_degree: int
+
+        :return: A deep copy of the jet space, with additional jet
+            fibers of higher degree.
+        :rtype: :class:`~JetSpace`
         """
         new_space = deepcopy(self)
 
@@ -62,6 +87,12 @@ class JetSpace:
 
     @property
     def dependents(self):
+        """The fibers of the total space on which the jet space is
+        built.
+
+        :return: The symbols of the original fibers.
+        :rtype: list[:class:`sympy.Expr`]
+        """
 
         return list(self.fibres)
 
@@ -94,16 +125,32 @@ class JetSpace:
         """The coordinates of the total space on which the jet space is
         built.
 
-        Returns:
-            A two-tuple of lists of the coordinates of the base space and
-            fiber respectively.
+        :return: The coordinates of the base space and fiber.
+        :rtype: tuple[list[:class:`sympy.Expr`],
+            list[:class:`sympy.Expr`]]
         """
 
         return self.base_space, self.dependents
 
 
 def total_derivative(jet_exp, coordinate, domain):
-    """The total derivative of an expression in a coordinate."""
+    """The total derivative of an expression in a coordinate.
+
+    :param jet_exp: The expression to be derived.
+    :type jet_exp: :class:`sympy.Expr`
+
+    :param coordinate: The coordinate to derive in. Should be one of the
+        symbols of the base space.
+    :type coordinate: :class:`sympy.Expr`
+
+    :param domain: The jet space in which ``jet_exp`` exists.
+    :type domain: :class:`~JetSpace`
+
+    :return: The derived expression. This expression exists in the
+        the (once) extended jet space compared to the domain of the
+        derivative.
+    :rtype: :class:`sympy.Expr`
+    """
     codomain = domain.extension(domain.degree + 1)
 
     diff_jet_exp = jet_exp.diff(coordinate)

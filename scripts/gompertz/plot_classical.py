@@ -21,8 +21,9 @@ def plot(save_path=None, file_name="gompertz-classical-solutions.eps"):
     params = {"Ti": np.log(np.log(3)), "kG": 1}
 
     def classical_rhs(t, W, kG=1, Ti=1):
-        """The classical Gompertz model with \\(T_i\\)-parametrization."""
-
+        """The classical Gompertz model with
+        :math:`T_i`-parametrization.
+        """
         dWdt = kG * np.exp(-kG * (t - Ti)) * W
         return dWdt
 

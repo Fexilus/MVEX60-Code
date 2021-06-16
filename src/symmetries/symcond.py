@@ -10,26 +10,27 @@ def get_lin_symmetry_cond(diff_eqs, generator, jet_space,
     """Test if the linearized symmetry conditions hold differential
     equations.
 
-    Args:
-        diff_eqs: A single or iterable of differential equations
-            formulated in a jet space.
+    :param diff_eqs: The differential equation(s) expressed in jet space
+        notation.
+    :type diff_eqs: :class:`sympy.Expr` or list[:class:`sympy.Expr`]
 
-        generator: An infinitesimal generator that takes an expression
-            and a jet space and applies the prolongation on that jet
-            space to the expression.
+    :param generator: The generator corresponding to the Lie group of
+        transformations to be tested.
+    :type generator: :class:`~generator.Generator`
 
-        jet_space: The jet space on which the differential equations
-            exist.
+    :param jet_space: The jet space on which the differential equations
+        exist.
+    :type jet_space: :class:`~jetspace.JetSpace`
 
-        derivative_hints: If given, contains a single item or list
-            (depending on the form of the differential equations) of the
-            highest order derivatives to be solved for.
+    :param derivative_hints: The highest order derivative(s) that the
+        differential equation(s) can be solved for.
+    :type derivative_hints: :class:`sympy.Expr` or
+        list[:class:`sympy.Expr`]
 
-    Returns:
-        A single or list (depending on the form of the differential
-        equations) of differential equations that must hold for the
-        infinitesimal generator to generate a group of symmetries that
-        constitute a symmetry.
+    :return: The differential equation(s) that must hold for the
+        infinitesimal generator to generate a Lie group of symmetries.
+        The differential equations are expressed in jet space notation.
+    :rtype: :class:`sympy.Expr` or list[:class:`sympy.Expr`]
     """
     # Ensure that the iterable is reusable
     diff_eqs = list(diff_eqs)
@@ -45,7 +46,22 @@ def get_lin_symmetry_cond(diff_eqs, generator, jet_space,
 
 @optional_iter
 def find_submanifold_subs(diff_eqs, jet_space, derivative_hints=None):
-    """Find the substitutions for evaluation on differential equations.
+    """Find substitutions that can be used to evaluate a jet space
+    expression on the surface of a differential equation.
+
+    :param diff_eqs: The differential equation(s) expressed in jet space
+        notation.
+    :type diff_eqs: :class:`sympy.Expr` or list[:class:`sympy.Expr`]
+
+    :param jet_space: The jet space on which the differential equations
+        exist. (Is currently not used)
+    :type jet_space: :class:`~jetspace.JetSpace`
+
+    :param derivative_hints: Highest order derivative(s) that the
+        differential equation(s) can be solved for. (Is currently
+        required)
+    :type derivative_hints: :class:`sympy.Expr` or
+        list[:class:`sympy.Expr`]
     """
     if derivative_hints:
         subs_coords = list(iter_wrapper(derivative_hints))

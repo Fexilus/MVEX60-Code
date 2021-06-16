@@ -22,24 +22,27 @@ FIG_HEIGHT = 6
 def plot(save_path=None, file_names=["classical-gompertz-surface.pdf",
                                      "autonomous-gompertz-surface.pdf"],
          plot_projection=False, plot_lifts=True, plot_surface=True):
-    r"""Plot the jet surface of the classical and autonomous Gompertz
+    """Plot the jet surface of the classical and autonomous Gompertz
     models on the front page of the thesis.
 
-    Args:
-        save_path: Optional path to save the figures to.
+    :param save_path: Optional path to save the figures to.
+    :type save_path: str, optional
 
-        file_names: List of the names of the file name to save to if a
-            path is given.
+    :param file_names: The names of the file names to save to if a path
+        is given.
+    :type file_names: list[str], optional
 
-        plot_projection: Boolean value to control whether the projection
-            of solution and transformation lines are plotted. (Not
-            implemented)
+    :param plot_projection: Switch to control whether the projection of
+        solution and transformation lines are plotted. (Not implemented)
+    :type plot_projection: bool, optional
 
-        plot_lifts: Boolean value to control whether the lifts of
-            solution and transformation lines are plotted.
+    :param plot_lifts: Switch to control whether the lifts of solution
+        and transformation lines are plotted.
+    :type plot_lifts: bool, optional
 
-        plot_surface: Boolean value to control whether the ODE surface
-            if plotted.
+    :param plot_surface: Switch to control whether the ODE surface if
+        plotted.
+    :type plot_surface: bool, optional
     """
     plt.rc("mathtext", fontset="cm")
 
@@ -70,36 +73,47 @@ def plot_classical_surface(default_params, t_vec, W_vec, tlim, Wlim, dWdtlim,
                            file_name="classical-gompertz-surface.pdf",
                            plot_projection=False, plot_lifts=True,
                            plot_surface=True):
-    r"""Plot the jet surface of the autonomous Gompertz model.
+    """Plot the jet surface of the autonomous Gompertz model.
 
-    Args:
-        default_params: A dict containing the default parameters of the
-            \(T_i\)-parametrized Gompertz model. The parameters are
-            \lstinline{"A"}, \lstinline{"Ti"} and \lstinline{"kG"}.
+    :param default_params: The default parameters of the
+        :math:`T_i`-parametrized Gompertz model. The parameter names are
+        ``"A"``, ``"Ti"`` and ``"kG"``.
+    :type default_params: dict[str, float]
 
-        t_vec: numpy array of time values to evaluate at.
+    :param t_vec: Array of time values to evaluate at.
+    :type t_vec: :class:`numpy.ndarray`
 
-        W_vec: numpy array of size values to evaluate at.
+    :param W_vec: numpy array of size values to evaluate at.
+    :type W_vec: :class:`numpy.ndarray`
 
-        tlim: Two-tupple of limits for the time axis.
+    :param tlim: Limits for the time axis.
+    :type tlim: tuple[float, float]
 
-        Wlim: Two-tupple of limits for the size axis.
+    :param Wlim: Limits for the size axis.
+    :type Wlim: tuple[float, float]
 
-        dWdtlim: Two-tupple of limits for the size derivative axis.
+    :param dWdtlim: Limits for the size derivative axis.
+    :type dWdtlim: tuple[float, float]
 
-        save_path: Optional path to save the figure to.
+    :param save_path: Path to save the figure to. If ``None``, the
+        figure will not be saved to file.
+    :type save_path: str, optional
 
-        file_name: Name of the file name to save to if a path is given.
+    :param file_name: Name of the file name to save to if a path is
+        given.
+    :type file_name: str, optional
 
-        plot_projection: Boolean value to control whether the projection
-            of solution and transformation lines are plotted. (Not
-            implemented)
+    :param plot_projection: Switch to control whether the projection of
+        solution and transformation lines are plotted. (Not implemented)
+    :type plot_projection: bool, optional
 
-        plot_lifts: Boolean value to control whether the lifts of
-            solution and transformation lines are plotted.
+    :param plot_lifts: Switch to control whether the lifts of solution
+        and transformation lines are plotted.
+    :type plot_lifts: bool, optional
 
-        plot_surface: Boolean value to control whether the ODE surface
-            if plotted.
+    :param plot_surface: Switch to control whether the ODE surface if
+        plotted.
+    :type plot_surface: bool, optional
     """
     # Set up symbolic parameters
     t, W = symbols("t W")
@@ -192,36 +206,47 @@ def plot_autonomous_surface(default_params, t_vec, W_vec, tlim, Wlim, dWdtlim,
                             file_name="autonomous-gompertz-surface.pdf",
                             plot_projection=False, plot_lifts=True,
                             plot_surface=True):
-    r"""Plot the jet surface of the autonomous Gompertz model.
+    """Plot the jet surface of the autonomous Gompertz model.
 
-    Args:
-        default_params: A dict containing the default parameters of the
-            \(T_i\)-parametrized Gompertz model. The parameters are
-            \lstinline{"A"}, \lstinline{"Ti"} and \lstinline{"kG"}.
+    :param default_params: The default parameters of the
+        :math:`T_i`-parametrized Gompertz model. The parameter names are
+        ``"A"``, ``"Ti"`` and ``"kG"``.
+    :type default_params: dict[str, float]
 
-        t_vec: numpy array of time values to evaluate at.
+    :param t_vec: Array of time values to evaluate at.
+    :type t_vec: :class:`numpy.ndarray`
 
-        W_vec: numpy array of size values to evaluate at.
+    :param W_vec: numpy array of size values to evaluate at.
+    :type W_vec: :class:`numpy.ndarray`
 
-        tlim: Two-tupple of limits for the time axis.
+    :param tlim: Limits for the time axis.
+    :type tlim: tuple[float, float]
 
-        Wlim: Two-tupple of limits for the size axis.
+    :param Wlim: Limits for the size axis.
+    :type Wlim: tuple[float, float]
 
-        dWdtlim: Two-tupple of limits for the size derivative axis.
+    :param dWdtlim: Limits for the size derivative axis.
+    :type dWdtlim: tuple[float, float]
 
-        save_path: Optional path to save the figure to.
+    :param save_path: Path to save the figure to. If ``None``, the
+        figure will not be saved to file.
+    :type save_path: str, optional
 
-        file_name: Name of the file name to save to if a path is given.
+    :param file_name: Name of the file name to save to if a path is
+        given.
+    :type file_name: str, optional
 
-        plot_projection: Boolean value to control whether the projection
-            of solution and transformation lines are plotted. (Not
-            implemented)
+    :param plot_projection: Switch to control whether the projection of
+        solution and transformation lines are plotted. (Not implemented)
+    :type plot_projection: bool, optional
 
-        plot_lifts: Boolean value to control whether the lifts of
-            solution and transformation lines are plotted.
+    :param plot_lifts: Switch to control whether the lifts of solution
+        and transformation lines are plotted.
+    :type plot_lifts: bool, optional
 
-        plot_surface: Boolean value to control whether the ODE surface
-            if plotted.
+    :param plot_surface: Switch to control whether the ODE surface if
+        plotted.
+    :type plot_surface: bool, optional
     """
     # Set up symbolic parameters
     t, W = symbols("t W")
