@@ -14,15 +14,15 @@ class JetSpace:
     :param base_coord: The basis vectors of the base space.
     :type base_coord: list[:class:`sympy.Expr`]
 
-    :param fibre_coord: The basis vectors of the fibers.
-    :type fibre_coord: list[:class:`sympy.Expr`]
+    :param fiber_coord: The basis vectors of the fibers.
+    :type fiber_coord: list[:class:`sympy.Expr`]
 
     :param degree: The degree of the created jet space. A degree of 0
         corresponds to the total space.
     :type degree: int
     """
 
-    def __init__(self, base_coord, fibre_coord, degree):
+    def __init__(self, base_coord, fiber_coord, degree):
 
         self.degree = degree
 
@@ -30,9 +30,9 @@ class JetSpace:
 
         base_size = len(self.base_space)
 
-        self.fibres = {}
-        for coordinate in iter_wrapper(fibre_coord):
-            self.fibres[coordinate] = {(0,) * base_size: coordinate}
+        self.fibers = {}
+        for coordinate in iter_wrapper(fiber_coord):
+            self.fibers[coordinate] = {(0,) * base_size: coordinate}
 
         self._add_jet_fibers(degree)
 
@@ -41,7 +41,7 @@ class JetSpace:
 
         dcopy = copy(self)
         dcopy.base_space = deepcopy(self.base_space, memo)
-        dcopy.fibres = deepcopy(self.fibres, memo)
+        dcopy.fibers = deepcopy(self.fibers, memo)
 
         return dcopy
 
@@ -94,7 +94,7 @@ class JetSpace:
         :rtype: list[:class:`sympy.Expr`]
         """
 
-        return list(self.fibres)
+        return list(self.fibers)
 
 
     def _add_jet_fibers(self, upper_degree, lower_degree=1):
@@ -113,12 +113,12 @@ class JetSpace:
             deriv_symbols = list(combinations_with_replacement(self.base_space,
                                                                d))
 
-            for dependent in self.fibres:
+            for dependent in self.fibers:
                 for deriv_index, deriv_symbol in zip(deriv_indices,
                                                      deriv_symbols):
                     deriv_string = "".join(map(str, deriv_symbol))
                     symbol_name = dependent.name + "_{" + deriv_string + "}"
-                    self.fibres[dependent][deriv_index] = Symbol(symbol_name)
+                    self.fibers[dependent][deriv_index] = Symbol(symbol_name)
 
     @property
     def original_total_space(self):
@@ -157,10 +157,10 @@ def total_derivative(jet_exp, coordinate, domain):
 
     coord_index = domain.base_index(coordinate)
 
-    for dependent, dependent_fibres in domain.fibres.items():
-        for fibre_index, fibre_coord in dependent_fibres.items():
-            deriv_index = tuple(map(operator.add, fibre_index, coord_index))
-            deriv_symbol = codomain.fibres[dependent][deriv_index]
-            diff_jet_exp += deriv_symbol * jet_exp.diff(fibre_coord)
+    for dependent, dependent_fibers in domain.fibers.items():
+        for fiber_index, fiber_coord in dependent_fibers.items():
+            deriv_index = tuple(map(operator.add, fiber_index, coord_index))
+            deriv_symbol = codomain.fibers[dependent][deriv_index]
+            diff_jet_exp += deriv_symbol * jet_exp.diff(fiber_coord)
 
     return diff_jet_exp

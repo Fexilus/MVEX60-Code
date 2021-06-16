@@ -40,11 +40,11 @@ omega_P = alphaP * M - gammaP * P
 
 right_hand_sides = [omega_M, omega_B, omega_L, omega_A, omega_P]
 
-diff_functions = [jet_space.fibres[M][(1,)] - omega_M,
-                  jet_space.fibres[B][(1,)] - omega_B,
-                  jet_space.fibres[L][(1,)] - omega_L,
-                  jet_space.fibres[A][(1,)] - omega_A,
-                  jet_space.fibres[P][(1,)] - omega_P]
+diff_functions = [jet_space.fibers[M][(1,)] - omega_M,
+                  jet_space.fibers[B][(1,)] - omega_B,
+                  jet_space.fibers[L][(1,)] - omega_L,
+                  jet_space.fibers[A][(1,)] - omega_A,
+                  jet_space.fibers[P][(1,)] - omega_P]
 
 inf_generator, ansatz_consts = create_poly_ansatz(jet_space, 1)
 
@@ -57,7 +57,7 @@ for i, eta in enumerate(inf_generator.etas, start=1):
     print_eta = poly(eta, ansatz_consts + [t] + list(states))
     print(latex.doprint(Eq(Function(f"\\eta^{i}")(t, *states), print_eta)))
 
-first_derivatives = (fibres[(1,)] for _, fibres in jet_space.fibres.items())
+first_derivatives = (fibers[(1,)] for _, fibers in jet_space.fibers.items())
 lin_symmetry_cond = get_lin_symmetry_cond(diff_functions, inf_generator,
                                           jet_space,
                                           derivative_hints=first_derivatives)

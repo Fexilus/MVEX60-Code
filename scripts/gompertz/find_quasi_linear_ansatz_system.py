@@ -18,8 +18,8 @@ W, G = states = symbols("W G", nonnegative=True)
 
 jet_space = JetSpace(time, states, 1)
 
-Wt = jet_space.fibres[W][(1,)]
-Gt = jet_space.fibres[G][(1,)]
+Wt = jet_space.fibers[W][(1,)]
+Gt = jet_space.fibers[G][(1,)]
 
 # Parameters
 kG = symbols("k_G")

@@ -14,11 +14,11 @@ M, B, L, A, P = states = symbols("M B L A P", nonnegative=True)
 
 jet_space = JetSpace(time, states, 1)
 
-Mt = jet_space.fibres[M][(1,)]
-Bt = jet_space.fibres[B][(1,)]
-Lt = jet_space.fibres[L][(1,)]
-At = jet_space.fibres[A][(1,)]
-Pt = jet_space.fibres[P][(1,)]
+Mt = jet_space.fibers[M][(1,)]
+Bt = jet_space.fibers[B][(1,)]
+Lt = jet_space.fibers[L][(1,)]
+At = jet_space.fibers[A][(1,)]
+Pt = jet_space.fibers[P][(1,)]
 
 derivatives = [Mt, Bt, Lt, At, Pt]
 

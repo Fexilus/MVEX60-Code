@@ -13,7 +13,7 @@ W = state = symbols("W", positive=True)
 # Jet space and derivative coordinate
 jet_space = JetSpace(time, state, 1)
 
-Wt = jet_space.fibres[W][(1,)]
+Wt = jet_space.fibers[W][(1,)]
 
 # Parameters
 kG, A = symbols("k_G A", positive=True)

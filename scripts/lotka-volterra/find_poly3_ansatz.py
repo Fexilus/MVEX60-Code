@@ -28,8 +28,8 @@ omega_2 = b * u1 * u2 - m * u2
 
 right_hand_sides = [omega_1, omega_2]
 
-diff_functions = [jet_space.fibres[u1][(1,)] - omega_1,
-                  jet_space.fibres[u2][(1,)] - omega_2]
+diff_functions = [jet_space.fibers[u1][(1,)] - omega_1,
+                  jet_space.fibers[u2][(1,)] - omega_2]
 
 inf_generator, ansatz_consts = create_poly_ansatz(jet_space, 3)
 
@@ -42,7 +42,7 @@ for i, eta in enumerate(inf_generator.etas, start=1):
     print_eta = poly(eta, ansatz_consts + [t] + list(states))
     print(latex.doprint(Eq(Function(f"\\eta^{i}")(t, *states), print_eta)))
 
-first_derivatives = (fibres[(1,)] for _, fibres in jet_space.fibres.items())
+first_derivatives = (fibers[(1,)] for _, fibers in jet_space.fibers.items())
 lin_symmetry_cond = get_lin_symmetry_cond(diff_functions, inf_generator,
                                           jet_space,
                                           derivative_hints=first_derivatives)

@@ -53,9 +53,9 @@ class Generator:
         for base_coord, xi in zip(jet_space.base_space, self.xis):
             out_expr += xi * expr.diff(base_coord)
 
-        for dependent in jet_space.fibres:
-            for multiindex in jet_space.fibres[dependent]:
-                derivative = expr.diff(jet_space.fibres[dependent][multiindex])
+        for dependent in jet_space.fibers:
+            for multiindex in jet_space.fibers[dependent]:
+                derivative = expr.diff(jet_space.fibers[dependent][multiindex])
                 eta_prolongation = eta_prolongations[dependent][multiindex]
 
                 out_expr += eta_prolongation * derivative
@@ -215,17 +215,17 @@ class Generator:
         :rtype: list[:class:`sympy.Expr`]
         """
         jet_space = JetSpace(*self.total_space, degree)
-        fibers = jet_space.fibres
+        fibers = jet_space.fibers
 
         # Sort the prolonged tangent field
-        fibre_basis = []
+        fiber_basis = []
         for cur_deg in range(degree + 1):
             for derivative_dict in fibers.values():
                 for multiindex, base in derivative_dict.items():
                     if sum(multiindex) == cur_deg:
-                        fibre_basis.append(base)
+                        fiber_basis.append(base)
 
-        return list(chain(jet_space.base_space, fibre_basis))
+        return list(chain(jet_space.base_space, fiber_basis))
 
 
 def generator_on(total_space):
@@ -280,9 +280,9 @@ def get_prolongations(xis, etas, jet_space):
     eta_prolongations = {}
     base_size = len(jet_space.base_space)
 
-    for dependent, eta in zip_strict(jet_space.fibres, etas):
+    for dependent, eta in zip_strict(jet_space.fibers, etas):
 
-        multiindex_iter = iter(jet_space.fibres[dependent])
+        multiindex_iter = iter(jet_space.fibers[dependent])
 
         eta_prolongations[dependent] = {(0,) * base_size: eta}
         next(multiindex_iter)
@@ -317,7 +317,7 @@ def get_prolongations(xis, etas, jet_space):
                 derivative_index = tuple(map(operator.add, prev_index,
                                              base_index))
 
-                deriv_coord = jet_space.fibres[dependent][derivative_index]
+                deriv_coord = jet_space.fibers[dependent][derivative_index]
                 xi_term = deriv_coord * total_derivative(xi, base_coord,
                                                          jet_space)
 

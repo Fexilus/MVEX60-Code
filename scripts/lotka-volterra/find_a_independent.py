@@ -15,8 +15,8 @@ t = symbols("t", real=True)
 u1, u2 = states = symbols("N P", positive=True)
 jet_space = JetSpace(t, states, 1)
 
-u1t = jet_space.fibres[u1][(1,)]
-u2t = jet_space.fibres[u2][(1,)]
+u1t = jet_space.fibers[u1][(1,)]
+u2t = jet_space.fibers[u2][(1,)]
 
 a, b, c, d = parameters = symbols("a b c d")
 diff_eqs = [u1t - a*u1 + b*u1*u2, u2t - c*u1*u2 + d*u2]
