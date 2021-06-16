@@ -60,8 +60,8 @@ class JetSpace:
         return new_space
 
 
-    def get_dependents(self):
-        """Return the dependent coordinates of the jet space."""
+    @property
+    def dependents(self):
 
         return list(self.fibres)
 
@@ -99,7 +99,7 @@ class JetSpace:
             fiber respectively.
         """
 
-        return self.base_space, self.get_dependents()
+        return self.base_space, self.dependents
 
 
 def total_derivative(jet_exp, coordinate, domain):

@@ -16,7 +16,7 @@ def create_poly_ansatz(jet_space, degree=1):
     components of a given jet space.
     """
     independents = jet_space.base_space
-    dependents = jet_space.get_dependents()
+    dependents = jet_space.dependents
 
     key = monomial_key("grlex", tuple(reversed(independents + dependents)))
 
