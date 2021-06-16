@@ -28,7 +28,8 @@ class Generator:
 
         self.etas = [sympify(eta) for eta in iter_wrapper(etas)]
 
-        self.total_space = (list(total_space[0]), list(total_space[1]))
+        self.total_space = (list(iter_wrapper(total_space[0])),
+                            list(iter_wrapper(total_space[1])))
 
     def __call__(self, expr, jet_space=None):
         """Apply the generator on an expression on a jet space.
