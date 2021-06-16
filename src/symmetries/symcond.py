@@ -43,6 +43,7 @@ def get_lin_symmetry_cond(diff_eqs, generator, jet_space,
     return sym_cond
 
 
+@optional_iter
 def find_submanifold_subs(diff_eqs, jet_space, derivative_hints=None):
     """Find the substitutions for evaluation on differential equations.
     """
@@ -55,8 +56,7 @@ def find_submanifold_subs(diff_eqs, jet_space, derivative_hints=None):
         raise NotImplementedError("Hint-free substitutions not implemented")
 
     def substitutions():
-        for diff_eq, subs_coord in zip_strict(iter_wrapper(diff_eqs),
-                                              subs_coords):
+        for diff_eq, subs_coord in zip_strict(diff_eqs, subs_coords):
             rhs = list(linsolve([diff_eq], subs_coord))
 
             if len(rhs) != 1:
