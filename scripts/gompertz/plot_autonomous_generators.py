@@ -40,12 +40,10 @@ def plot(save_path=None, file_names=["gompertz-autonomous-ansatz.eps",
                                      "gompertz-autonomous-param.eps"],
          transformation_kw_args=None):
 
-    plt.rc("mathtext", fontset="cm")
-
     transformation_kw_args = transformation_kw_args or {}
 
     tlim = (-2, 10)
-    Wlim = (0, 3)
+    Wlim = (0, 3.1)
 
     #num_solution_lines = 11
     trans_max_lens = [10, 1, 2, 2, 1, 10]
@@ -77,6 +75,8 @@ def plot(save_path=None, file_names=["gompertz-autonomous-ansatz.eps",
                             **transformation_kw_args)
 
         ax.set_title(f"$X_{{\\mathrm{{a}},{i}}}$")
+        ax.set_xlim(tlim)
+        ax.set_ylim(Wlim)
         ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
         ax.set_xlabel("$t$")
         ax.set_ylabel("$W$")
@@ -104,6 +104,8 @@ def plot(save_path=None, file_names=["gompertz-autonomous-ansatz.eps",
                             **transformation_kw_args)
 
         ax.set_title(f"$X_{{\\mathrm{{a}},{i}}}$")
+        ax.set_xlim(tlim)
+        ax.set_ylim(Wlim)
         ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
         ax.set_xlabel("$t$")
         ax.set_ylabel("$W$")

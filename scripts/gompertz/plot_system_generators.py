@@ -41,13 +41,11 @@ def plot(save_path=None, file_names=["gompertz-system-ansatz.eps",
                                      "gompertz-system-param.eps"],
          transformation_kw_args=None):
 
-    plt.rc("mathtext", fontset="cm")
-
     transformation_kw_args = transformation_kw_args or {}
 
     tlim = (-2, 10)
-    Wlim = (0, 3)
-    Glim = (0, 3)
+    Wlim = (0, 3.1)
+    Glim = (0, 3.1)
 
     trans_max_lens = [3, 0.8, 0.8, 0.3, 3, 0.2]
 
@@ -65,7 +63,7 @@ def plot(save_path=None, file_names=["gompertz-system-ansatz.eps",
         return rhs_func(t, *y, *param_vals)
 
     # Plot generators from ansatz
-    fig = plt.figure(figsize=(12, 9))
+    fig = plt.figure(constrained_layout=True, figsize=(12, 9))
     subfigs = fig.subfigures(3, 2).flat
 
     ansatz_iter_bundle = ((i, gen, max_len) for i, (gen, max_len)
@@ -79,17 +77,20 @@ def plot(save_path=None, file_names=["gompertz-system-ansatz.eps",
                             trans_max_len=max_len, **transformation_kw_args)
 
         subfig.suptitle(f"$X_{{\\mathrm{{s}},{i}}}$")
+        axs[0].set_xlim(tlim)
+        axs[0].set_ylim(Wlim)
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
         axs[0].set_xlabel("$t$")
         axs[0].set_ylabel("$W$")
+        axs[1].set_xlim(tlim)
+        axs[1].set_ylim(Glim)
         axs[1].set_aspect((tlim[1] - tlim[0]) / (Glim[1] - Glim[0]))
         axs[1].set_xlabel("$t$")
         axs[1].set_ylabel("$G$")
 
     if save_path:
         file_path = os.path.join(save_path, file_names[0])
-        plt.savefig(file_path, format="eps",
-                    bbox_inches="tight")
+        plt.savefig(file_path, format="eps")
 
     # Plot generators from parameter independence
     fig = plt.figure(constrained_layout=True, figsize=(6, 9))
@@ -106,17 +107,20 @@ def plot(save_path=None, file_names=["gompertz-system-ansatz.eps",
                             trans_max_len=max_len, **transformation_kw_args)
 
         subfig.suptitle(f"$X_{{\\mathrm{{s}},{i}}}$")
+        axs[0].set_xlim(tlim)
+        axs[0].set_ylim(Wlim)
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
         axs[0].set_xlabel("$t$")
         axs[0].set_ylabel("$W$")
+        axs[1].set_xlim(tlim)
+        axs[1].set_ylim(Glim)
         axs[1].set_aspect((tlim[1] - tlim[0]) / (Glim[1] - Glim[0]))
         axs[1].set_xlabel("$t$")
         axs[1].set_ylabel("$G$")
 
     if save_path:
         file_path = os.path.join(save_path, file_names[1])
-        plt.savefig(file_path, format="eps",
-                    bbox_inches="tight")
+        plt.savefig(file_path, format="eps")
 
 
 if __name__ == "__main__":

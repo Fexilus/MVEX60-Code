@@ -10,7 +10,8 @@ from .utils import integrate_two_ways, integrate_forward
 
 
 def get_integral_curves(generator, start_points, parameters=None, boundry=None,
-                        max_len=10.0, two_sided=False, jet_space_order=0):
+                        max_len=10.0, two_sided=False, jet_space_order=0,
+                        strict=False):
     """Get integral curves of a generator in specific points."""
 
     coords = generator.get_jet_space_basis(jet_space_order)
@@ -36,10 +37,10 @@ def get_integral_curves(generator, start_points, parameters=None, boundry=None,
 
         if two_sided:
             _, curve = integrate_two_ways(integrator, dt=ds, max_len=max_len,
-                                          y_boundry=boundry)
+                                          y_boundry=boundry, strict=strict)
         else:
             _, curve = integrate_forward(integrator, dt=ds, max_len=max_len,
-                                         y_boundry=boundry)
+                                         y_boundry=boundry, strict=strict)
 
         curves.append(curve)
 

@@ -11,11 +11,9 @@ from symmetries.visualize.utils import integrate_two_ways, get_spread
 def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
                                      "lotka-volterra-solutions-varp.eps"]):
 
-    plt.rc("mathtext", fontset="cm")
-
     tlim = (-2, 10)
-    Nlim = (0, 2)
-    Plim = (0, 2)
+    Nlim = (0, 1.7)
+    Plim = (0, 1.7)
 
     NUM_SOLUTION_LINES = 3
     include_init_val = (0, 1, 1)
@@ -53,13 +51,20 @@ def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
         is_include_init_val = np.allclose(init_val, include_init_val)
         color = "black" if is_include_init_val else None
         zorder = 2 if is_include_init_val else 1
+        linewidth = 2 if is_include_init_val else 1
 
-        axs[0].plot(time_points, solut[:, 0], color=color, zorder=zorder)
+        axs[0].plot(time_points, solut[:, 0], color=color, zorder=zorder,
+                    lw=linewidth)
+        axs[0].set_xlim(tlim)
+        axs[0].set_ylim(Nlim)
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Nlim[1] - Nlim[0]))
         axs[0].set_xlabel("$t$")
         axs[0].set_ylabel("$N$")
 
-        axs[1].plot(time_points, solut[:, 1], color=color, zorder=zorder)
+        axs[1].plot(time_points, solut[:, 1], color=color, zorder=zorder,
+                    lw=linewidth)
+        axs[1].set_xlim(tlim)
+        axs[1].set_ylim(Plim)
         axs[1].set_aspect((tlim[1] - tlim[0]) / (Plim[1] - Plim[0]))
         axs[1].set_xlabel("$t$")
         axs[1].set_ylabel("$P$")
@@ -87,13 +92,20 @@ def plot(save_path=None, file_names=["lotka-volterra-solutions-varn.eps",
         is_include_init_val = np.allclose(init_val, include_init_val)
         color = "black" if is_include_init_val else None
         zorder = 2 if is_include_init_val else 1
+        linewidth = 2 if is_include_init_val else 1
 
-        axs[0].plot(time_points, solut[:, 0], color=color, zorder=zorder)
+        axs[0].plot(time_points, solut[:, 0], color=color, zorder=zorder,
+                    lw=linewidth)
+        axs[0].set_xlim(tlim)
+        axs[0].set_ylim(Nlim)
         axs[0].set_aspect((tlim[1] - tlim[0]) / (Nlim[1] - Nlim[0]))
         axs[0].set_xlabel("$t$")
         axs[0].set_ylabel("$N$")
 
-        axs[1].plot(time_points, solut[:, 1], color=color, zorder=zorder)
+        axs[1].plot(time_points, solut[:, 1], color=color, zorder=zorder,
+                    lw=linewidth)
+        axs[1].set_xlim(tlim)
+        axs[1].set_ylim(Plim)
         axs[1].set_aspect((tlim[1] - tlim[0]) / (Plim[1] - Plim[0]))
         axs[1].set_xlabel("$t$")
         axs[1].set_ylabel("$P$")

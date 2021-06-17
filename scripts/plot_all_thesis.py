@@ -3,6 +3,12 @@ import os.path
 import argparse
 import importlib
 
+import matplotlib.pyplot as plt
+
+
+plt.rc("font", family="serif")
+plt.rc("mathtext", fontset="cm")
+plt.rc("axes", titlesize=16)
 
 SOLUTION_PLOT_FILES = [("gompertz.plot_classical", {}),
                        ("gompertz.plot_autonomous", {}),

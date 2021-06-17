@@ -44,8 +44,6 @@ def plot(save_path=None, file_names=["classical-gompertz-surface.pdf",
         plotted.
     :type plot_surface: bool, optional
     """
-    plt.rc("mathtext", fontset="cm")
-
     tlim = (-2, 10)
     Wlim = (0.001, 4.2)
     dWdtlim = (-4, 2)
@@ -166,8 +164,7 @@ def plot_classical_surface(default_params, t_vec, W_vec, tlim, Wlim, dWdtlim,
         plot_transformation_curves(ax, np.stack(default_line, axis=1),
                                    cla_generator, default_params, tlim,
                                    (Wlim, dWdtlim),
-                                   trans_max_len=np.log(4 / 3),
-                                   plot_kwargs={"zorder": 4}, in2d=False,
+                                   trans_max_len=np.log(4 / 3), in2d=False,
                                    jet_space_order=1)
     if plot_projection:
         raise NotImplementedError("Projected transformations are not "
@@ -298,8 +295,7 @@ def plot_autonomous_surface(default_params, t_vec, W_vec, tlim, Wlim, dWdtlim,
         plot_transformation_curves(ax, np.stack(default_line, axis=1),
                                    aut_generator, default_params, tlim,
                                    (Wlim, dWdtlim), trans_max_len=3,
-                                   plot_kwargs={"zorder": 4}, in2d=False,
-                                   jet_space_order=1)
+                                   in2d=False, jet_space_order=1, strict=True)
     if plot_projection:
         raise NotImplementedError("Projected transformations are not "
                                   "implemented.")

@@ -14,8 +14,6 @@ FIG_HEIGHT = 6
 def plot(save_path=None, file_name="jet-surface.pdf", plot_projection=True,
          plot_lifts=True, plot_surface=True):
 
-    plt.rc("mathtext", fontset="cm")
-
     xlim = (-1, 1)
     ylim = (-8, 8)
     zlim = (-16, 8)

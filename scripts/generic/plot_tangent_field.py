@@ -14,8 +14,6 @@ FIG_HEIGHT = 6
 def plot(save_path=None, file_names=["rotation-field.eps",
                                      "rotation-representative.eps"]):
 
-    plt.rc("mathtext", fontset="cm")
-
     xlim = (-1, 1)
     ylim = (-1, 1)
 

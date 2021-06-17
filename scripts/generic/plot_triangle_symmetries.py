@@ -9,8 +9,6 @@ from matplotlib.patches import FancyArrowPatch
 def plot(save_path=None, file_name="triangles.pdf", vertex_labels=None):
 
     plt.rc("text", usetex=True)
-    plt.rc("font", family="serif")
-    plt.rc("mathtext", fontset="cm")
 
     triangle1_vertices = np.array([[0, 0], [0.5, np.sqrt(0.75)], [1, 0]])
     triangle2_vertices = triangle1_vertices + np.array([1.2, 0])

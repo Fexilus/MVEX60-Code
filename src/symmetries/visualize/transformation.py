@@ -15,12 +15,12 @@ from ..utils import iter_wrapper
 def plot_transformation(generator, axs, diff_eq_rhs, init_val, tlim,
                         parameters=None, dt=0.1, ylim=None,
                         num_trans_points=10, trans_max_len=10,
-                        arrow_stroke_arguments=None):
+                        arrow_stroke_arguments=None, strict=False):
     """Plot transformation defined by generator of an ODE on axis."""
 
     # Plot the initial solution curve
     time_points, solut = plot_solution_curve(axs, diff_eq_rhs, init_val, tlim,
-                                             dt=dt, ylim=ylim)
+                                             dt=dt, ylim=ylim, strict=strict)
 
     if not ylim:
         ylim = (solut.min(axis=0), solut.max(axis=0))
@@ -31,7 +31,8 @@ def plot_transformation(generator, axs, diff_eq_rhs, init_val, tlim,
     trans_curves = plot_transformation_curves(axs, solution_curve, generator,
                                               parameters, tlim, ylim,
                                               num_trans_points, trans_max_len,
-                                              arrow_stroke_arguments)
+                                              arrow_stroke_arguments,
+                                              strict=strict)
 
     # Plot a new solution curve where the transformation lands.
     # The middle point is chosen as a starting point to ensure that the
@@ -41,10 +42,11 @@ def plot_transformation(generator, axs, diff_eq_rhs, init_val, tlim,
 
     time_points, solut = plot_solution_curve(axs, diff_eq_rhs,
                                              center_trans_end_point, tlim,
-                                             dt=dt, ylim=ylim)
+                                             dt=dt, ylim=ylim, strict=strict)
 
 
-def plot_solution_curve(axs, diff_eq_rhs, init_val, tlim, dt=0.1, ylim=None):
+def plot_solution_curve(axs, diff_eq_rhs, init_val, tlim, dt=0.1, ylim=None,
+                        strict=False):
     """Plot the solution curve of an ODE."""
 
     # Process arguments
@@ -57,7 +59,8 @@ def plot_solution_curve(axs, diff_eq_rhs, init_val, tlim, dt=0.1, ylim=None):
     tlim_diff = tlim[1] - tlim[0]
 
     time_points, solut = integrate_two_ways(integrator, dt, max_len=tlim_diff,
-                                            t_boundry=tlim, y_boundry=ylim)
+                                            t_boundry=tlim, y_boundry=ylim,
+                                            strict=strict)
 
     for i, ax in enumerate(axs):
         ax.plot(time_points, solut[:,i])
@@ -68,7 +71,8 @@ def plot_solution_curve(axs, diff_eq_rhs, init_val, tlim, dt=0.1, ylim=None):
 def plot_transformation_curves(axs, solution_curve, generator, parameters,
                                tlim, ylim, num_trans_points=10,
                                trans_max_len=10, arrow_stroke_arguments=None,
-                               plot_kwargs=None, in2d=True, jet_space_order=0):
+                               plot_kwargs=None, in2d=True, jet_space_order=0,
+                               strict=False):
     """Plot equispaced transformation curves originating from a solution
     curve.
     """
@@ -98,7 +102,8 @@ def plot_transformation_curves(axs, solution_curve, generator, parameters,
                                        parameters=parameters,
                                        boundry=(tlim, *ylim),
                                        max_len=trans_max_len,
-                                       jet_space_order=jet_space_order)
+                                       jet_space_order=jet_space_order,
+                                       strict=strict)
 
     # Set up arrow stroke effect
     arrow_stroke = WithArrowStroke(**arrow_stroke_arguments)
@@ -109,9 +114,9 @@ def plot_transformation_curves(axs, solution_curve, generator, parameters,
         if in2d:
             for i, ax in enumerate(axs, start=1):
                 ax.plot(curve[:,0], curve[:, i], path_effects=[arrow_stroke],
-                        color="black", **plot_kwargs)
+                        color="black", zorder=3, **plot_kwargs)
         else:
             ax.plot(*curve.T, path_effects=[arrow_stroke], color="black",
-                    **plot_kwargs)
+                    zorder=3, **plot_kwargs)
 
     return trans_curves

@@ -11,8 +11,6 @@ FIG_HEIGHT = 6
 
 def plot(save_path=None, file_name="generic-solutions.eps"):
 
-    plt.rc("mathtext", fontset="cm")
-
     xlim = (-1, 1)
     ylim = (-8, 8)
 

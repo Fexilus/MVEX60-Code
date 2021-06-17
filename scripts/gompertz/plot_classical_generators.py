@@ -42,15 +42,13 @@ def plot(save_path=None, file_names=["gompertz-classical-local.eps",
                                      "gompertz-classical-param.eps"],
          limits=None, transformation_kw_args=None, plot_selective=None):
 
-    plt.rc("mathtext", fontset="cm")
-
     # Process arguments
     if limits:
         tlim = limits[0]
         Wlim = limits[1]
     else:
         tlim = (-2, 10)
-        Wlim = (0, 3)
+        Wlim = (0, 3.1)
 
     transformation_kw_args = transformation_kw_args or {}
 
@@ -94,6 +92,8 @@ def plot(save_path=None, file_names=["gompertz-classical-local.eps",
         ax.quiver(ts, Ws, xi_evals, eta_evals, zorder=3, headwidth=5)
 
         ax.set_title(f"$X_{{\\mathrm{{c}},{i}}}$")
+        ax.set_xlim(tlim)
+        ax.set_ylim(Wlim)
         ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
         ax.set_xlabel("$t$")
         ax.set_ylabel("$W$")
@@ -118,6 +118,8 @@ def plot(save_path=None, file_names=["gompertz-classical-local.eps",
                             **transformation_kw_args)
 
         ax.set_title(f"$X_{{\\mathrm{{c}},{i}}}$")
+        ax.set_xlim(tlim)
+        ax.set_ylim(Wlim)
         ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
         ax.set_xlabel("$t$")
         ax.set_ylabel("$W$")
@@ -146,6 +148,8 @@ def plot(save_path=None, file_names=["gompertz-classical-local.eps",
                             **transformation_kw_args)
 
         ax.set_title(f"$X_{{\\mathrm{{c}},{i}}}$")
+        ax.set_xlim(tlim)
+        ax.set_ylim(Wlim)
         ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
         ax.set_xlabel("$t$")
         ax.set_ylabel("$W$")

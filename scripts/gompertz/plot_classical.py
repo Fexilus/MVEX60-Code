@@ -10,10 +10,8 @@ from symmetries.visualize.utils import integrate_two_ways, get_spread
 
 def plot(save_path=None, file_name="gompertz-classical-solutions.eps"):
 
-    plt.rc("mathtext", fontset="cm")
-
     tlim = (-2, 10)
-    Wlim = (0, 3)
+    Wlim = (0, 3.1)
 
     NUM_SOLUTION_LINES = 5
     include_init_val = (0, 1)
@@ -51,6 +49,8 @@ def plot(save_path=None, file_name="gompertz-classical-solutions.eps"):
 
         ax.plot(time_points, solut, color=color, zorder=zorder, lw=linewidth)
 
+    ax.set_xlim(tlim)
+    ax.set_ylim(Wlim)
     ax.set_aspect((tlim[1] - tlim[0]) / (Wlim[1] - Wlim[0]))
     ax.set_xlabel("$t$")
     ax.set_ylabel("$W$")

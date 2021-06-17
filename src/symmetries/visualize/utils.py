@@ -1,7 +1,7 @@
 """Utility functions for the visualization code."""
 import numpy as np
 
-def in_ranges(vec, ranges):
+def in_ranges(vec, ranges, strict=False):
     """Test if elements in vector are in their respective ranges.
 
     If ranges is None, allways return True.
@@ -23,12 +23,16 @@ def in_ranges(vec, ranges):
 
     ranges = np.array(ranges, ndmin=2)
 
-    return np.all(vec >= ranges[:,0]) and np.all(vec <= ranges[:,1])
+    if strict:
+        return np.all(vec >= ranges[:,0]) and np.all(vec <= ranges[:,1])
+    else:
+        return np.any(np.logical_and((vec >= ranges[:,0]),
+                                     (vec <= ranges[:,1])))
 
 
 
 def integrate_two_ways(integrator, dt, max_len, t_boundry=None,
-                       y_boundry=None):
+                       y_boundry=None, strict=False):
     """Integrate an ODE in both directions, given a step size.
 
     This function is useful when the ODE might become numerically
@@ -54,8 +58,8 @@ def integrate_two_ways(integrator, dt, max_len, t_boundry=None,
     curve_forward_y = []
 
     while (integrator.t <= init_t + max_len
-           and in_ranges(integrator.t, t_boundry)
-           and in_ranges(integrator.y, y_boundry)):
+           and in_ranges(integrator.t, t_boundry, strict=strict)
+           and in_ranges(integrator.y, y_boundry, strict=strict)):
         integrator.integrate(integrator.t + dt)
 
         if integrator.successful():
@@ -70,8 +74,8 @@ def integrate_two_ways(integrator, dt, max_len, t_boundry=None,
     curve_backward_y = []
 
     while (integrator.t >= init_t - max_len
-           and in_ranges(integrator.t, t_boundry)
-           and in_ranges(integrator.y, y_boundry)):
+           and in_ranges(integrator.t, t_boundry, strict=strict)
+           and in_ranges(integrator.y, y_boundry, strict=strict)):
         integrator.integrate(integrator.t - dt)
 
         if integrator.successful():
@@ -89,7 +93,8 @@ def integrate_two_ways(integrator, dt, max_len, t_boundry=None,
     return np.array(curve_t)[:,None], np.array(curve_y)
 
 
-def integrate_forward(integrator, dt, max_len, t_boundry=None, y_boundry=None):
+def integrate_forward(integrator, dt, max_len, t_boundry=None, y_boundry=None,
+                      strict=False):
     """Integrate an ODE forward., given a step size.
 
     Exist to comply with the form of the two way integration function.
@@ -112,8 +117,8 @@ def integrate_forward(integrator, dt, max_len, t_boundry=None, y_boundry=None):
     curve_forward_y = []
 
     while (integrator.t <= init_t + max_len
-           and in_ranges(integrator.t, t_boundry)
-           and in_ranges(integrator.y, y_boundry)):
+           and in_ranges(integrator.t, t_boundry, strict=strict)
+           and in_ranges(integrator.y, y_boundry, strict=strict)):
         integrator.integrate(integrator.t + dt)
 
         if integrator.successful():
