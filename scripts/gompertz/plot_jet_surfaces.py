@@ -127,7 +127,8 @@ def plot_classical_surface(default_params, t_vec, W_vec, tlim, Wlim, dWdtlim,
     surf_ts, surf_Ws, surf_dWdts = crop_surface(surf_ts, surf_Ws, surf_dWdts,
                                                 dWdtlim)
 
-    fig, ax = plt.subplots(subplot_kw=dict(projection="3d"),
+    fig, ax = plt.subplots(subplot_kw=dict(projection="3d",
+                                           proj_type = "ortho"),
                            figsize=(FIG_WIDTH, FIG_HEIGHT))
 
     if plot_surface:
@@ -258,7 +259,8 @@ def plot_autonomous_surface(default_params, t_vec, W_vec, tlim, Wlim, dWdtlim,
     surf_ts, surf_Ws = np.meshgrid(t_vec, W_vec)
     surf_dWdts = - kG * np.log(surf_Ws / A) * surf_Ws
 
-    fig, ax = plt.subplots(subplot_kw=dict(projection="3d"),
+    fig, ax = plt.subplots(subplot_kw=dict(projection="3d",
+                                           proj_type = "ortho"),
                            figsize=(FIG_WIDTH, FIG_HEIGHT))
 
     if plot_surface:
